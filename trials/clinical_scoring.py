@@ -23,9 +23,7 @@ def aggregate(components, conflict=False):
         if value is not None
     )
     return {
-        "overall_score": round(credit, 1)
-        if known and not conflict
-        else None,
+        "overall_score": round(credit, 1) if known and not conflict else None,
         "coverage": round(known / 100, 3),
         "components": components,
         "weights": CLINICAL_WEIGHTS,

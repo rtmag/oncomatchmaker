@@ -20,7 +20,7 @@ export function FindingDialog({ finding, onClose }: FindingDialogProps) {
               {finding.geneValidation && <Tag tone="evidence">HGNC: {finding.geneValidation}</Tag>}
             </div>
             <section>
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Reported text</h3>
+              <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Original report evidence</h3>
               <blockquote className="rounded-xl border border-border bg-card-2 px-4 py-3 text-sm leading-relaxed">{finding.sourceText}</blockquote>
             </section>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
@@ -41,7 +41,7 @@ export function FindingDialog({ finding, onClose }: FindingDialogProps) {
                 The report flags possible clonal hematopoiesis. Tumor origin is not established, so this finding is not used as a tumor-directed rationale.
               </Callout>
             )}
-            <Callout>Pathogenicity and therapeutic relevance are separate assessments. Values are shown as reported; no unit conversion is applied.</Callout>
+            <Callout>Pathogenicity and therapeutic relevance are separate assessments. Current values may include user-provided context. Original report evidence is preserved above.</Callout>
           </div>
         </DialogContent>
       )}

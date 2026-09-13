@@ -1,3 +1,5 @@
+import { EMPTY_CLINICAL_CONTEXT } from "@/lib/clinical-context"
+import { OptionalClinicalFields } from "./OptionalClinicalFields"
 import { ArrowRight, ArrowUpRight, Atom, Braces, Dna, FileText, LoaderCircle } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -84,6 +86,8 @@ export function IntakeView() {
   const [cityLoading, setCityLoading] = useState(false)
   const [cityError, setCityError] = useState("")
   const [pdf, setPdf] = useState<File | null>(null)
+  const [clinical, setClinical] = useState(EMPTY_CLINICAL_CONTEXT)
+  const [contextError, setContextError] = useState("")
   const [elapsed, setElapsed] = useState(0)
   const running = busy === "extract" || busy === "match"
 
@@ -109,11 +113,14 @@ export function IntakeView() {
 
   const handlePdf = useCallback(async (file: File) => { if (!running) setPdf(file) }, [running])
   const analyze = async () => {
-    if (!pdf || !selectedCity) return
-    const { label: _label, ...location } = selectedCity
-    if (await extractPdf(pdf, location)) {
-      toast.success("Your trial landscape is ready.")
-      navigate("overview")
+    if (!pdf) return
+    if (city.trim() && !selectedCity) { setCityError("Choose a city suggestion or clear the city to continue without geography."); return }
+    if (clinical.therapyStatus === 'entered' && !clinical.therapies.trim()) { setContextError("Enter prior treatments or choose Unknown / None."); return }
+    setContextError("")
+    const location = selectedCity ? { city: selectedCity.city, country: selectedCity.country, latitude: selectedCity.latitude, longitude: selectedCity.longitude } : { city: null, country: null, latitude: null, longitude: null }
+    if (await extractPdf(pdf, location, clinical)) {
+      toast.success("Extraction ready. Review the profile before matching trials.")
+      navigate("profile")
     }
   }
   const handleJson = useCallback(async (file: File) => openReview(await loadJson(file), `Loaded ${file.name}.`), [loadJson])
@@ -134,7 +141,7 @@ export function IntakeView() {
             Bring the report <span className="text-primary">into focus.</span>
           </>
         }
-        subtitle="One molecular report. One city. Explore your trial landscape with molecular evidence, six expert perspectives, and recruiting sites near you."
+        subtitle="Upload a report, review the extracted profile, then explore trials with six expert perspectives. Clinical context and location are optional."
       />
 
       <div className="grid gap-5 lg:grid-cols-12">
@@ -147,7 +154,7 @@ export function IntakeView() {
           />
           <div className="grid gap-8 px-6 pb-6 md:grid-cols-[1.25fr_1fr]">
             <div className="grid content-start gap-4">
-              <Field label="Patient city" hint="Choose a city and country from the suggestions.">
+              <Field label="Patient city (optional)" hint="Choose a suggestion, or leave blank for clinical screening without geographic scores.">
                 {(control) => (
                   <input {...control} className={inputClass} value={city} disabled={running} onChange={(event) => { setCity(event.target.value); setSelectedCity(null) }} placeholder="Search city, e.g. Singapore or Boston" maxLength={120} autoComplete="off" aria-controls="city-options" aria-expanded={suggestions.length > 0} role="combobox" />
                 )}
@@ -159,6 +166,8 @@ export function IntakeView() {
               </div>}
               {!cityLoading && !selectedCity && city.length >= 2 && suggestions.length === 0 && !cityError && <p className="text-xs text-muted-foreground">No city found in the registry location directory. Try the nearest major city.</p>}
               {selectedCity && <p className="text-xs text-primary">✓ {selectedCity.label} · location confirmed</p>}
+              <OptionalClinicalFields value={clinical} onChange={setClinical} disabled={running} />
+              {contextError && <p role="alert" className="text-xs text-destructive">{contextError}</p>}
               <FileDropzone
                 accept={PDF_ACCEPT}
                 maxSizeMB={20}
@@ -169,9 +178,9 @@ export function IntakeView() {
                 hint="PDF · up to 20 MB · processed with the extraction model"
                 icon={<FileText className="size-5" />}
               />
-              <Button size="lg" disabled={!pdf || !selectedCity || running} onClick={analyze}>
+              <Button size="lg" disabled={!pdf || running} onClick={analyze}>
                 {running ? <LoaderCircle className="animate-spin" /> : <ArrowRight />}
-                {busy === "extract" ? "Reading molecular findings…" : busy === "match" ? "Matching trials and recruiting sites…" : "Analyze report & find trials"}
+                {busy === "extract" ? "Reading molecular findings…" : busy === "match" ? "Matching trials and recruiting sites…" : "Extract and review report"}
               </Button>
               {running && <div role="status" className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-sm">
                 <p className="font-medium">{busy === "extract" ? "Extracting and validating your molecular profile" : "Screening the registry and reviewing the strongest candidates"}</p>
@@ -202,7 +211,7 @@ export function IntakeView() {
             <PanelHeader
               eyebrow="Synthetic cases"
               title="Explore a demo profile"
-              description="Synthetic patients; trial search uses live ClinicalTrials.gov records."
+              description="Synthetic patients; trial search uses the local registry snapshot."
             />
             <ul className="grid grid-cols-[minmax(0,1fr)] gap-1 px-3 pb-3">
               {error && (

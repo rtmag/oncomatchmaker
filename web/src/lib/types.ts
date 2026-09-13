@@ -9,6 +9,8 @@ export interface Location {
 
 export interface CityOption extends Location { label: string }
 export interface ScreeningPoint {
+  /** Nearest explicitly recruiting site per country; not the full site inventory. */
+  recruiting_sites?: NearestSite[]
   nct_id: string
   title: string
   preliminary_score: number
@@ -33,6 +35,7 @@ export interface Disease {
   histology: string | null
   stage: string | null
   ontology_id: string | null
+  synonyms?: string[]
   normalization_status: string
 }
 

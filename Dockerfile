@@ -30,4 +30,6 @@ RUN pip install --no-cache-dir .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python -m app.snapshot && uvicorn app.api:app --host 0.0.0.0 --port ${PORT}"]
+# Build the companion features before accepting searches so a fresh deployment
+# has the same provisional clinical scoring as the local workspace.
+CMD ["sh", "-c", "python -m app.snapshot && python -m trials.registry_features data/snapshots/2026-09-13-v1/oncology.sqlite && exec uvicorn app.api:app --host 0.0.0.0 --port ${PORT}"]

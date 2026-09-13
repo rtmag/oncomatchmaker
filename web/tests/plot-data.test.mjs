@@ -32,3 +32,33 @@ test('review can honestly lower support; reviewed points are not forced above gr
  assert.equal(points[0].plot_score,15)
  assert.equal(filterScreeningPoints(points,true)[0].plot_score,15)
 })
+
+const { recruitingSites, filterSites, countryKey } = await import('../src/features/trials/plot-data.ts')
+const location={city:'Detroit',country:'USA',latitude:42.33,longitude:-83.05}
+const site=(name,country,latitude,longitude,status='RECRUITING')=>({name,country,latitude,longitude,status})
+test('travel filters select the closest permitted site without changing clinical support',()=>{
+ const reviewed={...trial('A',65),trial:{nct_id:'A',title:'A',status:'RECRUITING',sites:[site('Windsor','Canada',42.3,-83.02),site('Cleveland','United States',41.499,-81.694),site('Closed','USA',42.33,-83.05,'ACTIVE_NOT_RECRUITING')]}}
+ const point=buildPlotPoints([reviewed],[])[0]
+ const sites=recruitingSites(point,location)
+ assert.equal(sites.length,2)
+ assert.equal(sites[0].site.name,'Windsor')
+ const domestic=filterSites(sites,{country:'',maxDistance:null,domesticOnly:true},location.country)
+ assert.equal(domestic[0].site.name,'Cleveland')
+ assert.equal(filterSites(sites,{country:'',maxDistance:50,domesticOnly:true},location.country).length,0)
+ assert.equal(filterSites(sites,{country:'canada',maxDistance:50,domesticOnly:false},location.country).length,1)
+ assert.equal(point.plot_score,65)
+ assert.equal(countryKey('Korea, Republic of'),countryKey('South Korea'))
+})
+test('missing coordinates and closed trials never get an artificial distance',()=>{
+ const point=buildPlotPoints([trial('A',65)],[])[0]
+ assert.deepEqual(recruitingSites(point,{...location,latitude:null}),[])
+ point.reviewed.trial.status='NOT_YET_RECRUITING'
+ point.reviewed.trial.sites=[site('Upcoming','USA',42,-83)]
+ assert.deepEqual(recruitingSites(point,location),[])
+})
+test('legacy access distance is not represented as a nearest recruiting site',()=>{
+ const point=buildPlotPoints([],landscape)[0]
+ assert.deepEqual(recruitingSites(point,location),[])
+ const known={...point,sites:[{site:site('Open','Canada',42.3,-83.02),distance_km:999}]}
+ assert.ok(recruitingSites(known,location)[0].distance_km<5)
+})

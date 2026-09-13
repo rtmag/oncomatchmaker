@@ -143,7 +143,7 @@ export function TrialsView({ param }: { param: string | null }) {
       </div>
 
       <SearchNotes warnings={results.warnings} />
-      <ClinicalGeographyPlot trials={trials} landscape={results.screening_landscape} />
+      <ClinicalGeographyPlot trials={trials} landscape={results.screening_landscape} location={results.profile.patient_context.location} />
 
       {shown.length > 0 ? (
         <>

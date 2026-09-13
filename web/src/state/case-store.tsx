@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useMemo, useReducer, type ReactNode } from "react"
 import { toast } from "sonner"
 
+import { applyIntakeContext, EMPTY_CLINICAL_CONTEXT, type OptionalClinicalContext } from "@/lib/clinical-context"
+import { draftFromProfile, type ContextDraft } from "@/lib/profile-edit"
 import { api } from "@/lib/api"
 import type { Location, MatchResults, MolecularProfile } from "@/lib/types"
 
@@ -15,6 +17,7 @@ export interface ProfileSource {
 }
 
 interface CaseState {
+  contextDraft: ContextDraft | null
   profile: MolecularProfile | null
   source: ProfileSource | null
   results: MatchResults | null
@@ -25,6 +28,7 @@ interface CaseState {
 }
 
 type Action =
+  | { type: "draft"; draft: ContextDraft }
   | { type: "start"; task: BusyTask }
   | { type: "fail"; error: string }
   | { type: "loaded"; profile: MolecularProfile; source: ProfileSource }
@@ -32,6 +36,7 @@ type Action =
   | { type: "matched"; results: MatchResults; fingerprint: string }
 
 const INITIAL: CaseState = {
+  contextDraft: null,
   profile: null,
   source: null,
   results: null,
@@ -43,6 +48,7 @@ const MAX_JSON_BYTES = 2 * 1024 * 1024
 
 function reducer(state: CaseState, action: Action): CaseState {
   switch (action.type) {
+    case "draft": return { ...state, contextDraft: action.draft }
     case "start":
       return { ...state, busy: action.task, error: null }
     case "fail":
@@ -50,7 +56,7 @@ function reducer(state: CaseState, action: Action): CaseState {
     case "loaded":
       return { ...INITIAL, profile: action.profile, source: action.source }
     case "edited":
-      return { ...state, profile: action.profile }
+      return { ...state, profile: action.profile, contextDraft: null }
     case "matched":
       return { ...state, busy: null, results: action.results, resultsFingerprint: action.fingerprint }
   }
@@ -71,9 +77,10 @@ async function readProfileJson(file: File): Promise<unknown> {
 interface CaseContextValue extends CaseState {
   /** True when the profile was edited after the last search. */
   isStale: boolean
+  setContextDraft: (draft: ContextDraft) => void
   loadDemo: (id: string, label: string) => Promise<boolean>
   loadJson: (file: File) => Promise<boolean>
-  extractPdf: (file: File, location: Location) => Promise<boolean>
+  extractPdf: (file: File, location: Location, context?: OptionalClinicalContext) => Promise<boolean>
   editProfile: (profile: MolecularProfile) => void
   runMatch: (profile: MolecularProfile) => Promise<boolean>
 }
@@ -117,15 +124,12 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   )
 
   const extractPdf = useCallback(
-    async (file: File, location: Location) => {
+    async (file: File, location: Location, context = EMPTY_CLINICAL_CONTEXT) => {
       dispatch({ type: "start", task: "extract" })
       try {
-        const profile = await api.extract(file)
+        const profile = applyIntakeContext(await api.extract(file), context)
         profile.patient_context.location = location
         dispatch({ type: "loaded", profile, source: { kind: "pdf", label: file.name } })
-        dispatch({ type: "start", task: "match" })
-        const results = await api.match(profile)
-        dispatch({ type: "matched", results, fingerprint: profileFingerprint(profile) })
         return true
       } catch (error) {
         const message = error instanceof Error ? error.message : "Analysis failed. Please try again."
@@ -147,19 +151,21 @@ export function CaseProvider({ children }: { children: ReactNode }) {
     [perform],
   )
 
+  const setContextDraft = useCallback((draft: ContextDraft) => dispatch({ type: "draft", draft }), [])
   const editProfile = useCallback((profile: MolecularProfile) => dispatch({ type: "edited", profile }), [])
 
   const value = useMemo<CaseContextValue>(
     () => ({
       ...state,
-      isStale: Boolean(state.profile && state.results && state.resultsFingerprint !== profileFingerprint(state.profile)),
+      isStale: Boolean(state.profile && state.results && (state.resultsFingerprint !== profileFingerprint(state.profile) || (state.contextDraft && JSON.stringify(state.contextDraft) !== JSON.stringify(draftFromProfile(state.profile))))),
       loadDemo,
       loadJson,
       extractPdf,
       editProfile,
+      setContextDraft,
       runMatch,
     }),
-    [state, loadDemo, loadJson, extractPdf, editProfile, runMatch],
+    [state, loadDemo, loadJson, extractPdf, editProfile, runMatch, setContextDraft],
   )
 
   return <CaseContext.Provider value={value}>{children}</CaseContext.Provider>

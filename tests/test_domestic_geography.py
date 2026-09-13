@@ -97,3 +97,25 @@ def test_landscape_and_reviewed_site_selection_use_same_policy():
     assert points[0]["distance_km"] == chosen.distance_km
     assert points[0]["geography_score"] == access["score"]
     assert points[1]["geography_score"] is None
+
+
+def test_landscape_keeps_nearest_site_per_country_for_travel_filters():
+    db = sqlite3.connect(":memory:")
+    db.executescript("""
+        CREATE TABLE studies(nct_id, overall_status);
+        CREATE TABLE sites(nct_id,status,latitude,longitude,country);
+        INSERT INTO studies VALUES('A','RECRUITING');
+        INSERT INTO sites VALUES('A','RECRUITING',0,1,'Japan'),
+        ('A','RECRUITING',0,3,'South Korea'),
+        ('A','RECRUITING',0,4,'South Korea'),
+        ('A','ACTIVE_NOT_RECRUITING',0,0,'South Korea');
+    """)
+    points = [{"nct_id": "A", "clinical_score": 60}]
+    attach_screening_geography(
+        db, points, Location(latitude=0, longitude=0, country="South Korea")
+    )
+    sites = points[0]["recruiting_sites"]
+    assert len(sites) == 2
+    assert {row["site"]["longitude"] for row in sites} == {1, 3}
+    assert min(row["distance_km"] for row in sites) < points[0]["distance_km"]
+    assert points[0]["clinical_score"] == 60

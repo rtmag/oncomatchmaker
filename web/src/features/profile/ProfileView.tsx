@@ -47,17 +47,20 @@ function ProvenancePanel({ provenance }: { provenance: IngestionProvenance }) {
 
 function MeasuredBiomarkers({ profile }: { profile: MolecularProfile }) {
   const { msi, tmb, tumor_fraction } = profile.biomarkers
+  const fields = profile.ingestion_provenance?.field_evidence as Record<string, { evidence?: { page: number; quote: string } }> | undefined
+  const missing = (key: string) => fields?.[key] ? "Withheld for review" : "Unknown / not extracted"
   const items = [
-    ["MSI", msi.status ?? "Unknown"],
-    ["TMB", tmb.value !== null ? `${tmb.value} ${tmb.unit}` : "Unknown"],
-    ["Tumor fraction", tumor_fraction !== null ? formatPercent(tumor_fraction) : "Not reported"],
+    ["MSI", msi.status?.replaceAll("_", " ") ?? missing("msi"), "msi"],
+    ["TMB", tmb.value !== null ? `${tmb.value} ${tmb.unit}` : missing("tmb"), "tmb"],
+    ["Tumor fraction", tumor_fraction !== null ? formatPercent(tumor_fraction) : missing("tumor_fraction"), "tumor_fraction"],
   ]
   return (
     <dl className="grid gap-4 border-t border-border px-6 py-5 sm:grid-cols-3">
-      {items.map(([term, value]) => (
+      {items.map(([term, value, key]) => (
         <div key={term}>
           <dt className="text-xs text-muted-foreground">{term}</dt>
           <dd className="mt-0.5 font-display text-lg font-medium capitalize">{value}</dd>
+          {fields?.[key]?.evidence && <details className="mt-2 text-xs text-muted-foreground"><summary className="cursor-pointer">Original PDF · page {fields[key].evidence!.page}</summary><blockquote className="mt-2 whitespace-pre-wrap">{fields[key].evidence!.quote}</blockquote></details>}
         </div>
       ))}
     </dl>
@@ -78,6 +81,7 @@ export function ProfileView() {
         subtitle="Confirm what the report says before any biomarker is connected to treatment evidence or trials."
         aside={<CasePill />}
       />
+      {!!profile.ingestion_provenance?.clinician_context && <Callout className="mb-5" title="User-provided clinical context">This profile includes manually supplied or corrected fields. Compare current values with the original PDF citations before confirming. Changes are retained in the extraction audit.</Callout>}
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.6fr)_minmax(360px,1fr)]">
         <div className="grid min-w-0 content-start gap-5">
           <Panel>

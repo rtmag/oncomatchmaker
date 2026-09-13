@@ -64,6 +64,8 @@ function toFinding(
 /** Presentation-only flattening of the canonical profile; never infers actionability. */
 export function normalizeFindings(profile: MolecularProfile): Finding[] {
   const { snv_indel, copy_number, fusions, msi, tmb } = profile.biomarkers
+  const fields = profile.ingestion_provenance?.field_evidence as Record<string, { evidence?: { quote: string; page: number } }> | undefined
+  const source = (key: string) => ({ source_text: fields?.[key]?.evidence?.quote, source_page: fields?.[key]?.evidence?.page })
   const findings: Finding[] = []
   const add = (gene: string, kind: FindingKind, detail: string, item: FindingSource, vaf?: number | null) =>
     findings.push(toFinding(findings.length, gene, kind, detail, item, vaf ?? null))
@@ -72,11 +74,11 @@ export function normalizeFindings(profile: MolecularProfile): Finding[] {
   for (const c of copy_number) add(c.gene, "copy number", c.alteration, c)
   for (const f of fusions) add(f.gene, "fusion", f.partner ? `Fusion with ${f.partner}` : "Fusion", f)
   if (msi.status && !UNREPORTED.test(msi.status)) {
-    add("MSI", "biomarker", msi.status, { classification: "reported biomarker", source_text: `MSI: ${msi.status}` })
+    add("MSI", "biomarker", msi.status, { classification: "reported biomarker", ...source("msi") })
   }
   if (typeof tmb.value === "number") {
     const detail = `${tmb.value} ${tmb.unit}`
-    add("TMB", "biomarker", detail, { classification: tmb.classification || "reported biomarker", source_text: `TMB: ${detail}` })
+    add("TMB", "biomarker", detail, { classification: tmb.classification || "reported biomarker", ...source("tmb") })
   }
   return findings
 }

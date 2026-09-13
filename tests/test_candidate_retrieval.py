@@ -267,3 +267,58 @@ def test_retrieval_requires_disease_and_molecular_hit():
 
     profile["biomarkers"] = {"snv_indel": [], "copy_number": [], "fusions": []}
     assert [row.nct_id for row in retrieve_candidates(db, profile)] == ["NCT00000001"]
+
+
+def test_unknown_location_does_not_query_or_assign_geography():
+    # No site tables needed: clinical-only matching should skip the geographic pass.
+    db = sqlite3.connect(":memory:")
+    points = [{"nct_id": "NCT1", "distance_km": None, "geography_score": None}]
+    attach_screening_geography(db, points, Location())
+    assert points[0]["distance_km"] is None
+    assert points[0]["geography_score"] is None
+
+
+def test_snapshot_matching_without_location_keeps_clinical_scores(profile, monkeypatch):
+    from schemas.astra_contracts import EXPERT_ROLES
+    from trials import pipeline
+
+    if not pipeline.SNAPSHOT.exists():
+        pytest.skip("Local registry snapshot unavailable")
+    profile.patient_context.location = Location()
+    profile.patient_context.ecog = None
+    profile.patient_context.prior_therapies = []
+    profile.patient_context.prior_therapies_known = False
+
+    def forbidden_lookup(*args, **kwargs):
+        raise AssertionError("Blank optional location must not call a geocoder")
+
+    monkeypatch.setattr(pipeline, "resolve_city_location", forbidden_lookup)
+
+    class Team:
+        def run_team(self, payload, record, evidence):
+            assert payload["patient_context"]["ecog"] is None
+            assert payload["patient_context"]["prior_therapies_known"] is False
+            return {
+                "assessments": [
+                    {
+                        "expert_role": role,
+                        "assessment": "caution",
+                        "reasoning_summary": "Synthetic test",
+                    }
+                    for role in EXPERT_ROLES
+                ],
+                "consensus": {
+                    "disposition": "needs_review",
+                    "safety_gate_triggered_by": [],
+                },
+            }
+
+    result = pipeline.match_patient(
+        profile, astra_runner=Team(), max_candidates=1, target_candidates=1
+    )
+    assert result.trials
+    assert result.trials[0].match.overall_score is not None
+    assert all(
+        t.geography_score is None and t.nearest_site is None for t in result.trials
+    )
+    assert all(p["geography_score"] is None for p in result.screening_landscape)

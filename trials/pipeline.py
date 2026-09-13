@@ -47,7 +47,11 @@ ASSESSMENT_FRACTIONS = {"support": 0.9, "caution": 0.6}
 
 def attach_screening_geography(db, landscape, location):
     """One pass over explicitly open sites, preserving missing access as unknown."""
+    if location.latitude is None or location.longitude is None:
+        return
     access_sites = {}
+    # Nearest site per country supports travel filters without shipping every site.
+    country_sites = {}
     for nct_id, lat, lon, country in db.execute("""
         SELECT s.nct_id,s.latitude,s.longitude,s.country FROM sites s
         JOIN studies t ON t.nct_id=s.nct_id
@@ -56,6 +60,20 @@ def attach_screening_geography(db, landscape, location):
     """):
         distance = haversine_distance(location.latitude, location.longitude, lat, lon)
         distance = round(distance, 1)
+        by_country = country_sites.setdefault(nct_id, {})
+        if country not in by_country or distance < by_country[country]["distance_km"]:
+            by_country[country] = {
+                "site": {
+                    "name": "Recruiting site",
+                    "city": None,
+                    "country": country,
+                    "latitude": lat,
+                    "longitude": lon,
+                    "status": "RECRUITING",
+                    "contacts": [],
+                },
+                "distance_km": distance,
+            }
         access = geographic_access(distance, location.country, country)
         key = (-access["score"], distance)
         if nct_id not in access_sites or key < access_sites[nct_id][0]:
@@ -65,6 +83,7 @@ def attach_screening_geography(db, landscape, location):
         if selected is not None:
             _, distance, access = selected
             point.update(
+                recruiting_sites=list(country_sites[point["nct_id"]].values()),
                 distance_km=round(distance, 1),
                 geography_score=access["score"],
                 geography_access=access,
@@ -125,7 +144,11 @@ def _evaluated_trial(profile, location, candidate, record, team):
         accessible_site=accessible,
         geography_access=access or {},
         geography_availability=(
-            "confirmed_recruiting_site" if nearest else "no_confirmed_open_site"
+            "patient_location_unknown"
+            if location.latitude is None or location.longitude is None
+            else "confirmed_recruiting_site"
+            if nearest
+            else "no_confirmed_open_site"
         ),
         expert_assessments=team["assessments"],
         consensus=team["consensus"],
@@ -157,10 +180,14 @@ def _match_snapshot(
         approved_options=find_approved_options(profile),
     )
     location = result.profile.patient_context.location
-    if location.latitude is None or location.longitude is None:
+    if (location.latitude is None or location.longitude is None) and location.city:
         resolved = resolve_city_location(location.city or "", location.country or "")
         result.profile.patient_context.location = resolved
         location = resolved
+    if location.latitude is None or location.longitude is None:
+        result.warnings.append(
+            "Patient location is unknown: clinical screening continues; geographic access is unscored."
+        )
     result.warnings.extend(
         [
             "ASTRA ranks evidence for professional review; it does not determine eligibility or therapeutic benefit.",
