@@ -6,8 +6,10 @@ from normalization.genes import get_registry
 from schemas.extraction import IngestionResult
 
 
-def ingest_report(pdf_path, *, extractor=None, registry=None, ocr=False):
-    document = read_document(pdf_path, ocr=ocr)
+def ingest_report(
+    pdf_path, *, extractor=None, registry=None, ocr=False, reader_mode="fast"
+):
+    document = read_document(pdf_path, ocr=ocr, mode=reader_mode)
     if any(p.extraction_method == "unreadable" for p in document.pages):
         raise ExtractionError(
             "Report has unreadable pages. Enable OCR or supply a searchable PDF; partial extraction is not accepted."
@@ -37,6 +39,7 @@ def ingest_report(pdf_path, *, extractor=None, registry=None, ocr=False):
     profile.ingestion_provenance = {
         "source_sha256": document.sha256,
         "reader_version": document.reader_version,
+        "reader_mode": reader_mode,
         "model": extractor.model,
         "prompt_version": PROMPT_VERSION,
         "hgnc_snapshot_sha256": registry.metadata.get("upstream_sha256"),
@@ -62,7 +65,9 @@ def ingest_report(pdf_path, *, extractor=None, registry=None, ocr=False):
     )
 
 
-def parse_report(pdf_path):
+def parse_report(pdf_path, *, reader_mode="fast"):
     from schemas.molecular_profile import MolecularProfile
 
-    return MolecularProfile.model_validate(ingest_report(pdf_path).profile)
+    return MolecularProfile.model_validate(
+        ingest_report(pdf_path, reader_mode=reader_mode).profile
+    )

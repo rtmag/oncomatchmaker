@@ -14,6 +14,9 @@ LOCATIONS = {
     "fmi-nsclc-met-exon14": PatientLocation(
         "New York", "United States", 40.7128, -74.0060
     ),
+    "fmi-prostate-brca2-loss": PatientLocation(
+        "Sydney", "Australia", -33.8688, 151.2093
+    ),
     "tempus-metastatic-colon-msih": PatientLocation("Paris", "France", 48.8566, 2.3522),
 }
 
@@ -22,6 +25,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("database", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--fixture-dir", type=Path)
     args = parser.parse_args()
     profiles = json.loads((SPIKE / "profiles.json").read_text())["cases"]
     assessments = json.loads((SPIKE / "chatgpt_assessments.json").read_text())[
@@ -45,6 +49,12 @@ def main():
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({"cases": output}, indent=2) + "\n")
+    if args.fixture_dir:
+        args.fixture_dir.mkdir(parents=True, exist_ok=True)
+        for case in output:
+            (args.fixture_dir / f"{case['case_id']}.json").write_text(
+                json.dumps(case, indent=2) + "\n"
+            )
     print(
         json.dumps(
             {

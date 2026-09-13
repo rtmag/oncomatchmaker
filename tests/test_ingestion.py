@@ -237,6 +237,12 @@ def test_pdf_reader_and_invalid_files(tmp_path):
     bad.write_text("not a PDF")
     with pytest.raises(PDFReadError):
         read_document(bad)
+    assert read_document(path, mode="fast").reader_version == "pymupdf-blocks-fast-1.0"
+    assert read_document(path, mode="safe").reader_version.startswith(
+        "dual-native-safe"
+    )
+    with pytest.raises(ValueError, match="mode"):
+        read_document(path, mode="invalid")
     blank = tmp_path / "blank.pdf"
     with pymupdf.open() as pdf:
         pdf.new_page()
@@ -244,6 +250,20 @@ def test_pdf_reader_and_invalid_files(tmp_path):
     assert read_document(blank).pages[0].extraction_method == "unreadable"
     with pytest.raises(ExtractionError, match="unreadable"):
         ingest_report(blank)
+
+
+def test_safe_mode_deduplicates_duplicate_glyphs(tmp_path):
+    path = tmp_path / "duplicate.pdf"
+    with pymupdf.open() as pdf:
+        page = pdf.new_page()
+        page.insert_text((40, 40), "KRAS G12C pathogenic molecular finding")
+        page.insert_text((40, 40), "KRAS G12C pathogenic molecular finding")
+        pdf.save(path)
+    fast = read_document(path, mode="fast")
+    safe = read_document(path, mode="safe")
+    row_order = safe.text.split("[ORIGINAL BLOCK-ORDER TEXT]")[0]
+    assert row_order.count("KRAS G12C") == 1
+    assert fast.text.count("KRAS G12C") == 2
 
 
 def test_pipeline_two_passes(document, finding):

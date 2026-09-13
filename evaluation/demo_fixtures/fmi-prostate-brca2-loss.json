@@ -1,0 +1,1161 @@
+{
+  "result_schema_version": "0.1",
+  "case_id": "fmi-prostate-brca2-loss",
+  "generated_at": "2026-09-13T05:42:10.517474+00:00",
+  "snapshot_id": "oncology-snapshot-2026-09-13-v1",
+  "source_report": {
+    "filename": "07_FMI_F1CDx_prostate_BRCA2.pdf",
+    "sha256": "0f8293e4b0a00c7ab94f29738f82d3430b5335c71c58717095a6b37e7d2e2144",
+    "page_count": 19,
+    "reader_version": "pymupdf-blocks-fast-1.0",
+    "ingestion_mode": "recorded_public_sample_profile"
+  },
+  "patient_location": {
+    "city": "Sydney",
+    "country": "Australia",
+    "latitude": -33.8688,
+    "longitude": 151.2093
+  },
+  "molecular_profile": {
+    "case_id": "fmi-prostate-brca2-loss",
+    "source_pdf": "07_FMI_F1CDx_prostate_BRCA2.pdf",
+    "report": {
+      "vendor": "Foundation Medicine",
+      "assay": "FoundationOne CDx",
+      "sample_type": "tissue"
+    },
+    "disease": {
+      "raw_text": "Prostate acinar adenocarcinoma",
+      "normalized": "prostate adenocarcinoma",
+      "synonyms": [
+        "prostate cancer"
+      ],
+      "histology": "acinar adenocarcinoma",
+      "stage": null
+    },
+    "patient_context": {
+      "age": null,
+      "sex": null,
+      "prior_therapies": [],
+      "ecog": null,
+      "prior_therapies_known": false
+    },
+    "biomarkers": {
+      "copy_number": [
+        {
+          "gene": "BRCA2",
+          "gene_synonyms": [
+            "FANCD1"
+          ],
+          "event": "loss",
+          "germline_status": "unknown",
+          "zygosity": "unknown",
+          "source_text": "BRCA2 loss"
+        }
+      ],
+      "msi": {
+        "status": "stable",
+        "synonyms": [
+          "MSS"
+        ]
+      },
+      "tmb": {
+        "value": 1.0,
+        "unit": "mut/Mb"
+      }
+    },
+    "schema_version": "0.3"
+  },
+  "molecular_biology_summary": [
+    "BRCA2 loss",
+    "MSI: stable"
+  ],
+  "trials": [
+    {
+      "nct_id": "NCT06952803",
+      "title": "A Study of Metastases Free Survival With Saruparib vs Placebo Added to a Standard RT/ADT in Men With High-risk Prostate Cancer With a BRCA Mutation",
+      "source_url": "https://clinicaltrials.gov/study/NCT06952803",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-08-21",
+      "retrieval_basis": [
+        "disease: prostate adenocarcinoma",
+        "disease: prostate cancer",
+        "molecular: brca2"
+      ],
+      "consensus": {
+        "trial_id": "NCT06952803",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "gene_level",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "central tumor BRCA confirmation",
+          "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+          "radiotherapy and ADT history"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT06952803",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "central tumor BRCA confirmation",
+            "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+            "radiotherapy and ADT history",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06952803"
+          ],
+          "reasoning_summary": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+        },
+        {
+          "trial_id": "NCT06952803",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "central tumor BRCA confirmation",
+            "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+            "radiotherapy and ADT history",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06952803"
+          ],
+          "reasoning_summary": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+        },
+        {
+          "trial_id": "NCT06952803",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "central tumor BRCA confirmation",
+            "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+            "radiotherapy and ADT history",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06952803"
+          ],
+          "reasoning_summary": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+        },
+        {
+          "trial_id": "NCT06952803",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "central tumor BRCA confirmation",
+            "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+            "radiotherapy and ADT history",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06952803"
+          ],
+          "reasoning_summary": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+        },
+        {
+          "trial_id": "NCT06952803",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "central tumor BRCA confirmation",
+            "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+            "radiotherapy and ADT history",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06952803"
+          ],
+          "reasoning_summary": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+        },
+        {
+          "trial_id": "NCT06952803",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "central tumor BRCA confirmation",
+            "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+            "radiotherapy and ADT history",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06952803"
+          ],
+          "reasoning_summary": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 73.3,
+        "composite_score": 73.3,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 80.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06952803"
+            ],
+            "missing_information": [
+              "central tumor BRCA confirmation",
+              "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+              "radiotherapy and ADT history",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06952803"
+            ],
+            "missing_information": [
+              "central tumor BRCA confirmation",
+              "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+              "radiotherapy and ADT history",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06952803"
+            ],
+            "missing_information": [
+              "central tumor BRCA confirmation",
+              "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+              "radiotherapy and ADT history",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06952803"
+            ],
+            "missing_information": [
+              "central tumor BRCA confirmation",
+              "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+              "radiotherapy and ADT history",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06952803"
+            ],
+            "missing_information": [
+              "central tumor BRCA confirmation",
+              "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+              "radiotherapy and ADT history",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06952803"
+            ],
+            "missing_information": [
+              "central tumor BRCA confirmation",
+              "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+              "radiotherapy and ADT history",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 98.0,
+        "distance_km": 5.1,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 73.3,
+        "geography_y": 98.0,
+        "quadrant": "high_match_high_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "Research Site",
+        "city": "St Leonards",
+        "region": null,
+        "country": "Australia",
+        "distance_km": 5.1,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-08-21",
+        "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Research Site",
+          "city": "Waratah",
+          "region": null,
+          "country": "Australia",
+          "distance_km": 117.3,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-08-21",
+          "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+        },
+        {
+          "facility": "Research Site",
+          "city": "Orange",
+          "region": null,
+          "country": "Australia",
+          "distance_km": 205.9,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-08-21",
+          "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+        }
+      ],
+      "rationale": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation.",
+      "missing_information": [
+        "central tumor BRCA confirmation",
+        "high-risk localized, locally advanced, or qualifying biochemical-recurrence context",
+        "radiotherapy and ADT history",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: central tumor BRCA confirmation?",
+        "Can the treating team confirm: high-risk localized, locally advanced, or qualifying biochemical-recurrence context?",
+        "Can the treating team confirm: radiotherapy and ADT history?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT05806515",
+      "title": "Carboplatin Chemotherapy Before Surgery for People With High-Risk Prostate Cancer and an Inherited BRCA1 or BRCA2 Gene Mutation",
+      "source_url": "https://clinicaltrials.gov/study/NCT05806515",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-01-29",
+      "retrieval_basis": [
+        "disease: prostate adenocarcinoma",
+        "disease: prostate cancer",
+        "molecular: brca2"
+      ],
+      "consensus": {
+        "trial_id": "NCT05806515",
+        "disposition": "insufficient_information",
+        "match_tier": "needs_review",
+        "primary_relationship": "gene_level",
+        "known_conflicts": [],
+        "missing_information": [
+          "germline BRCA1/2 result",
+          "high- or very-high-risk disease",
+          "performance status and organ function"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT05806515",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "unknown",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "germline BRCA1/2 result",
+            "high- or very-high-risk disease",
+            "performance status and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05806515"
+          ],
+          "reasoning_summary": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+        },
+        {
+          "trial_id": "NCT05806515",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "germline BRCA1/2 result",
+            "high- or very-high-risk disease",
+            "performance status and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05806515"
+          ],
+          "reasoning_summary": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+        },
+        {
+          "trial_id": "NCT05806515",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "germline BRCA1/2 result",
+            "high- or very-high-risk disease",
+            "performance status and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05806515"
+          ],
+          "reasoning_summary": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+        },
+        {
+          "trial_id": "NCT05806515",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "germline BRCA1/2 result",
+            "high- or very-high-risk disease",
+            "performance status and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05806515"
+          ],
+          "reasoning_summary": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+        },
+        {
+          "trial_id": "NCT05806515",
+          "expert_role": "trial_eligibility",
+          "assessment": "unknown",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "germline BRCA1/2 result",
+            "high- or very-high-risk disease",
+            "performance status and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05806515"
+          ],
+          "reasoning_summary": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+        },
+        {
+          "trial_id": "NCT05806515",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "germline BRCA1/2 result",
+            "high- or very-high-risk disease",
+            "performance status and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05806515"
+          ],
+          "reasoning_summary": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 53.8,
+        "composite_score": 53.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 45.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05806515"
+            ],
+            "missing_information": [
+              "germline BRCA1/2 result",
+              "high- or very-high-risk disease",
+              "performance status and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05806515"
+            ],
+            "missing_information": [
+              "germline BRCA1/2 result",
+              "high- or very-high-risk disease",
+              "performance status and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 55.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05806515"
+            ],
+            "missing_information": [
+              "germline BRCA1/2 result",
+              "high- or very-high-risk disease",
+              "performance status and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 45.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05806515"
+            ],
+            "missing_information": [
+              "germline BRCA1/2 result",
+              "high- or very-high-risk disease",
+              "performance status and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05806515"
+            ],
+            "missing_information": [
+              "germline BRCA1/2 result",
+              "high- or very-high-risk disease",
+              "performance status and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05806515"
+            ],
+            "missing_information": [
+              "germline BRCA1/2 result",
+              "high- or very-high-risk disease",
+              "performance status and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 0.0,
+        "distance_km": 11828.1,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 53.8,
+        "geography_y": 0.0,
+        "quadrant": "lower_match_low_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "Anchorage Associates in Radiation Medicine",
+        "city": "Anchorage",
+        "region": "Alaska",
+        "country": "United States",
+        "distance_km": 11828.1,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-01-29",
+        "snapshot_retrieved_at": "2026-09-13T03:21:11.431257+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Anchorage Radiation Therapy Center",
+          "city": "Anchorage",
+          "region": "Alaska",
+          "country": "United States",
+          "distance_km": 11828.1,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-01-29",
+          "snapshot_retrieved_at": "2026-09-13T03:21:11.431257+00:00"
+        },
+        {
+          "facility": "Alaska Breast Care and Surgery LLC",
+          "city": "Anchorage",
+          "region": "Alaska",
+          "country": "United States",
+          "distance_km": 11828.1,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-01-29",
+          "snapshot_retrieved_at": "2026-09-13T03:21:11.431257+00:00"
+        }
+      ],
+      "rationale": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status.",
+      "missing_information": [
+        "germline BRCA1/2 result",
+        "high- or very-high-risk disease",
+        "performance status and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: germline BRCA1/2 result?",
+        "Can the treating team confirm: high- or very-high-risk disease?",
+        "Can the treating team confirm: performance status and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT06439225",
+      "title": "Platinum and Taxane Chemo in Met Castration Resistant Prostate Cancer Patients With Alterations in DNA Damage Response Genes",
+      "source_url": "https://clinicaltrials.gov/study/NCT06439225",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-04-16",
+      "retrieval_basis": [
+        "disease: prostate cancer",
+        "molecular: brca2"
+      ],
+      "consensus": {
+        "trial_id": "NCT06439225",
+        "disposition": "insufficient_information",
+        "match_tier": "needs_review",
+        "primary_relationship": "gene_level",
+        "known_conflicts": [],
+        "missing_information": [
+          "BRCA2 loss zygosity and clinical classification",
+          "ECOG and organ function",
+          "metastatic castration-resistant state",
+          "progression after ARPI therapy"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT06439225",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "unknown",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "BRCA2 loss zygosity and clinical classification",
+            "metastatic castration-resistant state",
+            "progression after ARPI therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06439225"
+          ],
+          "reasoning_summary": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+        },
+        {
+          "trial_id": "NCT06439225",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "BRCA2 loss zygosity and clinical classification",
+            "metastatic castration-resistant state",
+            "progression after ARPI therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06439225"
+          ],
+          "reasoning_summary": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+        },
+        {
+          "trial_id": "NCT06439225",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "BRCA2 loss zygosity and clinical classification",
+            "metastatic castration-resistant state",
+            "progression after ARPI therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06439225"
+          ],
+          "reasoning_summary": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+        },
+        {
+          "trial_id": "NCT06439225",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "BRCA2 loss zygosity and clinical classification",
+            "metastatic castration-resistant state",
+            "progression after ARPI therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06439225"
+          ],
+          "reasoning_summary": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+        },
+        {
+          "trial_id": "NCT06439225",
+          "expert_role": "trial_eligibility",
+          "assessment": "unknown",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "BRCA2 loss zygosity and clinical classification",
+            "metastatic castration-resistant state",
+            "progression after ARPI therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06439225"
+          ],
+          "reasoning_summary": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+        },
+        {
+          "trial_id": "NCT06439225",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [
+            "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "BRCA2 loss zygosity and clinical classification",
+            "metastatic castration-resistant state",
+            "progression after ARPI therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06439225"
+          ],
+          "reasoning_summary": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 53.8,
+        "composite_score": 53.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 45.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06439225"
+            ],
+            "missing_information": [
+              "BRCA2 loss zygosity and clinical classification",
+              "metastatic castration-resistant state",
+              "progression after ARPI therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06439225"
+            ],
+            "missing_information": [
+              "BRCA2 loss zygosity and clinical classification",
+              "metastatic castration-resistant state",
+              "progression after ARPI therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 55.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06439225"
+            ],
+            "missing_information": [
+              "BRCA2 loss zygosity and clinical classification",
+              "metastatic castration-resistant state",
+              "progression after ARPI therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 45.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06439225"
+            ],
+            "missing_information": [
+              "BRCA2 loss zygosity and clinical classification",
+              "metastatic castration-resistant state",
+              "progression after ARPI therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06439225"
+            ],
+            "missing_information": [
+              "BRCA2 loss zygosity and clinical classification",
+              "metastatic castration-resistant state",
+              "progression after ARPI therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06439225"
+            ],
+            "missing_information": [
+              "BRCA2 loss zygosity and clinical classification",
+              "metastatic castration-resistant state",
+              "progression after ARPI therapy",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 0.0,
+        "distance_km": 12499.7,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 53.8,
+        "geography_y": 0.0,
+        "quadrant": "lower_match_low_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "BCCA - Vancouver",
+        "city": "Vancouver",
+        "region": "British Columbia",
+        "country": "Canada",
+        "distance_km": 12499.7,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-04-16",
+        "snapshot_retrieved_at": "2026-09-13T03:22:25.864806+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Arthur J.E. Child Comprehensive Cancer Centre",
+          "city": "Calgary",
+          "region": "Alberta",
+          "country": "Canada",
+          "distance_km": 13169.8,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-04-16",
+          "snapshot_retrieved_at": "2026-09-13T03:22:25.864806+00:00"
+        },
+        {
+          "facility": "Cross Cancer Institute",
+          "city": "Edmonton",
+          "region": "Alberta",
+          "country": "Canada",
+          "distance_km": 13299.6,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-04-16",
+          "snapshot_retrieved_at": "2026-09-13T03:22:25.864806+00:00"
+        }
+      ],
+      "rationale": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity.",
+      "missing_information": [
+        "BRCA2 loss zygosity and clinical classification",
+        "metastatic castration-resistant state",
+        "progression after ARPI therapy",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: BRCA2 loss zygosity and clinical classification?",
+        "Can the treating team confirm: metastatic castration-resistant state?",
+        "Can the treating team confirm: progression after ARPI therapy?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    }
+  ],
+  "limitations": [
+    "The profile and expert review are recorded from the earlier public-sample POC; no live model call was made.",
+    "Candidate trial IDs are a recorded retrieval set, not an exhaustive search.",
+    "Eligibility remains undetermined until a trial site reviews the complete clinical record.",
+    "Distance is great-circle distance to sites explicitly recruiting in the snapshot, not travel time."
+  ],
+  "disclaimer": "Clinical decision-support for professional review; not medical advice or a determination of eligibility."
+}

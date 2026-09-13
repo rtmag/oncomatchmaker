@@ -1,0 +1,1076 @@
+{
+  "result_schema_version": "0.1",
+  "case_id": "fmi-lung-egfr-l858r",
+  "generated_at": "2026-09-13T05:42:02.452860+00:00",
+  "snapshot_id": "oncology-snapshot-2026-09-13-v1",
+  "source_report": {
+    "filename": "05_FMI_F1CDx_lung_EGFR.pdf",
+    "sha256": "9f67b50a8aa09313fb3c6391f03ee0b81f77016f3346756f27ad898dd6b001a7",
+    "page_count": 37,
+    "reader_version": "pymupdf-blocks-fast-1.0",
+    "ingestion_mode": "recorded_public_sample_profile"
+  },
+  "patient_location": {
+    "city": "Singapore",
+    "country": "Singapore",
+    "latitude": 1.3521,
+    "longitude": 103.8198
+  },
+  "molecular_profile": {
+    "case_id": "fmi-lung-egfr-l858r",
+    "source_pdf": "05_FMI_F1CDx_lung_EGFR.pdf",
+    "report": {
+      "vendor": "Foundation Medicine",
+      "assay": "FoundationOne CDx",
+      "sample_type": "tissue"
+    },
+    "disease": {
+      "raw_text": "Lung adenocarcinoma",
+      "normalized": "non-small cell lung cancer",
+      "synonyms": [
+        "NSCLC",
+        "lung adenocarcinoma"
+      ],
+      "histology": "adenocarcinoma",
+      "stage": null
+    },
+    "patient_context": {
+      "age": null,
+      "sex": null,
+      "prior_therapies": [],
+      "ecog": null,
+      "prior_therapies_known": false
+    },
+    "biomarkers": {
+      "snv_indel": [
+        {
+          "gene": "EGFR",
+          "gene_synonyms": [
+            "ERBB1",
+            "HER1"
+          ],
+          "protein_change": "L858R",
+          "source_text": "EGFR L858R"
+        }
+      ],
+      "msi": {
+        "status": "stable",
+        "synonyms": [
+          "MSS"
+        ]
+      },
+      "tmb": {
+        "value": 24.0,
+        "unit": "mut/Mb"
+      }
+    },
+    "schema_version": "0.3"
+  },
+  "molecular_biology_summary": [
+    "EGFR L858R",
+    "MSI: stable"
+  ],
+  "trials": [
+    {
+      "nct_id": "NCT06641609",
+      "title": "A Phase I Study of CFT8919 in Patients With Advanced NSCLC",
+      "source_url": "https://clinicaltrials.gov/study/NCT06641609",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-09-04",
+      "retrieval_basis": [
+        "disease: non-small cell lung cancer",
+        "disease: nsclc",
+        "molecular: egfr",
+        "molecular: l858r"
+      ],
+      "consensus": {
+        "trial_id": "NCT06641609",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "direct_variant",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "locally advanced or metastatic stage",
+          "measurable or evaluable disease",
+          "standard-treatment history or suitability"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT06641609",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "locally advanced or metastatic stage",
+            "standard-treatment history or suitability",
+            "measurable or evaluable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06641609"
+          ],
+          "reasoning_summary": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+        },
+        {
+          "trial_id": "NCT06641609",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "locally advanced or metastatic stage",
+            "standard-treatment history or suitability",
+            "measurable or evaluable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06641609"
+          ],
+          "reasoning_summary": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+        },
+        {
+          "trial_id": "NCT06641609",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "locally advanced or metastatic stage",
+            "standard-treatment history or suitability",
+            "measurable or evaluable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06641609"
+          ],
+          "reasoning_summary": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+        },
+        {
+          "trial_id": "NCT06641609",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "locally advanced or metastatic stage",
+            "standard-treatment history or suitability",
+            "measurable or evaluable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06641609"
+          ],
+          "reasoning_summary": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+        },
+        {
+          "trial_id": "NCT06641609",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "locally advanced or metastatic stage",
+            "standard-treatment history or suitability",
+            "measurable or evaluable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06641609"
+          ],
+          "reasoning_summary": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+        },
+        {
+          "trial_id": "NCT06641609",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "locally advanced or metastatic stage",
+            "standard-treatment history or suitability",
+            "measurable or evaluable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06641609"
+          ],
+          "reasoning_summary": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 77.8,
+        "composite_score": 77.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06641609"
+            ],
+            "missing_information": [
+              "locally advanced or metastatic stage",
+              "standard-treatment history or suitability",
+              "measurable or evaluable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06641609"
+            ],
+            "missing_information": [
+              "locally advanced or metastatic stage",
+              "standard-treatment history or suitability",
+              "measurable or evaluable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06641609"
+            ],
+            "missing_information": [
+              "locally advanced or metastatic stage",
+              "standard-treatment history or suitability",
+              "measurable or evaluable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06641609"
+            ],
+            "missing_information": [
+              "locally advanced or metastatic stage",
+              "standard-treatment history or suitability",
+              "measurable or evaluable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06641609"
+            ],
+            "missing_information": [
+              "locally advanced or metastatic stage",
+              "standard-treatment history or suitability",
+              "measurable or evaluable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06641609"
+            ],
+            "missing_information": [
+              "locally advanced or metastatic stage",
+              "standard-treatment history or suitability",
+              "measurable or evaluable disease",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 0.0,
+        "distance_km": 3651.0,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 77.8,
+        "geography_y": 0.0,
+        "quadrant": "high_match_low_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "Zhejiang Cancer Hospital",
+        "city": "Hangzhou",
+        "region": "Zhejiang",
+        "country": "China",
+        "distance_km": 3651.0,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-09-04",
+        "snapshot_retrieved_at": "2026-09-13T03:21:05.913880+00:00"
+      },
+      "alternative_open_sites": [],
+      "rationale": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration.",
+      "missing_information": [
+        "locally advanced or metastatic stage",
+        "standard-treatment history or suitability",
+        "measurable or evaluable disease",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: locally advanced or metastatic stage?",
+        "Can the treating team confirm: standard-treatment history or suitability?",
+        "Can the treating team confirm: measurable or evaluable disease?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT04181060",
+      "title": "Osimertinib With or Without Bevacizumab as Initial Treatment for Patients With EGFR-Mutant Lung Cancer",
+      "source_url": "https://clinicaltrials.gov/study/NCT04181060",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-09-10",
+      "retrieval_basis": [
+        "disease: non-small cell lung cancer",
+        "disease: nsclc",
+        "molecular: egfr",
+        "molecular: l858r"
+      ],
+      "consensus": {
+        "trial_id": "NCT04181060",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "direct_variant",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "advanced, metastatic, or recurrent stage",
+          "measurable disease",
+          "no prior EGFR TKI or systemic metastatic therapy"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT04181060",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced, metastatic, or recurrent stage",
+            "no prior EGFR TKI or systemic metastatic therapy",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT04181060"
+          ],
+          "reasoning_summary": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+        },
+        {
+          "trial_id": "NCT04181060",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced, metastatic, or recurrent stage",
+            "no prior EGFR TKI or systemic metastatic therapy",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT04181060"
+          ],
+          "reasoning_summary": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+        },
+        {
+          "trial_id": "NCT04181060",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced, metastatic, or recurrent stage",
+            "no prior EGFR TKI or systemic metastatic therapy",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT04181060"
+          ],
+          "reasoning_summary": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+        },
+        {
+          "trial_id": "NCT04181060",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced, metastatic, or recurrent stage",
+            "no prior EGFR TKI or systemic metastatic therapy",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT04181060"
+          ],
+          "reasoning_summary": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+        },
+        {
+          "trial_id": "NCT04181060",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced, metastatic, or recurrent stage",
+            "no prior EGFR TKI or systemic metastatic therapy",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT04181060"
+          ],
+          "reasoning_summary": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+        },
+        {
+          "trial_id": "NCT04181060",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced, metastatic, or recurrent stage",
+            "no prior EGFR TKI or systemic metastatic therapy",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT04181060"
+          ],
+          "reasoning_summary": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 77.8,
+        "composite_score": 77.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT04181060"
+            ],
+            "missing_information": [
+              "advanced, metastatic, or recurrent stage",
+              "no prior EGFR TKI or systemic metastatic therapy",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT04181060"
+            ],
+            "missing_information": [
+              "advanced, metastatic, or recurrent stage",
+              "no prior EGFR TKI or systemic metastatic therapy",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT04181060"
+            ],
+            "missing_information": [
+              "advanced, metastatic, or recurrent stage",
+              "no prior EGFR TKI or systemic metastatic therapy",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT04181060"
+            ],
+            "missing_information": [
+              "advanced, metastatic, or recurrent stage",
+              "no prior EGFR TKI or systemic metastatic therapy",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT04181060"
+            ],
+            "missing_information": [
+              "advanced, metastatic, or recurrent stage",
+              "no prior EGFR TKI or systemic metastatic therapy",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT04181060"
+            ],
+            "missing_information": [
+              "advanced, metastatic, or recurrent stage",
+              "no prior EGFR TKI or systemic metastatic therapy",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 0.0,
+        "distance_km": 10730.7,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 77.8,
+        "geography_y": 0.0,
+        "quadrant": "high_match_low_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "Fairbanks Memorial Hospital",
+        "city": "Fairbanks",
+        "region": "Alaska",
+        "country": "United States",
+        "distance_km": 10730.7,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-09-10",
+        "snapshot_retrieved_at": "2026-09-13T03:22:44.214943+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Alaska Oncology and Hematology LLC",
+          "city": "Anchorage",
+          "region": "Alaska",
+          "country": "United States",
+          "distance_km": 10737.1,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-10",
+          "snapshot_retrieved_at": "2026-09-13T03:22:44.214943+00:00"
+        },
+        {
+          "facility": "Katmai Oncology Group",
+          "city": "Anchorage",
+          "region": "Alaska",
+          "country": "United States",
+          "distance_km": 10737.1,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-10",
+          "snapshot_retrieved_at": "2026-09-13T03:22:44.214943+00:00"
+        }
+      ],
+      "rationale": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R.",
+      "missing_information": [
+        "advanced, metastatic, or recurrent stage",
+        "no prior EGFR TKI or systemic metastatic therapy",
+        "measurable disease",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: advanced, metastatic, or recurrent stage?",
+        "Can the treating team confirm: no prior EGFR TKI or systemic metastatic therapy?",
+        "Can the treating team confirm: measurable disease?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT07291037",
+      "title": "Phase III Study of Datopotamab Deruxtecan Versus Docetaxel in Previously Treated TROP2-positive Advanced or Metastatic Non-squamous NSCLC Without Actionable Genomic Alterations",
+      "source_url": "https://clinicaltrials.gov/study/NCT07291037",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-09-04",
+      "retrieval_basis": [
+        "disease: non-small cell lung cancer",
+        "disease: nsclc",
+        "molecular: egfr",
+        "molecular: l858r"
+      ],
+      "consensus": {
+        "trial_id": "NCT07291037",
+        "disposition": "conflict",
+        "match_tier": "not_matched",
+        "primary_relationship": "gene_level",
+        "known_conflicts": [
+          "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        ],
+        "missing_information": [],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "trial_eligibility",
+          "safety_critic"
+        ]
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT07291037",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07291037"
+          ],
+          "reasoning_summary": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        },
+        {
+          "trial_id": "NCT07291037",
+          "expert_role": "disease_oncology",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07291037"
+          ],
+          "reasoning_summary": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        },
+        {
+          "trial_id": "NCT07291037",
+          "expert_role": "actionability_evidence",
+          "assessment": "support",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07291037"
+          ],
+          "reasoning_summary": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        },
+        {
+          "trial_id": "NCT07291037",
+          "expert_role": "pathway_resistance",
+          "assessment": "support",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07291037"
+          ],
+          "reasoning_summary": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        },
+        {
+          "trial_id": "NCT07291037",
+          "expert_role": "trial_eligibility",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07291037"
+          ],
+          "reasoning_summary": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        },
+        {
+          "trial_id": "NCT07291037",
+          "expert_role": "safety_critic",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07291037"
+          ],
+          "reasoning_summary": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": null,
+        "composite_score": null,
+        "coverage": 0.0,
+        "rankable": false,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": null,
+            "status": "conflict",
+            "confidence": 0.9,
+            "rationale": [
+              "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+            ],
+            "evidence_references": [],
+            "missing_information": []
+          },
+          {
+            "dimension": "disease_fit",
+            "value": null,
+            "status": "conflict",
+            "confidence": 0.9,
+            "rationale": [
+              "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result."
+            ],
+            "evidence_references": [],
+            "missing_information": []
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          }
+        ],
+        "hard_conflicts": [
+          "molecular_fit",
+          "disease_fit"
+        ]
+      },
+      "geography_score": {
+        "score": 5.4,
+        "distance_km": 730.0,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "not_plottable",
+        "clinical_x": null,
+        "geography_y": 5.4,
+        "quadrant": null,
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Clinical hard conflict or no scorable clinical evidence."
+      },
+      "nearest_open_site": {
+        "facility": "Research Site",
+        "city": "Hat Yai",
+        "region": null,
+        "country": "Thailand",
+        "distance_km": 730.0,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-09-04",
+        "snapshot_retrieved_at": "2026-09-13T03:22:31.682950+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Research Site",
+          "city": "Ho Chi Minh City",
+          "region": null,
+          "country": "Vietnam",
+          "distance_km": 1097.9,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-04",
+          "snapshot_retrieved_at": "2026-09-13T03:22:31.682950+00:00"
+        },
+        {
+          "facility": "Research Site",
+          "city": "Bangkok",
+          "region": null,
+          "country": "Thailand",
+          "distance_km": 1426.5,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-04",
+          "snapshot_retrieved_at": "2026-09-13T03:22:31.682950+00:00"
+        }
+      ],
+      "rationale": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result.",
+      "missing_information": [],
+      "discussion_questions": []
+    }
+  ],
+  "limitations": [
+    "The profile and expert review are recorded from the earlier public-sample POC; no live model call was made.",
+    "Candidate trial IDs are a recorded retrieval set, not an exhaustive search.",
+    "Eligibility remains undetermined until a trial site reviews the complete clinical record.",
+    "Distance is great-circle distance to sites explicitly recruiting in the snapshot, not travel time."
+  ],
+  "disclaimer": "Clinical decision-support for professional review; not medical advice or a determination of eligibility."
+}

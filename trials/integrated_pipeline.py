@@ -68,6 +68,8 @@ def _recorded_experts(review: Mapping[str, Any]) -> list[dict[str, Any]]:
         }:
             decision = "conflict"
             conflicts = [review["rationale"]]
+        elif uncertain and role in {"molecular_profile_qc", "trial_eligibility"}:
+            decision = "unknown"
         elif uncertain or review["unknown_or_required_review"]:
             decision = "caution"
         rows.append(
@@ -138,7 +140,7 @@ def run_recorded_case(
     snapshot_id: str,
 ) -> IntegratedCaseResult:
     """Run a public PDF with recorded profile/model review through live local stages."""
-    document = read_document(pdf_path)
+    document = read_document(pdf_path, mode="fast")
     if any(page.extraction_method == "unreadable" for page in document.pages):
         raise ValueError(f"Unreadable pages in {pdf_path.name}")
     profile = dict(profile)
