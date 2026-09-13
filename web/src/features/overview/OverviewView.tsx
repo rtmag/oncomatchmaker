@@ -9,6 +9,7 @@ import { Stepper, StepperIndicator, StepperItem, StepperSeparator, StepperTitle,
 import { Callout, Panel, PanelHeader, Tag } from "@/components/ui/surface"
 import type { SceneSelection } from "@/features/scene/molecular-scene.js"
 import { TrialCard } from "@/features/trials/TrialCard"
+import { ExploratoryTrials } from "@/features/trials/ExploratoryTrials"
 import { ClinicalGeographyPlot } from "@/features/trials/ClinicalGeographyPlot"
 import { navigate, routeHref, type View } from "@/hooks/useHashRoute"
 import { normalizeFindings, type Finding } from "@/lib/findings"
@@ -246,6 +247,7 @@ export function OverviewView() {
         </section>
       )}
 
+      {results && <ExploratoryTrials results={results} />}
       <FindingDialog finding={inspected} onClose={() => setInspected(null)} />
     </>
   )

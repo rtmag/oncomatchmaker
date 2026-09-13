@@ -14,6 +14,73 @@ from schemas.molecular_profile import Location
 
 EARTH_RADIUS_KM = 6371.0088
 
+# Transparent prototype policy, not a travel-time, visa, language or cost model.
+GEOGRAPHY_POLICY = "domestic-access-v1"
+COUNTRY_ALIASES = {
+    "south korea": "kr",
+    "korea, republic of": "kr",
+    "republic of korea": "kr",
+    "korea (the republic of)": "kr",
+    "kr": "kr",
+    "kor": "kr",
+    "대한민국": "kr",
+    "united states": "us",
+    "united states of america": "us",
+    "usa": "us",
+    "us": "us",
+    "united kingdom": "gb",
+    "uk": "gb",
+    "gb": "gb",
+}
+
+
+def country_key(value):
+    key = " ".join((value or "").casefold().strip().split())
+    if key in {"", "unknown", "n/a", "none"}:
+        return None
+    return COUNTRY_ALIASES.get(key, key)
+
+
+def geographic_access(distance_km, patient_country, site_country):
+    """Return score and an auditable policy explanation; never infer language."""
+    patient, site = country_key(patient_country), country_key(site_country)
+    if patient is None or site is None:
+        context, scale, ceiling = "country_unknown", 250, 100
+        explanation = "Country comparison unavailable; distance-only fallback."
+    elif patient == site:
+        context, scale, ceiling = "domestic", 1500, 100
+        explanation = (
+            "Same-country access: slower distance penalty for domestic travel."
+        )
+    else:
+        context, scale, ceiling = "international", 1500, 60
+        explanation = "Cross-border access: international travel penalty applied."
+    score = round(ceiling * math.exp(-distance_km / scale), 1)
+    return {
+        "score": score,
+        "travel_context": context,
+        "policy_version": GEOGRAPHY_POLICY,
+        "rationale": explanation
+        + " Straight-line distance only; transport, language, visas, costs and personal mobility are not assessed.",
+    }
+
+
+def find_accessible_site(patient_location, sites):
+    """Highest policy-scored explicitly recruiting site, not necessarily nearest."""
+    candidates = []
+    for site in sites:
+        candidate = find_nearest_site(patient_location, [site])
+        if candidate:
+            access = geographic_access(
+                candidate.distance_km, patient_location.country, site.country
+            )
+            candidates.append((candidate, access))
+    return (
+        min(candidates, key=lambda row: (-row[1]["score"], row[0].distance_km))
+        if candidates
+        else (None, None)
+    )
+
 
 def resolve_city_location(
     city: str, country: str, *, http: httpx.Client | None = None

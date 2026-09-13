@@ -12,9 +12,12 @@ export interface ScreeningPoint {
   nct_id: string
   title: string
   preliminary_score: number
+  clinical_score?: number | null
+  clinical_assessment?: { coverage: number; score_version: string; status: string; uncertainty_bounds?: number[] | null; rationale?: string[] }
   geography_score: number | null
   distance_km: number | null
   screening_state: string
+  geography_access?: { policy_version?: string }
 }
 
 export interface ReportMetadata {
@@ -118,6 +121,8 @@ export interface TrialCandidate {
   sources: string[]
   retrieved_at: string
   cached: boolean
+  expanded_access?: boolean | null
+  registry_updated_at?: string | null
 }
 
 export type CriterionStatus = "MATCH" | "MISMATCH" | "UNKNOWN" | "NOT_APPLICABLE"
@@ -146,6 +151,8 @@ export interface NearestSite {
 }
 
 export interface TrialScore {
+  score_version?: string | null
+  uncertainty_bounds?: number[] | null
   overall_score: number | null
   coverage: number
   components: Record<string, number | null>
@@ -179,9 +186,12 @@ export interface RankedTrial {
   nearest_site: NearestSite | null
   geography_score: number | null
   geography_availability: string
+  accessible_site?: NearestSite | null
+  geography_access?: { score?: number; travel_context?: string; policy_version?: string; rationale?: string }
   expert_assessments: ExpertAssessment[]
   consensus: Record<string, unknown>
   category: TrialCategory
+  retrieval_route?: string
 }
 
 export type EvidenceContext = "same_disease" | "tumor_agnostic" | "other_disease" | "investigational"
@@ -202,6 +212,7 @@ export interface ApprovedOption {
 export type SearchStatus = "complete" | "partial" | "failed" | "not_searched"
 
 export interface MatchResults {
+  exploratory_trials?: { trial: TrialCandidate; matched_variants: string[]; disease_context: string; expert_reviewed: boolean }[]
   screening_landscape?: ScreeningPoint[]
   profile: MolecularProfile
   approved_options: ApprovedOption[]

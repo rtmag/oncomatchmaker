@@ -35,10 +35,28 @@ validation uses the complete report. Unknown layouts and amended reports retain
 full text. See [the extraction benchmark](evaluation/EXTRACTION_SECTION_BENCHMARK.md)
 for measured latency, retained landmarks and limitations.
 
-The results plot represents every snapshot study using the preliminary retrieval
-score. Overlapping points accumulate visually into density; unknown recruiting-site
-distance is shown in a separate strip. A second view shows validated ASTRA clinical
-scores only. Preliminary relevance is not a clinical exclusion or eligibility score.
+The results plot uses one fixed-denominator clinical-fit v3 score: supported points
+across molecular (30), disease (15), evidence (15), mechanism (15), eligibility (20),
+and safety (5). Unknown dimensions add no supported points; coverage and bounds stay
+visible. Unscored studies are listed separately, not assigned invented coordinates.
+All-studies and expert-shortlist filters preserve identical coordinates. Gray means
+unreviewed, not rejected; expert review can raise or lower support. Geography remains
+a separate axis. These uncalibrated scores do not predict eligibility or benefit.
+
+Patient-independent registry-features v2 preserves source clauses and cohort context.
+Specific inclusion requirements override broad titles; molecular and disease signals
+from unrelated cohorts cannot create a basket match. Unresolved cohort logic remains
+unscored for review, not a definitive exclusion. Rebuild the companion after updating:
+
+```sh
+.venv/bin/python -m trials.registry_features data/snapshots/2026-09-13-v1/oncology.sqlite
+.venv/bin/python -m evaluation.cohort_scoring_regression
+```
+
+The companion is replaced atomically without modifying registry records or PDFs.
+Expert review interleaves clinical support, supported geographic options, and exact
+marker candidates within the existing 20-trial budget. Failed/conflicting reviews
+do not count toward the target; remaining allocated candidates are evaluated.
 
 For machine-readable output:
 

@@ -28,6 +28,8 @@ class TrialCandidate(Model):
     sources: list[str] = Field(default_factory=list)
     retrieved_at: str
     cached: bool = False
+    expanded_access: bool | None = None
+    registry_updated_at: str | None = None
 
 
 class Criterion(Model):
@@ -58,6 +60,8 @@ class TrialScore(Model):
     components: dict[str, float | None]
     weights: dict[str, float]
     rationale: list[str]
+    score_version: str | None = None
+    uncertainty_bounds: list[float] | None = None
 
 
 class RankedTrial(Model):
@@ -67,8 +71,11 @@ class RankedTrial(Model):
     nearest_site: NearestSite | None = None
     geography_score: float | None = None
     geography_availability: str = "not_scored"
+    accessible_site: NearestSite | None = None
+    geography_access: dict = Field(default_factory=dict)
     expert_assessments: list[dict] = Field(default_factory=list)
     consensus: dict = Field(default_factory=dict)
+    retrieval_route: str = "named_disease"
     category: Literal["recruiting", "not_yet_recruiting", "review", "excluded"]
 
 
@@ -89,6 +96,13 @@ class ApprovedOption(Model):
     )
 
 
+class ExploratoryTrial(Model):
+    trial: TrialCandidate
+    matched_variants: list[str]
+    disease_context: str = "Other or unconfirmed tumor type — not an eligibility match"
+    expert_reviewed: bool = False
+
+
 class MatchResults(Model):
     profile: MolecularProfile
     approved_options: list[ApprovedOption] = Field(default_factory=list)
@@ -98,3 +112,4 @@ class MatchResults(Model):
     queries: list[dict[str, str]] = Field(default_factory=list)
     screening_summary: dict[str, int] = Field(default_factory=dict)
     screening_landscape: list[dict] = Field(default_factory=list)
+    exploratory_trials: list[ExploratoryTrial] = Field(default_factory=list)
