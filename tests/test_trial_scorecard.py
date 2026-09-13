@@ -1,8 +1,13 @@
 """Clinical matching and geographic access must remain separate score axes."""
+
 import unittest
 
 from schemas.trial_scorecard import CLINICAL_DIMENSIONS, DimensionScore
-from trials.scorecard import clinical_trial_score, geographic_access_score, trial_plot_position
+from trials.scorecard import (
+    clinical_trial_score,
+    geographic_access_score,
+    trial_plot_position,
+)
 
 
 def dimensions(value=80, status="supported"):
@@ -28,7 +33,10 @@ class TrialScorecardTests(unittest.TestCase):
     def test_unknown_is_null_and_reported_through_coverage(self):
         scores = dimensions()
         scores[-1] = DimensionScore(
-            "trial_design_relevance", None, "unknown", None,
+            "trial_design_relevance",
+            None,
+            "unknown",
+            None,
             missing_information=("Trial design review",),
         )
         clinical = clinical_trial_score(scores)
@@ -39,7 +47,10 @@ class TrialScorecardTests(unittest.TestCase):
     def test_clinical_conflict_makes_trial_unrankable(self):
         scores = dimensions()
         scores[0] = DimensionScore(
-            "molecular_fit", None, "conflict", 0.99,
+            "molecular_fit",
+            None,
+            "conflict",
+            0.99,
             rationale=("Trial excludes the reported alteration",),
         )
         clinical = clinical_trial_score(scores)

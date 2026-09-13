@@ -1,9 +1,9 @@
 """Build a location-free model packet from profiles and a CTGov snapshot."""
+
 import argparse
 import json
-from pathlib import Path
 import sqlite3
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SPIKE = ROOT / "matching_spike"
@@ -49,7 +49,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("database", type=Path)
     parser.add_argument("--profiles", type=Path, default=SPIKE / "profiles.json")
-    parser.add_argument("--candidate-sets", type=Path, default=SPIKE / "candidate_sets.json")
+    parser.add_argument(
+        "--candidate-sets", type=Path, default=SPIKE / "candidate_sets.json"
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     packet = build_packet(args.database, args.profiles, args.candidate_sets)

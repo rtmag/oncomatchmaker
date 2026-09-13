@@ -1,4 +1,5 @@
 """Compute clinical and geographic scores as mathematically independent axes."""
+
 from __future__ import annotations
 
 import math
@@ -11,7 +12,6 @@ from schemas.trial_scorecard import (
     GeographyScore,
     TrialPlotPosition,
 )
-
 
 DEFAULT_CLINICAL_WEIGHTS = {
     "molecular_fit": 30.0,
@@ -46,7 +46,9 @@ def clinical_trial_score(
         raise ValueError("provide exactly one score for every clinical dimension")
 
     conflicts = tuple(
-        dimension.dimension for dimension in dimensions if dimension.status == "conflict"
+        dimension.dimension
+        for dimension in dimensions
+        if dimension.status == "conflict"
     )
     known = [dimension for dimension in dimensions if dimension.value is not None]
     known_weight = sum(configured[dimension.dimension] for dimension in known)
@@ -129,19 +131,32 @@ def trial_plot_position(
         raise ValueError("minimum_coverage must be between 0 and 1")
     if not clinical.rankable or clinical.composite_score is None:
         return TrialPlotPosition(
-            "not_plottable", None, geography.score, None, clinical_threshold,
-            geography_threshold, "Clinical hard conflict or no scorable clinical evidence.",
+            "not_plottable",
+            None,
+            geography.score,
+            None,
+            clinical_threshold,
+            geography_threshold,
+            "Clinical hard conflict or no scorable clinical evidence.",
         )
     if clinical.coverage < minimum_coverage:
         return TrialPlotPosition(
-            "not_plottable", clinical.composite_score, geography.score, None,
-            clinical_threshold, geography_threshold,
+            "not_plottable",
+            clinical.composite_score,
+            geography.score,
+            None,
+            clinical_threshold,
+            geography_threshold,
             "Clinical evidence coverage is below the configured plotting threshold.",
         )
     if geography.score is None:
         return TrialPlotPosition(
-            "not_plottable", clinical.composite_score, None, None,
-            clinical_threshold, geography_threshold,
+            "not_plottable",
+            clinical.composite_score,
+            None,
+            None,
+            clinical_threshold,
+            geography_threshold,
             "No confirmed open site with a calculable distance.",
         )
     high_clinical = clinical.composite_score >= clinical_threshold
@@ -153,7 +168,11 @@ def trial_plot_position(
         (False, False): "lower_match_low_access",
     }[(high_clinical, high_geography)]
     return TrialPlotPosition(
-        "plottable", clinical.composite_score, geography.score, quadrant,
-        clinical_threshold, geography_threshold,
+        "plottable",
+        clinical.composite_score,
+        geography.score,
+        quadrant,
+        clinical_threshold,
+        geography_threshold,
         "Thresholds organize review; they are configurable and not clinically validated cutoffs.",
     )

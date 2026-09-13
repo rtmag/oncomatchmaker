@@ -71,7 +71,7 @@ labeled review list.
 
 ## Report-ready result
 
-The final structured result should include:
+The frozen `schemas/integrated_results.py` v0.1 result includes:
 
 - source report and extraction provenance,
 - normalized disease and molecular profile,
@@ -101,7 +101,21 @@ or enrollment instructions.
 7. Create `integration/full-pipeline-poc` from the updated `main` branch.
 8. Add adapters rather than duplicating profile, trial, or geography models.
 9. Run end-to-end EGFR, MET, BRCA2, MSI-high, and negative-report scenarios.
-10. Freeze the report-result schema before implementing final UI or report export.
+10. Freeze the report-result schema before implementing final UI or report export. (Done on the integration branch.)
+
+## Integration POC boundary
+
+`evaluation/run_full_pipeline_poc.py` reads each selected public PDF locally,
+records its byte hash and page count, validates its recorded molecular profile,
+loads complete trial records from the local snapshot, enforces the six-expert
+contract and deterministic consensus gates, computes the clinical score, then
+finds only explicitly recruiting sites and computes the independent geography
+axis. The emitted JSON validates against result schema v0.1.
+
+The current run uses profiles and expert reviews recorded during the earlier
+public-sample POC because no API credential is supplied to the integration job.
+It therefore proves the local pipeline and contracts, not fresh model inference
+or exhaustive candidate retrieval. The output labels this limitation directly.
 
 ## Sign-off gates
 
