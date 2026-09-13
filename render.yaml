@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: astra-oncomatchmaker
+    runtime: docker
+    region: singapore
+    plan: 1c-2g
+    numInstances: 1
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ONCOMATCH_EXTRACTION_MODEL
+        value: gpt-5.6-sol
+      - key: ONCOMATCH_ASTRA_MODEL
+        value: gpt-6-astra
+      - key: ONCOMATCH_ASTRA_MIN_REVIEWS
+        value: "12"
+      - key: ONCOMATCH_ASTRA_MAX_REVIEWS
+        value: "20"
+      - key: ONCOMATCH_TARGET_CANDIDATES
+        value: "5"
+      - key: ONCOMATCH_TEAM_CONCURRENCY
+        value: "3"

@@ -1,0 +1,211 @@
+{
+  "retrieved_at": "2026-09-13T03:38:39.895997+00:00",
+  "source": "https://www.ebi.ac.uk/ols4/api/search",
+  "scope": "Bounded demo cancer vocabulary from NCIt exact labels/synonyms; unmapped terms remain unresolved.",
+  "records": [
+    {
+      "id": "NCIT:C2926",
+      "label": "Lung Non-Small Cell Carcinoma",
+      "synonyms": [
+        "Lung Non-Small Cell Carcinoma",
+        "NSCLC - Non-Small Cell Lung Cancer",
+        "NSCLC",
+        "Non Small Cell Lung Cancer NOS",
+        "Non-Small Cell Cancer of Lung",
+        "Non-Small Cell Cancer of the Lung",
+        "Non-Small Cell Carcinoma of Lung",
+        "Non-Small Cell Carcinoma of the Lung",
+        "Non-Small Cell Lung Cancer",
+        "Non-Small Cell Lung Carcinoma",
+        "Non-small cell lung cancer, NOS",
+        "non-small cell lung cancer"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C2926"
+    },
+    {
+      "id": "NCIT:C3512",
+      "label": "Lung Adenocarcinoma",
+      "synonyms": [
+        "Adenocarcinoma of Lung",
+        "Adenocarcinoma of the Lung",
+        "Adenocarcinoma",
+        "LUAD",
+        "Lung Adenocarcinoma",
+        "Lung adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C3512"
+    },
+    {
+      "id": "NCIT:C4436",
+      "label": "Cholangiocarcinoma",
+      "synonyms": [
+        "CC",
+        "CHOLANGIOCARCINOMA, MALIGNANT",
+        "Cholangiocar.- intra/extrahepatic",
+        "Cholangiocarcinoma",
+        "Cholangiocarcinoma, intrahepatic and extrahepatic bile ducts (adenocarcinoma)",
+        "Cholangiocellular Carcinoma",
+        "Intrahepatic Bile Duct Cancer (Cholangiocarcinoma)",
+        "cholangiocarcinoma",
+        "cholangiosarcoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4436"
+    },
+    {
+      "id": "NCIT:C4004",
+      "label": "Gastric Adenocarcinoma",
+      "synonyms": [
+        "Adenocarcinoma - stomach",
+        "Adenocarcinoma of Stomach",
+        "Adenocarcinoma of the Stomach",
+        "Adenocarcinoma of the stomach",
+        "Adenocarcinoma",
+        "Gastric (Stomach) Adenocarcinoma",
+        "Gastric Adenocarcinoma",
+        "Gastric Adenocarcinoma, NOS",
+        "STAD",
+        "Stomach Adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4004"
+    },
+    {
+      "id": "NCIT:C5596",
+      "label": "Prostate Acinar Adenocarcinoma",
+      "synonyms": [
+        "Acinar Adenocarcinoma of Prostate",
+        "Acinar Adenocarcinoma of the Prostate",
+        "Acinar Prostate Adenocarcinoma",
+        "Prostate Acinar Adenocarcinoma",
+        "Prostate Acinar adenocarcinoma",
+        "Prostate Adenocarcinoma, Acinar Type/NOS",
+        "Prostatic Acinar Adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C5596"
+    },
+    {
+      "id": "NCIT:C2852",
+      "label": "Adenocarcinoma",
+      "synonyms": [
+        "ADENOCARCINOMA, MALIGNANT",
+        "Adenocarcinoma",
+        "Adenocarcinoma, NOS",
+        "adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C2852"
+    },
+    {
+      "id": "NCIT:C4029",
+      "label": "Cervical Adenocarcinoma",
+      "synonyms": [
+        "Adenocarcinoma - cervix",
+        "Adenocarcinoma of Cervix Uteri",
+        "Adenocarcinoma of Cervix",
+        "Adenocarcinoma of Uterine Cervix",
+        "Adenocarcinoma of the Cervix Uteri",
+        "Adenocarcinoma of the Cervix",
+        "Adenocarcinoma of the Uterine Cervix",
+        "Adenocarcinoma of the cervix",
+        "Adenocarcinoma",
+        "Carcinoma of Endocervix",
+        "Carcinoma of the Endocervix",
+        "Cervical Adenocarcinoma",
+        "Cervix Adenocarcinoma",
+        "Cervix Uteri Adenocarcinoma",
+        "Endocervical Adenocarcinoma",
+        "Endocervical Cancer",
+        "Endocervical Carcinoma",
+        "Uterine Cervix Adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4029"
+    },
+    {
+      "id": "NCIT:C4025",
+      "label": "Esophageal Adenocarcinoma",
+      "synonyms": [
+        "Adenocarcinoma - esophagus",
+        "Adenocarcinoma of Esophagus",
+        "Adenocarcinoma of the Esophagus",
+        "Adenocarcinoma of the esophagus",
+        "Adenocarcinoma",
+        "Esophageal Adenocarcinoma",
+        "Esophagus Adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4025"
+    },
+    {
+      "id": "NCIT:C27813",
+      "label": "Bile Duct Adenocarcinoma",
+      "synonyms": [
+        "Adenocarcinoma",
+        "Bile Duct Adenocarcinoma",
+        "Bile duct adenocarcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C27813"
+    },
+    {
+      "id": "NCIT:C3769",
+      "label": "Endometrioid Adenocarcinoma",
+      "synonyms": [
+        "Endometrioid Adenocarcinoma",
+        "Endometrioid Carcinoma",
+        "Endometrioid adenocarcinoma, NOS",
+        "Endometrioid carcinoma",
+        "Endometrioid carcinoma, NOS"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C3769"
+    },
+    {
+      "id": "NCIT:C4878",
+      "label": "Lung Carcinoma",
+      "synonyms": [
+        "Cancer of Lung",
+        "Cancer of the Lung",
+        "Carcinoma of Lung",
+        "Carcinoma of the Lung",
+        "Lung Cancer (all types)",
+        "Lung Cancer",
+        "Lung Carcinoma",
+        "Lung cancer, NOS",
+        "lung cancer"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4878"
+    },
+    {
+      "id": "NCIT:C4910",
+      "label": "Colon Carcinoma",
+      "synonyms": [
+        "Carcinoma of Colon",
+        "Carcinoma of the Colon",
+        "Colon Cancer",
+        "Colon Carcinoma",
+        "Colonic Carcinoma",
+        "colon cancer"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4910"
+    },
+    {
+      "id": "NCIT:C4194",
+      "label": "Invasive Breast Carcinoma of No Special Type",
+      "synonyms": [
+        "IBC NST",
+        "Infiltrating Ductal Adenocarcinoma",
+        "Infiltrating Ductal Breast Carcinoma",
+        "Infiltrating Ductal Carcinoma of Breast",
+        "Infiltrating Ductal Carcinoma of the Breast",
+        "Infiltrating Ductal Carcinoma",
+        "Invasive Breast Carcinoma of No Special Type",
+        "Invasive Ductal Adenocarcinoma",
+        "Invasive Ductal Breast Carcinoma",
+        "Invasive Ductal Carcinoma of Breast",
+        "Invasive Ductal Carcinoma of the Breast",
+        "Invasive Ductal Carcinoma",
+        "Invasive Ductal Carcinoma, NOS",
+        "Invasive Ductal Carcinoma, NST",
+        "Invasive Ductal Carcinoma, No Specific Type",
+        "Invasive Ductal Carcinoma, Not Otherwise Specified",
+        "infiltrating ductal carcinoma"
+      ],
+      "source": "http://purl.obolibrary.org/obo/NCIT_C4194"
+    }
+  ]
+}

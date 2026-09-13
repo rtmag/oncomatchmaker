@@ -1,0 +1,22 @@
+[
+  {
+    "scenario": "EGFR L858R NSCLC from Singapore",
+    "city_input": "Singapore, Singapore",
+    "candidate_trial_ids": ["NCT06641609", "NCT04181060"]
+  },
+  {
+    "scenario": "BRCA2-loss prostate cancer from Sydney",
+    "city_input": "Sydney, Australia",
+    "candidate_trial_ids": ["NCT06952803"]
+  },
+  {
+    "scenario": "MET exon 14 NSCLC from New York",
+    "city_input": "New York, United States",
+    "candidate_trial_ids": ["NCT06031688", "NCT07619339"]
+  },
+  {
+    "scenario": "MSI-high metastatic colon cancer from Paris",
+    "city_input": "Paris, France",
+    "candidate_trial_ids": ["NCT07807800", "NCT05310643"]
+  }
+]

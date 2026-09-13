@@ -1,0 +1,1055 @@
+{
+  "result_schema_version": "0.1",
+  "case_id": "tempus-metastatic-colon-msih",
+  "generated_at": "2026-09-13T05:42:12.986338+00:00",
+  "snapshot_id": "oncology-snapshot-2026-09-13-v1",
+  "source_report": {
+    "filename": "11_Tempus_xF_metastatic_colon.pdf",
+    "sha256": "c5e59c462400caf7bf46b596a5793d763de1a4bc7b031dc56d48187dda85245e",
+    "page_count": 5,
+    "reader_version": "pymupdf-blocks-fast-1.0",
+    "ingestion_mode": "recorded_public_sample_profile"
+  },
+  "patient_location": {
+    "city": "Paris",
+    "country": "France",
+    "latitude": 48.8566,
+    "longitude": 2.3522
+  },
+  "molecular_profile": {
+    "case_id": "tempus-metastatic-colon-msih",
+    "source_pdf": "11_Tempus_xF_metastatic_colon.pdf",
+    "report": {
+      "vendor": "Tempus",
+      "assay": "xF",
+      "sample_type": "plasma"
+    },
+    "disease": {
+      "raw_text": "Metastatic colon cancer",
+      "normalized": "metastatic colorectal cancer",
+      "synonyms": [
+        "mCRC",
+        "metastatic colon cancer"
+      ],
+      "histology": null,
+      "stage": "metastatic"
+    },
+    "patient_context": {
+      "age": null,
+      "sex": null,
+      "prior_therapies": [],
+      "ecog": null,
+      "prior_therapies_known": false
+    },
+    "biomarkers": {
+      "msi": {
+        "status": "high",
+        "synonyms": [
+          "MSI-H",
+          "microsatellite instability-high"
+        ]
+      },
+      "tmb": {
+        "value": null,
+        "unit": "mut/Mb"
+      }
+    },
+    "schema_version": "0.3"
+  },
+  "molecular_biology_summary": [
+    "MSI: high"
+  ],
+  "trials": [
+    {
+      "nct_id": "NCT07807800",
+      "title": "A Study of DES-1357 in People With Deficient Mismatch Repair (dMMR)/Microsatellite Instability-High (MSI-H) Metastatic Colorectal Cancer (mCRC)",
+      "source_url": "https://clinicaltrials.gov/study/NCT07807800",
+      "overall_status": "NOT_YET_RECRUITING",
+      "registry_last_update": "2026-09-08",
+      "retrieval_basis": [
+        "disease: mcrc",
+        "disease: metastatic colorectal cancer",
+        "molecular: dmmr",
+        "molecular: microsatellite instability-high",
+        "molecular: msi-h"
+      ],
+      "consensus": {
+        "trial_id": "NCT07807800",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "direct_variant",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "measurable disease",
+          "progression or intolerance after listed prior treatment"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT07807800",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression or intolerance after listed prior treatment",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07807800"
+          ],
+          "reasoning_summary": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+        },
+        {
+          "trial_id": "NCT07807800",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression or intolerance after listed prior treatment",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07807800"
+          ],
+          "reasoning_summary": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+        },
+        {
+          "trial_id": "NCT07807800",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression or intolerance after listed prior treatment",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07807800"
+          ],
+          "reasoning_summary": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+        },
+        {
+          "trial_id": "NCT07807800",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression or intolerance after listed prior treatment",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07807800"
+          ],
+          "reasoning_summary": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+        },
+        {
+          "trial_id": "NCT07807800",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression or intolerance after listed prior treatment",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07807800"
+          ],
+          "reasoning_summary": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+        },
+        {
+          "trial_id": "NCT07807800",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression or intolerance after listed prior treatment",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07807800"
+          ],
+          "reasoning_summary": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 79.8,
+        "composite_score": 79.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07807800"
+            ],
+            "missing_information": [
+              "progression or intolerance after listed prior treatment",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07807800"
+            ],
+            "missing_information": [
+              "progression or intolerance after listed prior treatment",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07807800"
+            ],
+            "missing_information": [
+              "progression or intolerance after listed prior treatment",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07807800"
+            ],
+            "missing_information": [
+              "progression or intolerance after listed prior treatment",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07807800"
+            ],
+            "missing_information": [
+              "progression or intolerance after listed prior treatment",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07807800"
+            ],
+            "missing_information": [
+              "progression or intolerance after listed prior treatment",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": null,
+        "distance_km": null,
+        "availability": "no_confirmed_open_site",
+        "study_status": "NOT_YET_RECRUITING",
+        "site_status": null,
+        "rationale": "No geographic score: study and site must both be explicitly recruiting."
+      },
+      "plot_position": {
+        "plot_status": "not_plottable",
+        "clinical_x": 79.8,
+        "geography_y": null,
+        "quadrant": null,
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "No confirmed open site with a calculable distance."
+      },
+      "nearest_open_site": null,
+      "alternative_open_sites": [],
+      "rationale": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile.",
+      "missing_information": [
+        "progression or intolerance after listed prior treatment",
+        "measurable disease",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: progression or intolerance after listed prior treatment?",
+        "Can the treating team confirm: measurable disease?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT05310643",
+      "title": "Nivolumab and Ipilimumab in Anti-PD1-Resistant dMMR/MSI mCRC",
+      "source_url": "https://clinicaltrials.gov/study/NCT05310643",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2025-07-01",
+      "retrieval_basis": [
+        "disease: mcrc",
+        "disease: metastatic colorectal cancer",
+        "molecular: dmmr"
+      ],
+      "consensus": {
+        "trial_id": "NCT05310643",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "direct_variant",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "confirmatory MSI/dMMR testing",
+          "measurable disease",
+          "progression during or soon after anti-PD1 therapy",
+          "required prior standard therapies"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT05310643",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression during or soon after anti-PD1 therapy",
+            "required prior standard therapies",
+            "confirmatory MSI/dMMR testing",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05310643"
+          ],
+          "reasoning_summary": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+        },
+        {
+          "trial_id": "NCT05310643",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression during or soon after anti-PD1 therapy",
+            "required prior standard therapies",
+            "confirmatory MSI/dMMR testing",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05310643"
+          ],
+          "reasoning_summary": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+        },
+        {
+          "trial_id": "NCT05310643",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression during or soon after anti-PD1 therapy",
+            "required prior standard therapies",
+            "confirmatory MSI/dMMR testing",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05310643"
+          ],
+          "reasoning_summary": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+        },
+        {
+          "trial_id": "NCT05310643",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression during or soon after anti-PD1 therapy",
+            "required prior standard therapies",
+            "confirmatory MSI/dMMR testing",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05310643"
+          ],
+          "reasoning_summary": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+        },
+        {
+          "trial_id": "NCT05310643",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression during or soon after anti-PD1 therapy",
+            "required prior standard therapies",
+            "confirmatory MSI/dMMR testing",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05310643"
+          ],
+          "reasoning_summary": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+        },
+        {
+          "trial_id": "NCT05310643",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "progression during or soon after anti-PD1 therapy",
+            "required prior standard therapies",
+            "confirmatory MSI/dMMR testing",
+            "measurable disease",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT05310643"
+          ],
+          "reasoning_summary": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 79.8,
+        "composite_score": 79.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05310643"
+            ],
+            "missing_information": [
+              "progression during or soon after anti-PD1 therapy",
+              "required prior standard therapies",
+              "confirmatory MSI/dMMR testing",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05310643"
+            ],
+            "missing_information": [
+              "progression during or soon after anti-PD1 therapy",
+              "required prior standard therapies",
+              "confirmatory MSI/dMMR testing",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05310643"
+            ],
+            "missing_information": [
+              "progression during or soon after anti-PD1 therapy",
+              "required prior standard therapies",
+              "confirmatory MSI/dMMR testing",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05310643"
+            ],
+            "missing_information": [
+              "progression during or soon after anti-PD1 therapy",
+              "required prior standard therapies",
+              "confirmatory MSI/dMMR testing",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05310643"
+            ],
+            "missing_information": [
+              "progression during or soon after anti-PD1 therapy",
+              "required prior standard therapies",
+              "confirmatory MSI/dMMR testing",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT05310643"
+            ],
+            "missing_information": [
+              "progression during or soon after anti-PD1 therapy",
+              "required prior standard therapies",
+              "confirmatory MSI/dMMR testing",
+              "measurable disease",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 99.8,
+        "distance_km": 0.4,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 79.8,
+        "geography_y": 99.8,
+        "quadrant": "high_match_high_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "H\u00f4pital Saint Antoine",
+        "city": "Paris",
+        "region": null,
+        "country": "France",
+        "distance_km": 0.4,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2025-07-01",
+        "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "CHRU Lille",
+          "city": "Lille",
+          "region": null,
+          "country": "France",
+          "distance_km": 204.0,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2025-07-01",
+          "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+        },
+        {
+          "facility": "CHU Poitiers",
+          "city": "Poitiers",
+          "region": null,
+          "country": "France",
+          "distance_km": 294.1,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2025-07-01",
+          "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+        }
+      ],
+      "rationale": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result.",
+      "missing_information": [
+        "progression during or soon after anti-PD1 therapy",
+        "required prior standard therapies",
+        "confirmatory MSI/dMMR testing",
+        "measurable disease",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: progression during or soon after anti-PD1 therapy?",
+        "Can the treating team confirm: required prior standard therapies?",
+        "Can the treating team confirm: confirmatory MSI/dMMR testing?",
+        "Can the treating team confirm: measurable disease?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT07446322",
+      "title": "FOLFIRI and Bevacizumab With or Without Pelareorep for Second-Line Treatment of Metastatic RAS-Mutated, Microsatellite-Stable Colorectal Cancer",
+      "source_url": "https://clinicaltrials.gov/study/NCT07446322",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-09-10",
+      "retrieval_basis": [
+        "disease: mcrc",
+        "disease: metastatic colorectal cancer",
+        "molecular: dmmr",
+        "molecular: msi-h"
+      ],
+      "consensus": {
+        "trial_id": "NCT07446322",
+        "disposition": "conflict",
+        "match_tier": "not_matched",
+        "primary_relationship": "gene_level",
+        "known_conflicts": [
+          "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        ],
+        "missing_information": [],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "trial_eligibility",
+          "safety_critic"
+        ]
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT07446322",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07446322"
+          ],
+          "reasoning_summary": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        },
+        {
+          "trial_id": "NCT07446322",
+          "expert_role": "disease_oncology",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07446322"
+          ],
+          "reasoning_summary": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        },
+        {
+          "trial_id": "NCT07446322",
+          "expert_role": "actionability_evidence",
+          "assessment": "support",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07446322"
+          ],
+          "reasoning_summary": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        },
+        {
+          "trial_id": "NCT07446322",
+          "expert_role": "pathway_resistance",
+          "assessment": "support",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07446322"
+          ],
+          "reasoning_summary": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        },
+        {
+          "trial_id": "NCT07446322",
+          "expert_role": "trial_eligibility",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07446322"
+          ],
+          "reasoning_summary": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        },
+        {
+          "trial_id": "NCT07446322",
+          "expert_role": "safety_critic",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07446322"
+          ],
+          "reasoning_summary": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": null,
+        "composite_score": null,
+        "coverage": 0.0,
+        "rankable": false,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": null,
+            "status": "conflict",
+            "confidence": 0.9,
+            "rationale": [
+              "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+            ],
+            "evidence_references": [],
+            "missing_information": []
+          },
+          {
+            "dimension": "disease_fit",
+            "value": null,
+            "status": "conflict",
+            "confidence": 0.9,
+            "rationale": [
+              "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation."
+            ],
+            "evidence_references": [],
+            "missing_information": []
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          }
+        ],
+        "hard_conflicts": [
+          "molecular_fit",
+          "disease_fit"
+        ]
+      },
+      "geography_score": {
+        "score": 0.0,
+        "distance_km": 5858.2,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "not_plottable",
+        "clinical_x": null,
+        "geography_y": 0.0,
+        "quadrant": null,
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Clinical hard conflict or no scorable clinical evidence."
+      },
+      "nearest_open_site": {
+        "facility": "Summit Health Cancer Center",
+        "city": "Florham Park",
+        "region": "New Jersey",
+        "country": "United States",
+        "distance_km": 5858.2,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-09-10",
+        "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Rutgers Cancer Institute",
+          "city": "New Brunswick",
+          "region": "New Jersey",
+          "country": "United States",
+          "distance_km": 5882.5,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-10",
+          "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+        },
+        {
+          "facility": "Gabrail Cancer Center",
+          "city": "Canton",
+          "region": "Ohio",
+          "country": "United States",
+          "distance_km": 6324.4,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-10",
+          "snapshot_retrieved_at": "2026-09-13T03:20:31.087901+00:00"
+        }
+      ],
+      "rationale": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation.",
+      "missing_information": [],
+      "discussion_questions": []
+    }
+  ],
+  "limitations": [
+    "The profile and expert review are recorded from the earlier public-sample POC; no live model call was made.",
+    "Candidate trial IDs are a recorded retrieval set, not an exhaustive search.",
+    "Eligibility remains undetermined until a trial site reviews the complete clinical record.",
+    "Distance is great-circle distance to sites explicitly recruiting in the snapshot, not travel time."
+  ],
+  "disclaimer": "Clinical decision-support for professional review; not medical advice or a determination of eligibility."
+}

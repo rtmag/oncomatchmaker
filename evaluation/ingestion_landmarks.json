@@ -1,0 +1,17 @@
+{
+  "annotation_scope": "Developer-reviewed first-page landmarks and amended/CH sections, not exhaustive clinical ground truth. Recall below is landmark recovery, not whole-report variant recall or clinical accuracy.",
+  "cases": [
+    {"prefix": "01_", "disease_contains": "Cholangiocarcinoma", "expected": [{"gene": "KRAS", "alteration_contains": "G12D"}, {"gene": "TP53", "alteration_contains": "C242Y"}], "forbidden_targets": ["FGFR2", "IDH1"], "source_page": 1},
+    {"prefix": "02_", "disease_contains": "Lung cancer", "expected": [{"gene": "ERBB2", "alteration_contains": "G776"}, {"gene": "TP53", "alteration_contains": "C176F"}], "forbidden_targets": ["ALK", "BRAF", "EGFR", "KRAS", "MET", "RET", "ROS1"], "source_page": 1},
+    {"prefix": "03_", "disease_contains": "Stomach adenocarcinoma", "expected": [{"gene": "DNMT3A", "alteration_contains": "W305", "non_tumor": true}], "forbidden_targets": ["ERBB2", "DNMT3A"], "source_page": 1},
+    {"prefix": "04_", "disease_contains": "Breast invasive ductal", "expected": [{"gene": "PIK3CA", "alteration_contains": "E545K"}, {"gene": "MAP2K4", "alteration_contains": "loss"}], "forbidden_targets": [], "source_page": 1},
+    {"prefix": "05_", "disease_contains": "Lung adenocarcinoma", "expected": [{"gene": "EGFR", "alteration_contains": "L858R"}, {"gene": "CDKN2A", "alteration_contains": "loss"}], "forbidden_targets": [], "source_page": 1},
+    {"prefix": "06_", "disease_contains": "non-small cell", "expected": [{"gene": "MET", "alteration_contains": "3024"}, {"gene": "CD274", "alteration_contains": "amplification"}], "forbidden_targets": [], "source_page": 1},
+    {"prefix": "07_", "disease_contains": "Prostate acinar", "expected": [{"gene": "BRCA2", "alteration_contains": "loss"}, {"gene": "TP53", "alteration_contains": "R283C"}], "forbidden_targets": ["EGFR", "BRAF", "ALK", "KRAS"], "source_page": 1},
+    {"prefix": "10_", "disease_contains": "Lung adenocarcinoma", "expected": [{"gene": "MYC", "alteration_contains": "gain"}, {"gene": "ATM", "alteration_contains": "loss"}, {"gene": "ATM", "alteration_contains": "M1", "non_tumor": true}, {"gene": "KIF5B", "partner": "RET"}], "forbidden_targets": ["ATR", "FANCA", "NSD2", "STAT5B", "MEN1"], "source_page": 1},
+    {"prefix": "11_", "disease_contains": "Metastatic colon", "expected": [{"gene": "ATM", "alteration_contains": "S214fs"}, {"gene": "BRCA2", "alteration_contains": "K697fs"}], "forbidden_targets": [], "source_page": 1},
+    {"prefix": "12_", "disease_contains": "Adenocarcinoma", "expected": [], "negative": true, "forbidden_targets": [], "source_page": 1},
+    {"prefix": "13_", "disease_contains": "Carcinoma, metastatic", "expected": [{"gene": "KRAS", "alteration_contains": "G12C"}, {"gene": "KEAP1", "alteration_contains": "R498"}, {"gene": "DNMT3A", "alteration_contains": "F640", "non_tumor": true}, {"gene": "KDM6A", "alteration_contains": "V1169", "non_tumor": true}], "forbidden_targets": ["DNMT3A", "KDM6A"], "source_page": "1–2"},
+    {"prefix": "14_", "disease_contains": "Endometrioid", "expected": [], "forbidden_targets": [], "msi": "stable", "source_page": 1}
+  ]
+}

@@ -1,0 +1,24 @@
+[
+  {
+    "biomarker": "KRAS G12C",
+    "therapy": "adagrasib",
+    "disease": "non-small cell lung cancer",
+    "context": "same_disease",
+    "jurisdiction": "US FDA",
+    "evidence_level": "accelerated approval",
+    "restrictions": ["Adult patients", "Locally advanced or metastatic NSCLC", "KRAS G12C established using an FDA-approved test", "At least one prior systemic therapy", "Accelerated approval; consult the current label and treating clinician"],
+    "sources": ["https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/216340s009lbl.pdf"],
+    "verified_at": "2026-09-13"
+  },
+  {
+    "biomarker": "EGFR L858R",
+    "therapy": "osimertinib with platinum-based chemotherapy",
+    "disease": "non-small cell lung cancer",
+    "context": "same_disease",
+    "jurisdiction": "US FDA",
+    "evidence_level": "approval announcement",
+    "restrictions": ["Locally advanced or metastatic NSCLC", "EGFR exon 21 L858R detected by an FDA-approved test", "Approval announcement is a historical source; verify the current full prescribing information"],
+    "sources": ["https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-osimertinib-chemotherapy-egfr-mutated-non-small-cell-lung-cancer"],
+    "verified_at": "2026-09-13"
+  }
+]

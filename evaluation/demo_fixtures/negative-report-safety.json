@@ -1,0 +1,23 @@
+{
+  "demo_schema_version": "0.1",
+  "case_id": "tempus-xf-negative-safety",
+  "display_name": "Negative-report safety case",
+  "source_report": {
+    "filename": "12_Tempus_xF_negative.pdf",
+    "sha256": "a713f569d046b1043edd2419854bc49344b7a92b36b0f63e2d90dc4f622fe02f",
+    "pages": 4,
+    "reader_version": "pymupdf-blocks-fast-1.0",
+    "result_mode": "precomputed_public_sample"
+  },
+  "disease": "Adenocarcinoma",
+  "reportable_pathogenic_targets": [],
+  "msi_status": "not_detected",
+  "trial_result_status": "not_yet_evaluated",
+  "messages": [
+    "No reportable pathogenic molecular target was identified in this public sample report.",
+    "Unknown does not mean negative; unreported or unassessed findings remain unknown.",
+    "No gene-level targeted trial is generated from this result.",
+    "Any disease-only discovery must be labelled broad and exploratory."
+  ],
+  "disclaimer": "Clinical decision-support for professional review; not medical advice or a determination of eligibility."
+}

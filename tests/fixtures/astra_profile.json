@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.1",
+  "report": {
+    "vendor": "TEST",
+    "assay": "TEST",
+    "sample_type": "tissue"
+  },
+  "disease": {
+    "raw_text": "Lung adenocarcinoma",
+    "normalized": "non-small cell lung cancer",
+    "synonyms": ["NSCLC"],
+    "histology": "adenocarcinoma",
+    "stage": null
+  },
+  "patient_context": {
+    "age": null,
+    "sex": null,
+    "prior_therapies": [],
+    "ecog": null
+  },
+  "biomarkers": {
+    "snv_indel": [
+      {
+        "gene": "EGFR",
+        "gene_synonyms": ["ERBB1", "HER1"],
+        "protein_change": "L858R",
+        "source_text": "EGFR L858R"
+      }
+    ],
+    "copy_number": [],
+    "fusions": [],
+    "msi": {"status": "stable"},
+    "tmb": {"value": 24.0, "unit": "mut/Mb"}
+  },
+  "technical_notes": [],
+  "extraction_confidence": {"overall": 1.0}
+}

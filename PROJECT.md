@@ -1774,3 +1774,71 @@ The platform should evolve from a report matcher into a longitudinal precision-o
 The central principle should remain constant:
 
 > Turn complex molecular oncology information into transparent, evidence-backed, practically accessible clinical options without replacing clinical judgment.
+
+---
+
+## 33. ASTRA Expert-Team Contract
+
+Trial matching will use an evidence-bounded virtual review team rather than a
+single keyword query or an unconstrained model response. The shared canonical
+molecular profile remains the only interface between report extraction and
+downstream matching.
+
+The first expert-team implementation contains six independent roles:
+
+1. molecular-profile quality control,
+2. disease-specific oncology review,
+3. actionability and evidence review,
+4. pathway and resistance review,
+5. trial-cohort and eligibility review,
+6. safety and contradiction review.
+
+A deterministic consensus layer combines their structured assessments. Explicit
+molecular, eligibility, or safety conflicts are hard gates and cannot be
+overridden by majority support. Unknown stage, prior therapy, performance status,
+laboratory values, germline status, zygosity, and other absent facts remain
+unknown and prevent a claim of eligibility.
+
+Candidate retrieval must record whether a study was found through an exact
+variant, gene-level relationship, phenotype biomarker, pathway mechanism,
+resistance strategy, or broad basket cohort. Direct matches, mechanistic matches,
+and exploratory basket matches must remain distinguishable in the result.
+
+Role definitions and the dependency-free executable contracts live in
+`trials/astra_team.py` and `schemas/astra_contracts.py`. Model-provider integration,
+CIViC retrieval, wider candidate generation, geography, and UI remain separate
+implementation phases. All outputs remain clinical-trial prescreening decision
+support and never constitute medical advice or a final eligibility determination.
+
+---
+
+## 34. Independent Clinical and Geographic Scores
+
+Geographic accessibility must not be included inside the multidimensional
+clinical-trial match score. ASTRA produces two independent values:
+
+1. a clinical composite derived from molecular, disease, mechanistic, evidence,
+   eligibility, and trial-design assessments;
+2. a geographic-access score derived from the nearest explicitly recruiting site.
+
+Only trials that survive molecular, disease, eligibility, and safety conflict
+gates are clinically rankable. Unknown clinical dimensions remain null and reduce
+reported evidence coverage. The conservative clinical composite is the observed
+weighted score multiplied by coverage.
+
+Geography is calculated only when the study status and individual site status are
+both `RECRUITING`. No confirmed open site or no calculable distance produces a
+null geography score rather than a false zero.
+
+The two scores can later be plotted with clinical match on the x-axis and
+geographic access on the y-axis. High-match, high-access trials occupy the
+upper-right quadrant. Nearby but biologically weak trials cannot improve their
+clinical score, while biologically strong but distant trials remain visible in a
+separate high-match, low-access quadrant.
+
+The POC score and quadrant thresholds are transparent, configurable prioritization
+aids. They are not estimates of therapeutic benefit, eligibility probability, or
+clinically validated cutoffs.
+
+The staged merge order, component interfaces, report-result requirements, and
+integration sign-off gates are maintained in `INTEGRATION_PLAN.md`.

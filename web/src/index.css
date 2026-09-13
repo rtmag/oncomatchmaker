@@ -1,0 +1,197 @@
+@import 'tailwindcss';
+
+/* Astra Precision design tokens: dark clinical instrument, mint = supported, blue = evidence, amber = unknown. */
+@theme {
+  --color-background: #080e18;
+  --color-foreground: #eff4f7;
+  --color-sidebar: #0b121d;
+  --color-inspector: #0c1722;
+  --color-uncertain: #91a2bb;
+  --color-watermark: #234052;
+  --color-stage: #070d16;
+  --color-card: #101925;
+  --color-card-2: #131f2d;
+  --color-accent: #142231;
+  --color-border: #243242;
+  --color-border-strong: #3a4e63;
+  --color-input: #34485b;
+  --color-muted-foreground: #9bacbe;
+  --color-primary: #89f2d2;
+  --color-primary-strong: #b0ffe6;
+  --color-primary-foreground: #0f2a23;
+  --color-evidence: #88adff;
+  --color-caution: #efc080;
+  --color-caution-foreground: #e6d3b0;
+  --color-destructive: #f3a6a6;
+  --color-ring: #89f2d2;
+  --color-scrim: #020810;
+
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-glow: 0 0 0 1px rgb(137 242 210 / 0.35), 0 10px 30px -10px rgb(137 242 210 / 0.55);
+  --shadow-lift: 0 24px 60px -24px rgb(0 0 0 / 0.75), 0 0 0 1px rgb(137 242 210 / 0.08);
+  --shadow-overlay: 0 35px 100px rgb(0 0 0 / 0.72);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-border-beam: border-beam calc(var(--duration) * 1s) infinite linear;
+  @keyframes border-beam {
+    100% {
+      offset-distance: 100%;
+    }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* Atmosphere: two low-contrast glows and film grain behind every view. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 40rem at 88% -12%, rgb(34 96 88 / 0.26), transparent 60%),
+      radial-gradient(50rem 32rem at -10% 110%, rgb(40 62 128 / 0.2), transparent 60%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  ::selection {
+    background: rgb(137 242 210 / 0.3);
+  }
+}
+
+@utility eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Molecular scene labels (Astra kit contract: .scene-labels, .molecular-label, .mechanism-label). */
+.scene-host canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.scene-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.molecular-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  padding: 5px 9px;
+  border: 1px solid color-mix(in srgb, var(--node-color, #89f2d2) 45%, transparent);
+  border-radius: 8px;
+  background: rgb(12 30 30 / 0.84);
+  color: var(--node-color, #bdf6e4);
+  font-size: 12px;
+  text-align: left;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    opacity 0.2s;
+}
+
+.molecular-label .label-title,
+.molecular-label .label-meta {
+  display: block;
+}
+
+.molecular-label .label-meta {
+  font-size: 10px;
+  color: #b2c5d1;
+}
+
+.molecular-label[data-selected='true'] {
+  border-color: var(--node-color, #89f2d2);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--node-color, #89f2d2) 30%, transparent);
+}
+
+.molecular-label.context-removed {
+  opacity: 0.35;
+}
+
+.molecular-label:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+.mechanism-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--color-muted-foreground);
+  font-size: 11px;
+}
+
+/* Radix dialog motion (transform-only so it composes with the translate utilities). */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(6px);
+  }
+}
+
+.dialog-overlay[data-state='open'] {
+  animation: overlay-in 180ms var(--ease-out-expo);
+}
+
+.dialog-content[data-state='open'] {
+  animation: content-in 260ms var(--ease-out-expo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "0.1",
+  "report": {
+    "vendor": "SYNTHETIC \u2014 not a real report",
+    "assay": "Demo"
+  },
+  "disease": {
+    "raw_text": "Metastatic NSCLC",
+    "normalized": "non-small cell lung cancer",
+    "stage": "metastatic"
+  },
+  "patient_context": {
+    "age": 62,
+    "ecog": null,
+    "prior_therapies": [],
+    "location": {
+      "city": "Singapore",
+      "country": "Singapore",
+      "latitude": 1.3521,
+      "longitude": 103.8198
+    }
+  },
+  "biomarkers": {
+    "snv_indel": [
+      {
+        "gene": "KRAS",
+        "protein_change": "G12C",
+        "classification": "pathogenic",
+        "source_text": "Synthetic KRAS G12C",
+        "potential_ch": false
+      }
+    ],
+    "msi": {
+      "status": "stable"
+    }
+  },
+  "technical_notes": [
+    "Synthetic profile for software testing only."
+  ]
+}
