@@ -1809,3 +1809,36 @@ Role definitions and the dependency-free executable contracts live in
 CIViC retrieval, wider candidate generation, geography, and UI remain separate
 implementation phases. All outputs remain clinical-trial prescreening decision
 support and never constitute medical advice or a final eligibility determination.
+
+---
+
+## 34. Independent Clinical and Geographic Scores
+
+Geographic accessibility must not be included inside the multidimensional
+clinical-trial match score. ASTRA produces two independent values:
+
+1. a clinical composite derived from molecular, disease, mechanistic, evidence,
+   eligibility, and trial-design assessments;
+2. a geographic-access score derived from the nearest explicitly recruiting site.
+
+Only trials that survive molecular, disease, eligibility, and safety conflict
+gates are clinically rankable. Unknown clinical dimensions remain null and reduce
+reported evidence coverage. The conservative clinical composite is the observed
+weighted score multiplied by coverage.
+
+Geography is calculated only when the study status and individual site status are
+both `RECRUITING`. No confirmed open site or no calculable distance produces a
+null geography score rather than a false zero.
+
+The two scores can later be plotted with clinical match on the x-axis and
+geographic access on the y-axis. High-match, high-access trials occupy the
+upper-right quadrant. Nearby but biologically weak trials cannot improve their
+clinical score, while biologically strong but distant trials remain visible in a
+separate high-match, low-access quadrant.
+
+The POC score and quadrant thresholds are transparent, configurable prioritization
+aids. They are not estimates of therapeutic benefit, eligibility probability, or
+clinically validated cutoffs.
+
+The staged merge order, component interfaces, report-result requirements, and
+integration sign-off gates are maintained in `INTEGRATION_PLAN.md`.
