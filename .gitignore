@@ -25,3 +25,5 @@ dist/
 
 # Public vendor sample reports are retained locally and not redistributed.
 evaluation/corpus/*.pdf
+data/reference/
+evaluation/runs/
