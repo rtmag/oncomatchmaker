@@ -1,0 +1,13 @@
+case_id,filename,vendor,assay,tumor_type,sample_type,notes
+CASE_001,01_FMI_F1LCDx_cholangiocarcinoma.pdf,Foundation Medicine,FoundationOne Liquid CDx,cholangiocarcinoma,blood,ctDNA tumor fraction reported as low
+CASE_002,02_FMI_F1LCDx_lung_high_TF.pdf,Foundation Medicine,FoundationOne Liquid CDx,lung cancer,blood,ctDNA tumor fraction reported as high
+CASE_003,03_FMI_F1LCDx_stomach_TF_CBD.pdf,Foundation Medicine,FoundationOne Liquid CDx,stomach adenocarcinoma,blood,tumor fraction cannot be determined
+CASE_004,04_FMI_F1CDx_breast.pdf,Foundation Medicine,FoundationOne CDx,breast invasive ductal carcinoma,tissue,unknown
+CASE_005,05_FMI_F1CDx_lung_EGFR.pdf,Foundation Medicine,FoundationOne CDx,lung adenocarcinoma,tissue,EGFR noted in filename
+CASE_006,06_FMI_F1CDx_NSCLC_MET.pdf,Foundation Medicine,FoundationOne CDx,non-small cell lung carcinoma,tissue,MET noted in filename
+CASE_007,07_FMI_F1CDx_prostate_BRCA2.pdf,Foundation Medicine,FoundationOne CDx,prostate acinar adenocarcinoma,tissue,BRCA2 noted in filename
+CASE_010,10_Tempus_xT_lung.pdf,Tempus,Tempus xT,lung adenocarcinoma,tissue,paired normal blood specimen also reported
+CASE_011,11_Tempus_xF_metastatic_colon.pdf,Tempus,Tempus xF,metastatic colon cancer,peripheral blood,unknown
+CASE_012,12_Tempus_xF_negative.pdf,Tempus,Tempus xF,adenocarcinoma,peripheral blood,no reportable pathogenic variants
+CASE_013,13_Caris_Assure_metastatic_lung.pdf,Caris Life Sciences,Caris Assure,metastatic lung carcinoma,blood,unknown
+CASE_014,14_Caris_endometrium_MMR_MSI.pdf,Caris Life Sciences,unknown,endometrioid carcinoma,endometrium,MMR and MSI noted in filename
