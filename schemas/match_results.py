@@ -97,3 +97,4 @@ class MatchResults(Model):
     search_status: Literal["complete", "partial", "failed", "not_searched"] = "complete"
     queries: list[dict[str, str]] = Field(default_factory=list)
     screening_summary: dict[str, int] = Field(default_factory=dict)
+    screening_landscape: list[dict] = Field(default_factory=list)

@@ -1,6 +1,24 @@
 import sqlite3
 
 from trials.candidate_retrieval import retrieve_candidates, screen_trials
+from trials.pipeline import attach_screening_geography
+from schemas.molecular_profile import Location
+
+
+def test_landscape_uses_only_open_studies_and_open_sites():
+    db = sqlite3.connect(":memory:")
+    db.executescript("""
+        CREATE TABLE studies(nct_id TEXT, overall_status TEXT);
+        CREATE TABLE sites(nct_id TEXT,status TEXT,latitude REAL,longitude REAL);
+        INSERT INTO studies VALUES ('A','RECRUITING'),('B','NOT_YET_RECRUITING'),('C','RECRUITING');
+        INSERT INTO sites VALUES ('A','ACTIVE_NOT_RECRUITING',0,0),('A','RECRUITING',0,1),
+        ('B','RECRUITING',0,0),('C','UNKNOWN',0,0),('C','RECRUITING',NULL,NULL);
+    """)
+    points = [dict(nct_id=n, distance_km=None, geography_score=None) for n in "ABC"]
+    attach_screening_geography(db, points, Location(latitude=0, longitude=0))
+    assert 111 < points[0]["distance_km"] < 112
+    assert 0 < points[0]["geography_score"] < 100
+    assert all(row["distance_km"] is None and row["geography_score"] is None for row in points[1:])
 
 
 def test_retrieval_requires_disease_and_molecular_hit():
@@ -32,6 +50,12 @@ def test_retrieval_requires_disease_and_molecular_hit():
     assert screened.status_eligible == 2
     assert len(screened.candidates) == 1
     assert screened.candidates[0].preliminary_score > 0
+    assert len(screened.landscape) == 3
+    assert len({row["nct_id"] for row in screened.landscape}) == 3
+    assert screened.landscape[0]["preliminary_score"] == screened.candidates[0].preliminary_score
+    assert screened.landscape[1]["screening_state"] == "disease_not_retrieved"
+    assert screened.landscape[2]["preliminary_score"] == 0
+    assert all(row["geography_score"] is None for row in screened.landscape)
 
     profile["biomarkers"] = {"snv_indel": [], "copy_number": [], "fusions": []}
     assert [row.nct_id for row in retrieve_candidates(db, profile)] == ["NCT00000001"]

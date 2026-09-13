@@ -23,6 +23,7 @@ class TrialScreenResult:
     disease_eligible: int
     molecular_eligible: int
     candidates: tuple[RetrievedCandidate, ...]
+    landscape: tuple[dict, ...] = ()
 
 
 def _terms(profile: Mapping[str, Any]) -> tuple[set[str], set[str]]:
@@ -76,12 +77,16 @@ def screen_trials(
     """
     disease_terms, molecular_terms = _terms(profile)
     candidates = []
+    landscape = []
     total_screened = status_eligible = disease_eligible = molecular_eligible = 0
     for nct_id, title, eligibility, conditions_json, status in db.execute(
         """SELECT nct_id,title,eligibility_text,conditions_json,overall_status
            FROM studies"""
     ):
         total_screened += 1
+        row = {"nct_id": nct_id, "title": title or nct_id, "preliminary_score": 0.0,
+               "geography_score": None, "distance_km": None, "screening_state": "status_filtered"}
+        landscape.append(row)
         if status not in {"RECRUITING", "NOT_YET_RECRUITING"}:
             continue
         status_eligible += 1
@@ -95,12 +100,21 @@ def screen_trials(
         molecular_hits = tuple(
             sorted(term for term in molecular_terms if term in full_text)
         )
+        # Same transparent retrieval heuristic for every study. These scores
+        # describe text evidence for prioritization, not eligibility or benefit.
+        preliminary = (min(45, 30 + 5 * len(disease_hits)) if disease_hits else 0)
+        preliminary += min(40, 25 + 5 * len(molecular_hits)) if molecular_hits else 0
+        preliminary += 10 if status == "RECRUITING" else 5
+        preliminary += 5 if eligibility else 0
+        row.update(preliminary_score=float(preliminary), screening_state="disease_not_retrieved")
         if not disease_hits:
             continue
         disease_eligible += 1
+        row["screening_state"] = "molecular_not_retrieved"
         if molecular_terms and not molecular_hits:
             continue
         molecular_eligible += 1
+        row["screening_state"] = "shortlist_pool"
         preliminary = min(45, 30 + 5 * len(disease_hits))
         if molecular_terms:
             preliminary += min(40, 25 + 5 * len(molecular_hits))
@@ -129,6 +143,7 @@ def screen_trials(
         disease_eligible,
         molecular_eligible,
         tuple(ranked),
+        tuple(landscape),
     )
 
 

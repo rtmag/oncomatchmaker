@@ -4,7 +4,7 @@
 
 OncoMatchmaker is a clinical decision-support project that helps users move from a molecular oncology report to relevant treatment evidence and clinical-trial opportunities.
 
-Users upload a molecular oncology PDF and enter the patient's city and country. GPT-5.6 Sol extracts and reviews the molecular profile, local HGNC and NCIt checks normalize it, and the versioned oncology snapshot retrieves candidates. Six isolated GPT-6 Astra experts review each shortlisted trial concurrently. Clinical match and geographic access remain separate scores; geography uses only sites explicitly marked recruiting.
+Users upload a molecular oncology PDF and select the patient's city from suggestions that include region and country. GPT-5.6 Sol extracts the molecular profile, local HGNC and NCIt checks normalize it, and the versioned oncology snapshot retrieves candidates. Six isolated GPT-6 Astra experts review each shortlisted trial concurrently. Clinical match and geographic access remain separate scores; geography uses only sites explicitly marked recruiting.
 
 Approved therapies and experimental clinical trials are intentionally presented separately. OncoMatchmaker supports informed discussion with qualified clinicians and trial teams; it does not provide medical advice or determine treatment or trial eligibility.
 
@@ -19,11 +19,19 @@ python3 -m venv .venv
 .venv/bin/streamlit run app/main.py
 ```
 
-For Abhishek's React workspace, build `web/` and run `uvicorn app.api:app`. Upload a
-PDF, review the extracted profile, enter city and country, and select **Find evidence
-and trials**. The backend resolves the city, uses the local registry snapshot, runs
-the six-expert ASTRA team, and returns the complete result workspace. Reports and
-patient profiles are not written to a persistent cache by the UI.
+For the React workspace, build `web/` and run `uvicorn app.api:app`. Select a PDF
+and a city suggestion, then choose **Analyze report & find trials**. Extraction,
+snapshot screening, six-expert review and geographic ranking run automatically.
+City suggestions use the snapshot's city/region/country directory; coordinates
+are approximate city locations. Clinical fields remain unknown when unrecorded.
+The UI keeps successful extractions in server memory for one hour (maximum 16
+reports), keyed by exact PDF hash, model and extraction version. Restarting the
+server clears the cache. No PDF or extracted profile is persisted by this cache.
+
+The results plot represents every snapshot study using the preliminary retrieval
+score. Overlapping points accumulate visually into density; unknown recruiting-site
+distance is shown in a separate strip. A second view shows validated ASTRA clinical
+scores only. Preliminary relevance is not a clinical exclusion or eligibility score.
 
 For machine-readable output:
 

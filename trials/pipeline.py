@@ -13,7 +13,7 @@ from trials.astra_runner import AstraExpertRunner, ExpertTeamError
 from trials.candidate_retrieval import screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
 from trials.eligibility import evaluate_eligibility
-from trials.geography import find_nearest_site, resolve_city_location
+from trials.geography import find_nearest_site, resolve_city_location, haversine_distance
 from trials.integrated_pipeline import _trial
 from trials.ranking import score_trial
 from trials.search import generate_queries
@@ -43,6 +43,23 @@ CLINICAL_WEIGHTS = {
     "safety": 5.0,
 }
 ASSESSMENT_FRACTIONS = {"support": 0.9, "caution": 0.6}
+
+
+def attach_screening_geography(db, landscape, location):
+    """One pass over explicitly open sites, preserving missing access as unknown."""
+    distances = {}
+    for nct_id, lat, lon in db.execute("""
+        SELECT s.nct_id,s.latitude,s.longitude FROM sites s
+        JOIN studies t ON t.nct_id=s.nct_id
+        WHERE s.status='RECRUITING' AND t.overall_status='RECRUITING'
+        AND s.latitude BETWEEN -90 AND 90 AND s.longitude BETWEEN -180 AND 180
+    """):
+        distance = haversine_distance(location.latitude, location.longitude, lat, lon)
+        distances[nct_id] = min(distance, distances.get(nct_id, float("inf")))
+    for point in landscape:
+        distance = distances.get(point["nct_id"])
+        if distance is not None:
+            point.update(distance_km=round(distance, 1), geography_score=round(100 * math.exp(-distance / 250), 1))
 
 
 def _clinical_score(team):
@@ -154,6 +171,8 @@ def _match_snapshot(
     )
     with sqlite3.connect(database) as db:
         screening = screen_trials(db, result.profile.model_dump(mode="json"))
+        result.screening_landscape = [dict(row) for row in screening.landscape]
+        attach_screening_geography(db, result.screening_landscape, location)
         candidates = list(screening.candidates[:maximum_reviews])
         result.screening_summary = {
             "total_snapshot_trials_screened": screening.total_screened,

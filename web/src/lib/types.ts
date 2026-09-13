@@ -7,6 +7,16 @@ export interface Location {
   longitude: number | null
 }
 
+export interface CityOption extends Location { label: string }
+export interface ScreeningPoint {
+  nct_id: string
+  title: string
+  preliminary_score: number
+  geography_score: number | null
+  distance_km: number | null
+  screening_state: string
+}
+
 export interface ReportMetadata {
   vendor: string | null
   assay: string | null
@@ -192,6 +202,7 @@ export interface ApprovedOption {
 export type SearchStatus = "complete" | "partial" | "failed" | "not_searched"
 
 export interface MatchResults {
+  screening_landscape?: ScreeningPoint[]
   profile: MolecularProfile
   approved_options: ApprovedOption[]
   trials: RankedTrial[]

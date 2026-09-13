@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useMemo, useReducer, type React
 import { toast } from "sonner"
 
 import { api } from "@/lib/api"
-import type { MatchResults, MolecularProfile } from "@/lib/types"
+import type { Location, MatchResults, MolecularProfile } from "@/lib/types"
 
 export type SourceKind = "demo" | "json" | "pdf"
 export type BusyTask = "profile" | "extract" | "match"
@@ -73,7 +73,7 @@ interface CaseContextValue extends CaseState {
   isStale: boolean
   loadDemo: (id: string, label: string) => Promise<boolean>
   loadJson: (file: File) => Promise<boolean>
-  extractPdf: (file: File, city: string) => Promise<boolean>
+  extractPdf: (file: File, location: Location) => Promise<boolean>
   editProfile: (profile: MolecularProfile) => void
   runMatch: (profile: MolecularProfile) => Promise<boolean>
 }
@@ -117,17 +117,24 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   )
 
   const extractPdf = useCallback(
-    (file: File, city: string) =>
-      perform("extract", async () => {
+    async (file: File, location: Location) => {
+      dispatch({ type: "start", task: "extract" })
+      try {
         const profile = await api.extract(file)
-        profile.patient_context.location = { city: city.trim(), country: null, latitude: null, longitude: null }
-        return {
-          type: "loaded",
-          profile,
-          source: { kind: "pdf", label: file.name },
-        }
-      }),
-    [perform],
+        profile.patient_context.location = location
+        dispatch({ type: "loaded", profile, source: { kind: "pdf", label: file.name } })
+        dispatch({ type: "start", task: "match" })
+        const results = await api.match(profile)
+        dispatch({ type: "matched", results, fingerprint: profileFingerprint(profile) })
+        return true
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Analysis failed. Please try again."
+        dispatch({ type: "fail", error: message })
+        toast.error(message)
+        return false
+      }
+    },
+    [],
   )
 
   const runMatch = useCallback(

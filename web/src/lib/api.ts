@@ -1,4 +1,4 @@
-import type { DemoCase, MatchResults, MolecularProfile } from "./types"
+import type { CityOption, DemoCase, MatchResults, MolecularProfile } from "./types"
 
 const API_ROOT = "/api"
 const START_HINT = "Start it with: uvicorn app.api:app --reload"
@@ -67,6 +67,7 @@ const postJson = (body: unknown): RequestInit => ({
 })
 
 export const api = {
+  cities: (query: string) => request<CityOption[]>(`/cities?q=${encodeURIComponent(query)}`),
   demoCases: () => request<DemoCase[]>("/demo-cases"),
   demoCase: (id: string) => request<MolecularProfile>(`/demo-cases/${encodeURIComponent(id)}`),
   validateProfile: (candidate: unknown) => request<MolecularProfile>("/profile/validate", postJson(candidate)),

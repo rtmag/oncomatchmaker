@@ -134,6 +134,7 @@ function SceneFallback() {
 export function OverviewView() {
   const { profile, results, isStale, busy, runMatch } = useCase()
   const [inspected, setInspected] = useState<Finding | null>(null)
+  const [showContext, setShowContext] = useState(false)
   const findings = useMemo(() => (profile ? normalizeFindings(profile) : []), [profile])
 
   const handleSceneSelect = useCallback(
@@ -152,16 +153,16 @@ export function OverviewView() {
   return (
     <>
       <PageHeader
-        eyebrow="Case workspace"
+        eyebrow={results ? "Your results · Molecular evidence & geographic access" : "Case workspace"}
         title={
           <>
             A clearer path to <span className="text-primary">the next trial.</span>
           </>
         }
-        subtitle="Review the molecular profile, supporting evidence and enrollment requirements in one place."
-        aside={<CasePill />}
+        subtitle={results ? `${profile.disease.normalized || profile.disease.raw_text} · ${[profile.patient_context.location.city, profile.patient_context.location.country].filter(Boolean).join(", ")} · Explore the full registry, then inspect the expert shortlist.` : "Review the molecular profile, supporting evidence and enrollment requirements in one place."}
+        aside={!results && <CasePill />}
       />
-      {results && <ClinicalGeographyPlot trials={results.trials} />}
+      {results && <ClinicalGeographyPlot trials={results.trials} landscape={results.screening_landscape} />}
       <JourneyStepper hasResults={Boolean(results)} />
 
       {isStale && (
@@ -178,7 +179,9 @@ export function OverviewView() {
         </Callout>
       )}
 
-      <div className="grid gap-5 lg:grid-cols-12">
+      <details open={!results || showContext} onToggle={event => setShowContext(event.currentTarget.open)} className="mb-5 rounded-2xl border border-border p-4">
+      <summary className="cursor-pointer font-display text-base font-medium">Molecular profile, evidence connections & search details</summary>
+      {(!results || showContext) && <div className="mt-4 grid gap-5 lg:grid-cols-12">
         <Panel className="flex min-h-[500px] flex-col bg-stage lg:col-span-8 lg:row-span-2">
           <PanelHeader
             eyebrow="Molecular landscape"
@@ -209,7 +212,8 @@ export function OverviewView() {
           <GlanceList profile={profile} />
         </Panel>
         {results ? <SearchSummary results={results} /> : <ReadyPanel />}
-      </div>
+      </div>}
+      </details>
 
       {results && (
         <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">

@@ -1,15 +1,46 @@
 from types import SimpleNamespace
 from unittest.mock import patch
+import pytest
 
 from fastapi.testclient import TestClient
 from test_matching import FakeClient
 
-from app.api import app
+from app.api import app, _extraction_cache
 from ingestion.model_client import ExtractionError
 from trials.pipeline import match_patient
 
 client = TestClient(app)
 PDF_BYTES = b"%PDF-1.4 synthetic"
+
+
+@pytest.fixture(autouse=True)
+def empty_extraction_cache():
+    _extraction_cache.clear()
+    yield
+    _extraction_cache.clear()
+
+
+def test_cached_extraction_is_isolated_and_exact_pdf_only(profile):
+    with patch("ingestion.pipeline.ingest_report", return_value=SimpleNamespace(profile=profile.model_dump())) as run:
+        first = upload(PDF_BYTES).json()
+        assert first["ingestion_provenance"]["cache_hit"] is False
+        second = upload(PDF_BYTES).json()
+        assert second["ingestion_provenance"]["cache_hit"] is True
+        assert run.call_count == 1
+        upload(PDF_BYTES + b" different report")
+        assert run.call_count == 2
+
+
+def test_city_search_keeps_ambiguous_locations_separate():
+    directory = [
+        dict(city="Paris", country="France", label="Paris, France", latitude=48.85, longitude=2.35),
+        dict(city="Paris", country="United States", label="Paris, Texas, United States", latitude=33.66, longitude=-95.55),
+    ]
+    with patch("app.api._city_directory", return_value=directory):
+        response = client.get("/api/cities", params={"q": "Paris"})
+    assert response.status_code == 200
+    assert len(response.json()) == 2
+    assert {row["country"] for row in response.json()} == {"France", "United States"}
 
 
 def upload(content):

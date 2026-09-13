@@ -9,7 +9,7 @@ from schemas.extraction import ExtractionReview, FindingReview, IngestionResult
 FAST_MODE_WARNING = (
     "Fast extraction used one model pass plus deterministic evidence validation; "
     "an independent completeness review was not performed. Confirm the profile "
-    "against the source report before matching."
+    "against the source report before acting on trial results."
 )
 
 
