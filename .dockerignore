@@ -1,0 +1,15 @@
+.git
+.github
+.env
+.env.*
+.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/node_modules
+web/dist
+evaluation/corpus/*.pdf
+evaluation/runs
+data/reference
+.DS_Store
