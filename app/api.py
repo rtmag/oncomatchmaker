@@ -1,22 +1,22 @@
 """HTTP API for the web workspace. Run with: uvicorn app.api:app --reload"""
 
-import tempfile
 import hashlib
 import os
 import sqlite3
+import tempfile
 import time
 from collections import OrderedDict
-from threading import Lock
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 from typing import List
 
-from fastapi import FastAPI, File, HTTPException, UploadFile, Query
+from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from ingestion import pipeline as ingestion_pipeline
-from ingestion.model_client import ExtractionError
+from ingestion.model_client import PROMPT_VERSION, ExtractionError
 from ingestion.pdf_reader import PDFReadError
 from schemas.match_results import MatchResults
 from schemas.molecular_profile import MolecularProfile
@@ -38,26 +38,43 @@ _cache_lock = Lock()
 @lru_cache(maxsize=1)
 def _city_directory():
     with sqlite3.connect(trial_pipeline.SNAPSHOT) as db:
-        rows = [dict(city=city.strip(), country=country.strip(), latitude=lat, longitude=lon,
-                     region=region)
-                for city, region, country, lat, lon in db.execute("""
+        rows = [
+            dict(
+                city=city.strip(),
+                country=country.strip(),
+                latitude=lat,
+                longitude=lon,
+                region=region,
+            )
+            for city, region, country, lat, lon in db.execute("""
                     SELECT city,region,country,AVG(latitude),AVG(longitude) FROM sites
                     WHERE city IS NOT NULL AND country IS NOT NULL
                     AND latitude BETWEEN -90 AND 90 AND longitude BETWEEN -180 AND 180
                     GROUP BY city,region,country ORDER BY city,country
-                """)]
+                """)
+        ]
     # Vendors sometimes put street addresses in region. Collapse identical city
     # coordinates before suggesting places, retaining geographically distinct names.
     places = {}
     for row in rows:
-        key = (row["city"].casefold(), row["country"].casefold(), round(row["latitude"], 1), round(row["longitude"], 1))
-        if key not in places or len(row["region"] or "") < len(places[key]["region"] or ""):
+        key = (
+            row["city"].casefold(),
+            row["country"].casefold(),
+            round(row["latitude"], 1),
+            round(row["longitude"], 1),
+        )
+        if key not in places or len(row["region"] or "") < len(
+            places[key]["region"] or ""
+        ):
             places[key] = row
     options = []
     for row in places.values():
         region = row.pop("region")
         parts = [row["city"]]
-        if region and region.casefold() not in {row["city"].casefold(), row["country"].casefold()}:
+        if region and region.casefold() not in {
+            row["city"].casefold(),
+            row["country"].casefold(),
+        }:
             parts.append(region)
         parts.append(row["country"])
         options.append({**row, "label": ", ".join(parts)})
@@ -68,8 +85,14 @@ def _city_directory():
 def cities(q: str = Query(min_length=2, max_length=120)):
     query = q.strip().casefold()
     rows = [row for row in _city_directory() if query in row["label"].casefold()]
-    return sorted(rows, key=lambda row: (row["city"].casefold() != query,
-                  not row["city"].casefold().startswith(query), row["label"]))[:20]
+    return sorted(
+        rows,
+        key=lambda row: (
+            row["city"].casefold() != query,
+            not row["city"].casefold().startswith(query),
+            row["label"],
+        ),
+    )[:20]
 
 
 class DemoCase(BaseModel):
@@ -141,7 +164,11 @@ def extract(file: UploadFile = File(...)):
         raise HTTPException(413, "PDF exceeds the 20 MB limit.")
     if not data.startswith(PDF_MAGIC):
         raise HTTPException(415, "Upload a PDF molecular report.")
-    key = (hashlib.sha256(data).hexdigest(), os.environ.get("ONCOMATCH_EXTRACTION_MODEL", "gpt-5.6-sol"), "fast-v1")
+    key = (
+        hashlib.sha256(data).hexdigest(),
+        os.environ.get("ONCOMATCH_EXTRACTION_MODEL", "gpt-5.6-sol"),
+        PROMPT_VERSION,
+    )
     with _cache_lock:
         cached = _extraction_cache.get(key)
         if cached and time.monotonic() - cached[0] < 3600:
@@ -152,9 +179,8 @@ def extract(file: UploadFile = File(...)):
         path = Path(folder) / "report.pdf"
         path.write_bytes(data)
         try:
-            # The interactive demo uses one low-reasoning Sol pass, followed by
-            # deterministic source/HGNC checks. The returned profile is explicitly
-            # marked for human confirmation before trial matching.
+            # Select patient-result sections locally; recognized VUS appendices
+            # run concurrently. Validate all output against the complete source.
             result = ingestion_pipeline.ingest_report(path, extraction_mode="fast")
         except (ExtractionError, PDFReadError) as exc:
             raise HTTPException(

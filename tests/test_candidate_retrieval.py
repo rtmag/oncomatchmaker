@@ -1,8 +1,8 @@
 import sqlite3
 
+from schemas.molecular_profile import Location
 from trials.candidate_retrieval import retrieve_candidates, screen_trials
 from trials.pipeline import attach_screening_geography
-from schemas.molecular_profile import Location
 
 
 def test_landscape_uses_only_open_studies_and_open_sites():
@@ -18,7 +18,10 @@ def test_landscape_uses_only_open_studies_and_open_sites():
     attach_screening_geography(db, points, Location(latitude=0, longitude=0))
     assert 111 < points[0]["distance_km"] < 112
     assert 0 < points[0]["geography_score"] < 100
-    assert all(row["distance_km"] is None and row["geography_score"] is None for row in points[1:])
+    assert all(
+        row["distance_km"] is None and row["geography_score"] is None
+        for row in points[1:]
+    )
 
 
 def test_retrieval_requires_disease_and_molecular_hit():
@@ -52,7 +55,10 @@ def test_retrieval_requires_disease_and_molecular_hit():
     assert screened.candidates[0].preliminary_score > 0
     assert len(screened.landscape) == 3
     assert len({row["nct_id"] for row in screened.landscape}) == 3
-    assert screened.landscape[0]["preliminary_score"] == screened.candidates[0].preliminary_score
+    assert (
+        screened.landscape[0]["preliminary_score"]
+        == screened.candidates[0].preliminary_score
+    )
     assert screened.landscape[1]["screening_state"] == "disease_not_retrieved"
     assert screened.landscape[2]["preliminary_score"] == 0
     assert all(row["geography_score"] is None for row in screened.landscape)

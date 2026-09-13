@@ -5,9 +5,8 @@ from ingestion.pdf_reader import read_document
 from normalization.genes import get_registry
 from schemas.extraction import ExtractionReview, FindingReview, IngestionResult
 
-
 FAST_MODE_WARNING = (
-    "Fast extraction used one model pass plus deterministic evidence validation; "
+    "Fast extraction used patient-result sections plus deterministic evidence validation; "
     "an independent completeness review was not performed. Confirm the profile "
     "against the source report before acting on trial results."
 )
@@ -22,7 +21,9 @@ def _deterministic_review(extracted, document, registry):
             FindingReview(
                 finding_index=index,
                 verdict="unsupported" if errors else "supported",
-                reason="; ".join(errors) if errors else "Passed deterministic source and HGNC checks",
+                reason="; ".join(errors)
+                if errors
+                else "Passed deterministic source and HGNC checks",
             )
         )
     return ExtractionReview(
@@ -56,6 +57,7 @@ def ingest_report(
             reasoning_effort="low",
             max_output_tokens=8000,
             service_tier="priority",
+            select_patient_sections=True,
         )
         if extraction_mode == "fast"
         else SolExtractor()
@@ -100,6 +102,8 @@ def ingest_report(
         "service_tier": getattr(extractor, "service_tier", None),
         "vision_pages": getattr(extractor, "vision_pages", None),
         "prompt_version": PROMPT_VERSION,
+        "section_selection": getattr(extractor, "section_selection", None),
+        "model_calls": getattr(extractor, "calls", []),
         "hgnc_snapshot_sha256": registry.metadata.get("upstream_sha256"),
         "requires_review": extraction_mode == "fast" or bool(warnings or rejected),
         "independent_completeness_review_performed": extraction_mode == "audited",

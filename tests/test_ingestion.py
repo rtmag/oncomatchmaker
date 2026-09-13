@@ -1,4 +1,5 @@
 import json
+import threading
 from pathlib import Path
 from unittest.mock import patch
 
@@ -302,18 +303,14 @@ def test_fast_pipeline_uses_one_model_pass_and_requires_review(document, finding
 
     extractor = FakeExtractor()
     with patch("ingestion.pipeline.read_document", return_value=document):
-        result = ingest_report(
-            "unused", extractor=extractor, extraction_mode="fast"
-        )
+        result = ingest_report("unused", extractor=extractor, extraction_mode="fast")
     profile = MolecularProfile.model_validate(result.profile)
     assert not extractor.review_called
     assert profile.biomarkers.snv_indel[0].gene == "KRAS"
     assert profile.ingestion_provenance["extraction_mode"] == "fast"
     assert profile.ingestion_provenance["requires_review"] is True
     assert (
-        profile.ingestion_provenance[
-            "independent_completeness_review_performed"
-        ]
+        profile.ingestion_provenance["independent_completeness_review_performed"]
         is False
     )
 
@@ -388,3 +385,86 @@ def test_corpus_native_reader():
     for path in files:
         doc = read_document(path)
         assert doc.pages and all(p.extraction_method == "native" for p in doc.pages)
+
+
+@pytest.mark.parametrize("appendix_failure", [False, True])
+def test_parallel_appendix_preserves_vus_and_fails_closed(finding, appendix_failure):
+    document = PDFDocument(
+        sha256="test",
+        pages=[
+            PDFPage(
+                number=1,
+                text="Foundation patient result KRAS G12C",
+                extraction_method="native",
+                blocks=[],
+            ),
+            PDFPage(
+                number=2,
+                text="APPENDIX\nVariants of unknown significance\nA100C A101C A102C A103C",
+                extraction_method="native",
+                blocks=[],
+            ),
+        ],
+    )
+    barrier = threading.Barrier(2, timeout=5)
+    requests = []
+
+    def handler(request):
+        payload = json.loads(request.content)
+        requests.append(payload)
+        barrier.wait()
+        appendix = "[PAGE 2]" in payload["input"][1]["content"][0]["text"]
+        output = (
+            extraction(
+                [
+                    finding.model_copy(
+                        update={"classification": "VUS", "report_category": "VUS"}
+                    )
+                ]
+            )
+            if appendix
+            else extraction([finding])
+        )
+        return httpx.Response(
+            200,
+            json={
+                "status": "incomplete"
+                if appendix and appendix_failure
+                else "completed",
+                "output": [
+                    {
+                        "type": "message",
+                        "content": [
+                            {"type": "output_text", "text": output.model_dump_json()}
+                        ],
+                    }
+                ],
+            },
+        )
+
+    client = SolExtractor(
+        api_key="test",
+        select_patient_sections=True,
+        vision_pages=0,
+        http=httpx.Client(
+            base_url="https://example.test", transport=httpx.MockTransport(handler)
+        ),
+    )
+    if appendix_failure:
+        with pytest.raises(ExtractionError):
+            client.extract(document)
+    else:
+        result = client.extract(document)
+        assert [f.report_category for f in result.findings] == ["detected", "VUS"]
+        assert (
+            client.section_selection["execution"]
+            == "parallel_main_results_and_vus_appendix"
+        )
+    assert len(requests) == 2
+    assert all(
+        not (
+            "[PAGE 1]" in p["input"][1]["content"][0]["text"]
+            and "[PAGE 2]" in p["input"][1]["content"][0]["text"]
+        )
+        for p in requests
+    )

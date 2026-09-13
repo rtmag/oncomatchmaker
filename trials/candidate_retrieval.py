@@ -84,8 +84,14 @@ def screen_trials(
            FROM studies"""
     ):
         total_screened += 1
-        row = {"nct_id": nct_id, "title": title or nct_id, "preliminary_score": 0.0,
-               "geography_score": None, "distance_km": None, "screening_state": "status_filtered"}
+        row = {
+            "nct_id": nct_id,
+            "title": title or nct_id,
+            "preliminary_score": 0.0,
+            "geography_score": None,
+            "distance_km": None,
+            "screening_state": "status_filtered",
+        }
         landscape.append(row)
         if status not in {"RECRUITING", "NOT_YET_RECRUITING"}:
             continue
@@ -102,11 +108,14 @@ def screen_trials(
         )
         # Same transparent retrieval heuristic for every study. These scores
         # describe text evidence for prioritization, not eligibility or benefit.
-        preliminary = (min(45, 30 + 5 * len(disease_hits)) if disease_hits else 0)
+        preliminary = min(45, 30 + 5 * len(disease_hits)) if disease_hits else 0
         preliminary += min(40, 25 + 5 * len(molecular_hits)) if molecular_hits else 0
         preliminary += 10 if status == "RECRUITING" else 5
         preliminary += 5 if eligibility else 0
-        row.update(preliminary_score=float(preliminary), screening_state="disease_not_retrieved")
+        row.update(
+            preliminary_score=float(preliminary),
+            screening_state="disease_not_retrieved",
+        )
         if not disease_hits:
             continue
         disease_eligible += 1

@@ -13,7 +13,11 @@ from trials.astra_runner import AstraExpertRunner, ExpertTeamError
 from trials.candidate_retrieval import screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
 from trials.eligibility import evaluate_eligibility
-from trials.geography import find_nearest_site, resolve_city_location, haversine_distance
+from trials.geography import (
+    find_nearest_site,
+    haversine_distance,
+    resolve_city_location,
+)
 from trials.integrated_pipeline import _trial
 from trials.ranking import score_trial
 from trials.search import generate_queries
@@ -59,7 +63,10 @@ def attach_screening_geography(db, landscape, location):
     for point in landscape:
         distance = distances.get(point["nct_id"])
         if distance is not None:
-            point.update(distance_km=round(distance, 1), geography_score=round(100 * math.exp(-distance / 250), 1))
+            point.update(
+                distance_km=round(distance, 1),
+                geography_score=round(100 * math.exp(-distance / 250), 1),
+            )
 
 
 def _clinical_score(team):

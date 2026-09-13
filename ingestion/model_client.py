@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import base64
 import os
+import re
+import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Protocol
 
@@ -12,9 +15,10 @@ import pymupdf
 from dotenv import load_dotenv
 from pydantic import ValidationError
 
+from ingestion.result_sections import select_result_sections
 from schemas.extraction import ExtractedReport, ExtractionReview
 
-PROMPT_VERSION = "ingestion-0.2.2"
+PROMPT_VERSION = "ingestion-0.3-patient-sections"
 PROMPTS = Path(__file__).with_name("prompts")
 
 
@@ -59,6 +63,7 @@ class SolExtractor:
         reasoning_effort="medium",
         max_output_tokens=16000,
         service_tier=None,
+        select_patient_sections=False,
     ):
         load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
         key = api_key or os.environ.get("OPENAI_API_KEY")
@@ -73,6 +78,9 @@ class SolExtractor:
         self.reasoning_effort = reasoning_effort
         self.max_output_tokens = max_output_tokens
         self.service_tier = service_tier
+        self.select_patient_sections = select_patient_sections
+        self.section_selection = None
+        self.calls = []
         self.owned = http is None
         self.http = http or httpx.Client(
             base_url="https://api.openai.com/v1",
@@ -106,9 +114,19 @@ class SolExtractor:
         if self.service_tier:
             payload["service_tier"] = self.service_tier
         try:
+            started = time.perf_counter()
             response = self.http.post("/responses", json=payload)
             response.raise_for_status()
             result = response.json()
+            self.calls.append(
+                {
+                    "latency_seconds": round(time.perf_counter() - started, 3),
+                    "model": result.get("model", self.model),
+                    "usage": result.get("usage", {}),
+                    "service_tier": result.get("service_tier"),
+                    "status": result.get("status"),
+                }
+            )
             if result.get("status") != "completed":
                 raise ExtractionError(
                     "Model response incomplete; extraction not accepted. Retry or review the report."
@@ -141,7 +159,65 @@ class SolExtractor:
             raise ExtractionError(
                 "Report exceeds the extraction text limit; split and review it explicitly."
             )
-        content = [{"type": "input_text", "text": document.text}]
+        source_text = document.text
+        if self.select_patient_sections:
+            source_text, self.section_selection = select_result_sections(document)
+            if not self.section_selection["amendment_full_text_fallback"]:
+                # Only split a recognized Foundation VUS appendix, never mixed
+                # patient-result tables or amended/original report sequences.
+                chunks = re.split(r"(?=\[PAGE \d+\]\n)", source_text)
+                vus_chunks, primary_chunks = [], []
+                for chunk in chunks:
+                    is_vus = (
+                        "foundation" in document.text[:12000].casefold()
+                        and "appendix" in chunk[:650].casefold()
+                        and re.search(
+                            r"variants of (?:unknown|uncertain) significance",
+                            chunk,
+                            re.I,
+                        )
+                        and len(
+                            re.findall(
+                                r"\b[A-Z]\d+[A-Z*]\b|\bamplification\b|\bloss\b", chunk
+                            )
+                        )
+                        >= 4
+                    )
+                    (vus_chunks if is_vus else primary_chunks).append(chunk)
+                if vus_chunks and any(primary_chunks):
+                    prompt = (
+                        (PROMPTS / "extract.txt").read_text()
+                        + "\nOmission markers are not report content. Never quote across omitted blocks."
+                    )
+                    with ThreadPoolExecutor(max_workers=2) as pool:
+                        primary = pool.submit(
+                            self._call,
+                            prompt
+                            + "\nThis packet contains the main patient results. A separately supplied VUS appendix is extracted independently; do not invent its contents. Preserve original page numbers.",
+                            [{"type": "input_text", "text": "\n".join(primary_chunks)}],
+                            ExtractedReport,
+                        )
+                        appendix = pool.submit(
+                            self._call,
+                            prompt
+                            + "\nThis packet is a patient VUS appendix. Extract only its findings, with report_category VUS and classification VUS, preserving its uncertainty. Return null for report-level scalar fields and empty technical_notes; the main packet supplies these. Preserve original page numbers. Never quote omission markers.",
+                            [{"type": "input_text", "text": "\n".join(vus_chunks)}],
+                            ExtractedReport,
+                        )
+                        result, extra = primary.result(), appendix.result()
+                    if any(
+                        f.report_category != "VUS" or f.classification != "VUS"
+                        for f in extra.findings
+                    ):
+                        raise ExtractionError(
+                            "VUS appendix response lost its uncertainty; extraction not accepted."
+                        )
+                    result.findings.extend(extra.findings)
+                    self.section_selection["execution"] = (
+                        "parallel_main_results_and_vus_appendix"
+                    )
+                    return result
+        content = [{"type": "input_text", "text": source_text}]
         if pdf_path and self.vision_pages:
             with pymupdf.open(pdf_path) as pdf:
                 for page in list(pdf)[: self.vision_pages]:
@@ -161,7 +237,10 @@ class SolExtractor:
                         ]
                     )
         return self._call(
-            (PROMPTS / "extract.txt").read_text(), content, ExtractedReport
+            (PROMPTS / "extract.txt").read_text()
+            + "\nThe source may contain selected original patient-result sections. Page numbers are original PDF pages. Omission markers are not report content; never quote across them. Repeated therapy associations are not new findings. Preserve VUS, negative, germline and CH results. Read every supplied section.",
+            content,
+            ExtractedReport,
         )
 
     def review(self, document, extracted):

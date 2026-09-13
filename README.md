@@ -28,6 +28,13 @@ The UI keeps successful extractions in server memory for one hour (maximum 16
 reports), keyed by exact PDF hash, model and extraction version. Restarting the
 server clears the cache. No PDF or extracted profile is persisted by this cache.
 
+Fast extraction separates recognized patient-result sections from educational
+material before the model call. Separate Foundation VUS appendices run concurrently
+with the main results. Original PDFs and page numbering stay intact, and source
+validation uses the complete report. Unknown layouts and amended reports retain
+full text. See [the extraction benchmark](evaluation/EXTRACTION_SECTION_BENCHMARK.md)
+for measured latency, retained landmarks and limitations.
+
 The results plot represents every snapshot study using the preliminary retrieval
 score. Overlapping points accumulate visually into density; unknown recruiting-site
 distance is shown in a separate strip. A second view shows validated ASTRA clinical

@@ -46,7 +46,9 @@ def resolve_city_location(
         if owned:
             client.close()
     if not rows:
-        raise ValueError("City could not be resolved; add a region or country if it is ambiguous.")
+        raise ValueError(
+            "City could not be resolved; add a region or country if it is ambiguous."
+        )
     try:
         return Location(
             city=city,
