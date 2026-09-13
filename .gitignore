@@ -25,3 +25,6 @@ dist/
 
 # Public vendor sample reports are retained locally and not redistributed.
 evaluation/corpus/*.pdf
+
+# Locally generated model packets may contain full registry eligibility text.
+evaluation/matching_spike/generated/

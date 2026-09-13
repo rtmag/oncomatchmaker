@@ -1,0 +1,22 @@
+{
+  "fmi-lung-egfr-l858r": [
+    "NCT06641609",
+    "NCT04181060",
+    "NCT07291037"
+  ],
+  "fmi-nsclc-met-exon14": [
+    "NCT06031688",
+    "NCT07619339",
+    "NCT06119581"
+  ],
+  "fmi-prostate-brca2-loss": [
+    "NCT06952803",
+    "NCT05806515",
+    "NCT06439225"
+  ],
+  "tempus-metastatic-colon-msih": [
+    "NCT07807800",
+    "NCT05310643",
+    "NCT07446322"
+  ]
+}
