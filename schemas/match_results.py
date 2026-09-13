@@ -53,7 +53,7 @@ class NearestSite(Model):
 
 
 class TrialScore(Model):
-    overall_score: float
+    overall_score: float | None
     coverage: float
     components: dict[str, float | None]
     weights: dict[str, float]
@@ -96,3 +96,4 @@ class MatchResults(Model):
     warnings: list[str] = Field(default_factory=list)
     search_status: Literal["complete", "partial", "failed", "not_searched"] = "complete"
     queries: list[dict[str, str]] = Field(default_factory=list)
+    screening_summary: dict[str, int] = Field(default_factory=dict)

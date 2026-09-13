@@ -2,14 +2,15 @@ import json
 import math
 import os
 import sqlite3
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from pydantic import ValidationError
 
 from evidence.actionability import find_approved_options
 from schemas.match_results import MatchResults, RankedTrial
-from trials.astra_runner import AstraExpertRunner
-from trials.candidate_retrieval import retrieve_candidates
+from trials.astra_runner import AstraExpertRunner, ExpertTeamError
+from trials.candidate_retrieval import screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
 from trials.eligibility import evaluate_eligibility
 from trials.geography import find_nearest_site, resolve_city_location
@@ -55,17 +56,19 @@ def _clinical_score(team):
         if value is not None
     )
     hard_conflict = bool(team["consensus"]["safety_gate_triggered_by"])
-    overall = (
-        0.0
-        if hard_conflict
-        else sum(
-            (value or 0) * CLINICAL_WEIGHTS[name] for name, value in components.items()
+    overall = None
+    if not hard_conflict:
+        overall = round(
+            sum(
+                (value or 0) * CLINICAL_WEIGHTS[name]
+                for name, value in components.items()
+            ),
+            1,
         )
-    )
     from schemas.match_results import TrialScore
 
     return TrialScore(
-        overall_score=round(overall, 1),
+        overall_score=overall,
         coverage=round(known_weight / 100, 3),
         components=components,
         weights=CLINICAL_WEIGHTS,
@@ -73,7 +76,67 @@ def _clinical_score(team):
     )
 
 
-def _match_snapshot(profile, *, database, astra_runner, max_candidates):
+def _evaluated_trial(profile, location, candidate, record, team):
+    raw = json.loads(record["raw_json"])
+    raw["_retrieved_at"] = record["retrieved_at"]
+    raw["_cached"] = True
+    trial = parse_trial(raw)
+    eligibility = evaluate_eligibility(profile, trial)
+    nearest = (
+        find_nearest_site(location, trial.sites)
+        if trial.status == "RECRUITING"
+        else None
+    )
+    geography_score = (
+        round(100 * math.exp(-nearest.distance_km / 250), 1) if nearest else None
+    )
+    match = _clinical_score(team)
+    match.rationale.insert(
+        0, f"Preliminary local screening score: {candidate.preliminary_score:.1f}."
+    )
+    disposition = team["consensus"]["disposition"]
+    category = (
+        "excluded"
+        if disposition == "conflict"
+        else "recruiting"
+        if trial.status == "RECRUITING"
+        else "not_yet_recruiting"
+        if trial.status == "NOT_YET_RECRUITING"
+        else "review"
+    )
+    return RankedTrial(
+        trial=trial,
+        match=match,
+        eligibility=eligibility,
+        nearest_site=nearest,
+        geography_score=geography_score,
+        geography_availability=(
+            "confirmed_recruiting_site" if nearest else "no_confirmed_open_site"
+        ),
+        expert_assessments=team["assessments"],
+        consensus=team["consensus"],
+        category=category,
+    )
+
+
+def _match_snapshot(
+    profile,
+    *,
+    database,
+    astra_runner,
+    minimum_reviews,
+    maximum_reviews,
+    target_candidates,
+    team_concurrency,
+):
+    if not 1 <= minimum_reviews <= maximum_reviews <= 20:
+        raise ValueError(
+            "ASTRA review limits must satisfy 1 <= minimum <= maximum <= 20."
+        )
+    if not 1 <= target_candidates <= maximum_reviews:
+        raise ValueError("Target candidates must be between 1 and the review maximum.")
+    if not 1 <= team_concurrency <= 3:
+        raise ValueError("Team concurrency must be between 1 and 3.")
     result = MatchResults(
         profile=profile.model_copy(deep=True),
         approved_options=find_approved_options(profile),
@@ -90,9 +153,14 @@ def _match_snapshot(profile, *, database, astra_runner, max_candidates):
         ]
     )
     with sqlite3.connect(database) as db:
-        candidates = retrieve_candidates(db, result.profile.model_dump(mode="json"))[
-            :max_candidates
-        ]
+        screening = screen_trials(db, result.profile.model_dump(mode="json"))
+        candidates = list(screening.candidates[:maximum_reviews])
+        result.screening_summary = {
+            "total_snapshot_trials_screened": screening.total_screened,
+            "status_eligible": screening.status_eligible,
+            "disease_eligible": screening.disease_eligible,
+            "preliminary_ranked_pool": len(screening.candidates),
+        }
         result.queries = [
             {
                 "nct_id": candidate.nct_id,
@@ -101,58 +169,46 @@ def _match_snapshot(profile, *, database, astra_runner, max_candidates):
             }
             for candidate in candidates
         ]
-        for candidate in candidates:
-            record = _trial(db, candidate.nct_id)
-            raw = json.loads(record["raw_json"])
-            raw["_retrieved_at"] = record["retrieved_at"]
-            raw["_cached"] = True
-            trial = parse_trial(raw)
-            team = astra_runner.run_team(
-                result.profile.model_dump(mode="json"), record, []
-            )
-            eligibility = evaluate_eligibility(result.profile, trial)
-            nearest = (
-                find_nearest_site(location, trial.sites)
-                if trial.status == "RECRUITING"
-                else None
-            )
-            geography_score = (
-                round(100 * math.exp(-nearest.distance_km / 250), 1)
-                if nearest
-                else None
-            )
-            match = _clinical_score(team)
-            disposition = team["consensus"]["disposition"]
-            category = (
-                "excluded"
-                if disposition == "conflict"
-                else "recruiting"
-                if trial.status == "RECRUITING"
-                else "not_yet_recruiting"
-                if trial.status == "NOT_YET_RECRUITING"
-                else "review"
-            )
-            result.trials.append(
-                RankedTrial(
-                    trial=trial,
-                    match=match,
-                    eligibility=eligibility,
-                    nearest_site=nearest,
-                    geography_score=geography_score,
-                    geography_availability=(
-                        "confirmed_recruiting_site"
-                        if nearest
-                        else "no_confirmed_open_site"
-                    ),
-                    expert_assessments=team["assessments"],
-                    consensus=team["consensus"],
-                    category=category,
+        records = [
+            (candidate, _trial(db, candidate.nct_id)) for candidate in candidates
+        ]
+
+    profile_payload = result.profile.model_dump(mode="json")
+    reviewed = accepted = 0
+    for start in range(0, len(records), team_concurrency):
+        batch = records[start : start + team_concurrency]
+        with ThreadPoolExecutor(max_workers=len(batch)) as pool:
+            futures = {
+                pool.submit(astra_runner.run_team, profile_payload, record, []): (
+                    candidate,
+                    record,
                 )
-            )
+                for candidate, record in batch
+            }
+            for future in as_completed(futures):
+                candidate, record = futures[future]
+                reviewed += 1
+                try:
+                    team = future.result()
+                except ExpertTeamError:
+                    result.warnings.append(
+                        f"{candidate.nct_id}: ASTRA team failed validation; no partial assessment was accepted."
+                    )
+                    continue
+                row = _evaluated_trial(
+                    result.profile, location, candidate, record, team
+                )
+                result.trials.append(row)
+                if row.category != "excluded" and row.match.overall_score is not None:
+                    accepted += 1
+        if reviewed >= minimum_reviews and accepted >= target_candidates:
+            break
+    result.screening_summary["astra_reviewed"] = reviewed
+    result.screening_summary["non_conflicting_candidates"] = accepted
     result.trials.sort(
         key=lambda row: (
             row.category == "excluded",
-            -row.match.overall_score,
+            -(row.match.overall_score or -1),
             -(row.geography_score or -1),
             row.trial.nct_id,
         )
@@ -166,7 +222,15 @@ def _match_snapshot(profile, *, database, astra_runner, max_candidates):
 
 
 def match_patient(
-    profile, *, client=None, database=None, astra_runner=None, max_candidates=None
+    profile,
+    *,
+    client=None,
+    database=None,
+    astra_runner=None,
+    max_candidates=None,
+    minimum_reviews=None,
+    target_candidates=None,
+    team_concurrency=None,
 ):
     if client is None:
         owned_runner = astra_runner is None
@@ -176,8 +240,21 @@ def match_patient(
                 profile,
                 database=Path(database or SNAPSHOT),
                 astra_runner=runner,
-                max_candidates=max_candidates
-                or int(os.environ.get("ONCOMATCH_MAX_CANDIDATES", "3")),
+                minimum_reviews=(
+                    max_candidates
+                    if max_candidates is not None
+                    else minimum_reviews
+                    or int(os.environ.get("ONCOMATCH_ASTRA_MIN_REVIEWS", "12"))
+                ),
+                maximum_reviews=(
+                    max_candidates
+                    if max_candidates is not None
+                    else int(os.environ.get("ONCOMATCH_ASTRA_MAX_REVIEWS", "20"))
+                ),
+                target_candidates=target_candidates
+                or int(os.environ.get("ONCOMATCH_TARGET_CANDIDATES", "5")),
+                team_concurrency=team_concurrency
+                or int(os.environ.get("ONCOMATCH_TEAM_CONCURRENCY", "3")),
             )
         finally:
             if owned_runner:

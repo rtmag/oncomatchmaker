@@ -14,5 +14,11 @@ services:
         value: gpt-5.6-sol
       - key: ONCOMATCH_ASTRA_MODEL
         value: gpt-6-astra
-      - key: ONCOMATCH_MAX_CANDIDATES
+      - key: ONCOMATCH_ASTRA_MIN_REVIEWS
+        value: "12"
+      - key: ONCOMATCH_ASTRA_MAX_REVIEWS
+        value: "20"
+      - key: ONCOMATCH_TARGET_CANDIDATES
+        value: "5"
+      - key: ONCOMATCH_TEAM_CONCURRENCY
         value: "3"

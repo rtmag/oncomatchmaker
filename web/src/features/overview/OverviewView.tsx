@@ -79,12 +79,15 @@ function GlanceList({ profile }: { profile: MolecularProfile }) {
 
 function SearchSummary({ results }: { results: MatchResults }) {
   const meta = SEARCH_STATUS[results.search_status]
+  const screened = results.screening_summary.total_snapshot_trials_screened
+  const reviewed = results.screening_summary.astra_reviewed
   return (
     <Panel className="bg-[radial-gradient(ellipse_at_100%_100%,color-mix(in_oklab,var(--color-primary)_14%,transparent),transparent_70%)] lg:col-span-4">
       <PanelHeader eyebrow="Search" title="Evidence and trials retrieved" action={<Tag tone={meta.tone}>{meta.label}</Tag>} />
       <div className="grid gap-4 px-6 pb-6">
         <p className="text-sm text-muted-foreground">
-          {results.queries.length} ClinicalTrials.gov {results.queries.length === 1 ? "query" : "queries"} · {pluralize(results.warnings.length, "search note")}
+          {screened ? `${screened.toLocaleString()} snapshot trials screened` : `${results.queries.length} registry queries`}
+          {reviewed ? ` · ${reviewed} shortlisted trials reviewed by all six experts` : ""} · {pluralize(results.warnings.length, "search note")}
         </p>
         <div className="flex flex-wrap gap-2">
           <Button asChild size="sm">
@@ -210,7 +213,7 @@ export function OverviewView() {
         <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatTile label="Reported findings" hint="Canonical profile" value={findings.length} tone="mint" />
           <StatTile label="Approved associations" hint="US FDA · curated" value={results.approved_options.length} tone="evidence" delay={0.08} />
-          <StatTile label="Trial candidates" hint="ClinicalTrials.gov" value={trials.length} tone="neutral" delay={0.16} />
+          <StatTile label="Expert-reviewed trials" hint="From complete snapshot screening" value={trials.length} tone="neutral" delay={0.16} />
           <StatTile label="Recruiting now" hint="Disease compatible" value={recruiting} tone="mint" delay={0.24} />
         </div>
       )}

@@ -136,7 +136,7 @@ export interface NearestSite {
 }
 
 export interface TrialScore {
-  overall_score: number
+  overall_score: number | null
   coverage: number
   components: Record<string, number | null>
   weights: Record<string, number>
@@ -198,6 +198,7 @@ export interface MatchResults {
   warnings: string[]
   search_status: SearchStatus
   queries: Record<string, string>[]
+  screening_summary: Record<string, number>
 }
 
 export interface DemoCase {

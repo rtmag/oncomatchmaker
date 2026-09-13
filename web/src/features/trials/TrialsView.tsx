@@ -29,7 +29,7 @@ const CATEGORY_ORDER: TrialCategory[] = ["recruiting", "not_yet_recruiting", "re
 const distanceOf = (item: RankedTrial) => item.nearest_site?.distance_km ?? Number.MAX_SAFE_INTEGER
 const SORTS: Record<SortKey, { label: string; compare: (a: RankedTrial, b: RankedTrial) => number }> = {
   ranked: { label: "Pipeline ranking", compare: () => 0 },
-  score: { label: "Relevance score", compare: (a, b) => b.match.overall_score - a.match.overall_score },
+  score: { label: "Relevance score", compare: (a, b) => (b.match.overall_score ?? -1) - (a.match.overall_score ?? -1) },
   distance: { label: "Nearest site", compare: (a, b) => distanceOf(a) - distanceOf(b) },
 }
 
@@ -104,7 +104,7 @@ export function TrialsView({ param }: { param: string | null }) {
       <PageHeader
         eyebrow="Step 04 · Clinical trials"
         title="Find the relevant possibilities."
-        subtitle="Live ClinicalTrials.gov candidates, ranked by a transparent six-component relevance model."
+        subtitle="Every active/upcoming snapshot trial is screened locally; the strongest candidates receive six independent ASTRA expert reviews."
         aside={<CasePill />}
       />
 

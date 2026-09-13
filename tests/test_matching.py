@@ -8,7 +8,7 @@ from schemas.molecular_profile import Location, MolecularProfile
 from trials.client import TrialServiceError
 from trials.eligibility import evaluate_eligibility
 from trials.geography import find_nearest_site, haversine_distance
-from trials.pipeline import match_patient
+from trials.pipeline import _clinical_score, match_patient
 from trials.ranking import score_trial
 from trials.search import generate_queries
 
@@ -138,3 +138,26 @@ def test_recorded_real_response(profile, recorded_response):
     result = match_patient(profile, client=FakeClient(records))
     assert len(result.trials) == len(records)
     assert all(t.trial.cached and t.trial.sources for t in result.trials)
+
+
+def test_hard_conflict_is_unscored_not_zero():
+    roles = [
+        "molecular_profile_qc",
+        "disease_oncology",
+        "actionability_evidence",
+        "pathway_resistance",
+        "trial_eligibility",
+        "safety_critic",
+    ]
+    team = {
+        "assessments": [
+            {
+                "expert_role": role,
+                "assessment": "conflict" if role == "safety_critic" else "support",
+                "reasoning_summary": "Test assessment.",
+            }
+            for role in roles
+        ],
+        "consensus": {"safety_gate_triggered_by": ["safety_critic"]},
+    }
+    assert _clinical_score(team).overall_score is None

@@ -78,13 +78,17 @@ export function TrialDetail({ item }: { item: RankedTrial }) {
   return (
     <div className="grid gap-8">
       <section className="grid items-center gap-6 sm:grid-cols-[auto_1fr]">
-        <AnimatedCircularProgressBar
-          value={match.overall_score}
-          label="Relevance score"
-          gaugePrimaryColor={TONE_VAR[categoryMeta.tone]}
-          gaugeSecondaryColor="color-mix(in oklab, var(--color-foreground) 9%, transparent)"
-          className="size-28 text-3xl"
-        />
+        {match.overall_score === null ? (
+          <div className="grid size-28 place-items-center rounded-full border border-caution/40 bg-caution/8 text-center text-xs font-semibold text-caution">Unscored<br />hard conflict</div>
+        ) : (
+          <AnimatedCircularProgressBar
+            value={match.overall_score}
+            label="Clinical match score"
+            gaugePrimaryColor={TONE_VAR[categoryMeta.tone]}
+            gaugeSecondaryColor="color-mix(in oklab, var(--color-foreground) 9%, transparent)"
+            className="size-28 text-3xl"
+          />
+        )}
         <div>
           <div className="flex flex-wrap gap-2">
             <Tag tone={categoryMeta.tone}>

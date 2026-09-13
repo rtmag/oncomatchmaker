@@ -1,6 +1,6 @@
 import sqlite3
 
-from trials.candidate_retrieval import retrieve_candidates
+from trials.candidate_retrieval import retrieve_candidates, screen_trials
 
 
 def test_retrieval_requires_disease_and_molecular_hit():
@@ -26,4 +26,12 @@ def test_retrieval_requires_disease_and_molecular_hit():
         "disease": {"raw_text": "NSCLC", "normalized": "NSCLC", "synonyms": []},
         "biomarkers": {"snv_indel": [{"gene": "EGFR", "protein_change": "L858R"}]},
     }
+    assert [row.nct_id for row in retrieve_candidates(db, profile)] == ["NCT00000001"]
+    screened = screen_trials(db, profile)
+    assert screened.total_screened == 3
+    assert screened.status_eligible == 2
+    assert len(screened.candidates) == 1
+    assert screened.candidates[0].preliminary_score > 0
+
+    profile["biomarkers"] = {"snv_indel": [], "copy_number": [], "fusions": []}
     assert [row.nct_id for row in retrieve_candidates(db, profile)] == ["NCT00000001"]

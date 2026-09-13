@@ -43,7 +43,8 @@ export function buildBrief(results: MatchResults): string {
     ...bullets(
       results.trials.slice(0, MAX_BRIEF_TRIALS).map((r) => {
         const site = r.nearest_site ? ` · nearest site ~${formatKm(r.nearest_site.distance_km)}` : ""
-        return `${r.trial.nct_id} — ${r.trial.title} · ${CATEGORY[r.category].label} · ${formatPhase(r.trial.phase)} · relevance ${Math.round(r.match.overall_score)}/100 · prescreen: ${ELIGIBILITY[r.eligibility.status].label}${site}`
+        const clinical = r.match.overall_score === null ? "unscored (hard conflict)" : `${Math.round(r.match.overall_score)}/100`
+        return `${r.trial.nct_id} — ${r.trial.title} · ${CATEGORY[r.category].label} · ${formatPhase(r.trial.phase)} · clinical match ${clinical} · prescreen: ${ELIGIBILITY[r.eligibility.status].label}${site}`
       }),
       "No candidates returned",
     ),

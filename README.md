@@ -55,12 +55,16 @@ ranges are validated. Review these contracts with Roberto before merging.
 
 ## Matching behavior and limits
 
-- Candidate retrieval uses the complete local oncology snapshot and never counts a
-  text hit as a match. The demo defaults to the top three candidates.
+- Candidate retrieval screens every study in the local oncology snapshot and never
+  counts a text hit as a match. A fast local score ranks the viable pool before
+  model review.
 - Each candidate receives six independent Responses API calls: molecular QC,
   disease oncology, actionability evidence, pathway/resistance, trial eligibility,
   and safety critic. Any malformed, incomplete, refused, mismatched, or unsupported
   response fails the whole team closed.
+- The default live run reviews at least 12 preliminarily ranked trials, continues
+  down the pool up to 20 until five non-conflicting candidates are found, and runs
+  three independent six-expert teams concurrently.
 - Deterministic consensus makes safety-role conflicts non-overridable. Eligibility
   remains undetermined until the trial team reviews the complete clinical record.
 - The clinical composite contains no geography. Geographic access is calculated
@@ -95,7 +99,10 @@ Configure the ignored `.env` file (or environment):
 OPENAI_API_KEY=your-key-here
 ONCOMATCH_EXTRACTION_MODEL=gpt-5.6-sol
 ONCOMATCH_ASTRA_MODEL=gpt-6-astra
-ONCOMATCH_MAX_CANDIDATES=3
+ONCOMATCH_ASTRA_MIN_REVIEWS=12
+ONCOMATCH_ASTRA_MAX_REVIEWS=20
+ONCOMATCH_TARGET_CANDIDATES=5
+ONCOMATCH_TEAM_CONCURRENCY=3
 ```
 
 Select **PDF report** in the UI, upload a sample, and click **Extract profile**.

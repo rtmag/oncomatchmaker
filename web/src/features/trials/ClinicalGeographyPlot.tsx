@@ -5,7 +5,7 @@ const HEIGHT = 300
 const PAD = 42
 
 export function ClinicalGeographyPlot({ trials }: { trials: RankedTrial[] }) {
-  const points = trials.filter((trial) => trial.geography_score !== null)
+  const points = trials.filter((trial) => trial.geography_score !== null && trial.match.overall_score !== null)
   const x = (value: number) => PAD + (value / 100) * (WIDTH - PAD * 2)
   const y = (value: number) => HEIGHT - PAD - (value / 100) * (HEIGHT - PAD * 2)
 
@@ -28,8 +28,8 @@ export function ClinicalGeographyPlot({ trials }: { trials: RankedTrial[] }) {
           ))}
           {points.map((item) => (
             <a key={item.trial.nct_id} href={`#trials/${item.trial.nct_id}`}>
-              <circle cx={x(item.match.overall_score)} cy={y(item.geography_score ?? 0)} r={7} fill="var(--color-primary)" />
-              <text x={x(item.match.overall_score) + 10} y={y(item.geography_score ?? 0) + 4} className="fill-foreground text-[10px]">{item.trial.nct_id}</text>
+              <circle cx={x(item.match.overall_score ?? 0)} cy={y(item.geography_score ?? 0)} r={7} fill="var(--color-primary)" />
+              <text x={x(item.match.overall_score ?? 0) + 10} y={y(item.geography_score ?? 0) + 4} className="fill-foreground text-[10px]">{item.trial.nct_id}</text>
             </a>
           ))}
           <text x={WIDTH / 2} y={HEIGHT - 1} textAnchor="middle" className="fill-muted-foreground text-[11px]">Clinical match score</text>
