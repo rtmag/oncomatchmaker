@@ -1,16 +1,22 @@
 """Contract and safety-gate tests for the ASTRA expert team."""
+
 import json
-from pathlib import Path
 import unittest
+from pathlib import Path
 
-from schemas.astra_contracts import EXPERT_ROLES, ContractError, validate_molecular_profile
+from schemas.astra_contracts import (
+    EXPERT_ROLES,
+    ContractError,
+    validate_molecular_profile,
+)
 from trials.astra_team import build_expert_packets, reach_consensus
-
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def assessment(role, decision="support", relationships=None, missing=None, conflicts=None):
+def assessment(
+    role, decision="support", relationships=None, missing=None, conflicts=None
+):
     return {
         "trial_id": "NCT00000001",
         "expert_role": role,
@@ -28,7 +34,9 @@ def assessment(role, decision="support", relationships=None, missing=None, confl
 class AstraTeamTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.profile = json.loads((ROOT / "tests/fixtures/astra_profile.json").read_text())
+        cls.profile = json.loads(
+            (ROOT / "tests/fixtures/astra_profile.json").read_text()
+        )
 
     def test_profile_contract_accepts_canonical_symbols_and_synonyms(self):
         validate_molecular_profile(self.profile)
@@ -39,41 +47,59 @@ class AstraTeamTests(unittest.TestCase):
 
     def test_packets_are_role_specific_and_strip_locations(self):
         trial = {
-            "nct_id": "NCT00000001", "title": "Synthetic", "eligibility_text": "EGFR L858R",
+            "nct_id": "NCT00000001",
+            "title": "Synthetic",
+            "eligibility_text": "EGFR L858R",
             "locations": [{"facility": "Must not enter molecular review"}],
         }
         packets = build_expert_packets(self.profile, trial, [])
-        self.assertEqual({packet["expert_role"] for packet in packets}, set(EXPERT_ROLES))
+        self.assertEqual(
+            {packet["expert_role"] for packet in packets}, set(EXPERT_ROLES)
+        )
         self.assertTrue(all("locations" not in packet["trial"] for packet in packets))
 
     def test_missing_clinical_facts_prevent_tier_one(self):
         values = [assessment(role) for role in EXPERT_ROLES]
-        values[1] = assessment("disease_oncology", relationships=["direct_variant"], missing=["stage"])
+        values[1] = assessment(
+            "disease_oncology", relationships=["direct_variant"], missing=["stage"]
+        )
         result = reach_consensus(values)
         self.assertEqual(result["disposition"], "candidate")
         self.assertEqual(result["match_tier"], "tier_2")
         self.assertEqual(result["eligibility_state"], "not_determined")
 
     def test_safety_conflict_cannot_be_outvoted(self):
-        values = [assessment(role, relationships=["direct_variant"]) for role in EXPERT_ROLES]
+        values = [
+            assessment(role, relationships=["direct_variant"]) for role in EXPERT_ROLES
+        ]
         values[-1] = assessment(
-            "safety_critic", "conflict", ["direct_variant"], conflicts=["Trial excludes EGFR L858R"]
+            "safety_critic",
+            "conflict",
+            ["direct_variant"],
+            conflicts=["Trial excludes EGFR L858R"],
         )
         result = reach_consensus(values)
         self.assertEqual(result["match_tier"], "not_matched")
         self.assertEqual(result["safety_gate_triggered_by"], ["safety_critic"])
 
     def test_wrong_disease_is_a_hard_conflict(self):
-        values = [assessment(role, relationships=["direct_variant"]) for role in EXPERT_ROLES]
+        values = [
+            assessment(role, relationships=["direct_variant"]) for role in EXPERT_ROLES
+        ]
         values[1] = assessment(
-            "disease_oncology", "conflict", ["direct_variant"], conflicts=["Wrong disease cohort"]
+            "disease_oncology",
+            "conflict",
+            ["direct_variant"],
+            conflicts=["Wrong disease cohort"],
         )
         result = reach_consensus(values)
         self.assertEqual(result["disposition"], "conflict")
         self.assertEqual(result["safety_gate_triggered_by"], ["disease_oncology"])
 
     def test_caution_prevents_tier_one(self):
-        values = [assessment(role, relationships=["direct_variant"]) for role in EXPERT_ROLES]
+        values = [
+            assessment(role, relationships=["direct_variant"]) for role in EXPERT_ROLES
+        ]
         values[2] = assessment("actionability_evidence", "caution", ["direct_variant"])
         self.assertEqual(reach_consensus(values)["match_tier"], "tier_2")
 

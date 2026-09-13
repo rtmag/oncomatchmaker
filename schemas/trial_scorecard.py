@@ -1,9 +1,9 @@
 """Contracts for independent clinical-match and geographic-access scores."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from typing import Any, Optional
-
 
 CLINICAL_DIMENSIONS = (
     "molecular_fit",
@@ -36,7 +36,9 @@ class DimensionScore:
         if self.confidence is not None and not 0 <= self.confidence <= 1:
             raise ValueError("confidence must be between 0 and 1")
         if self.status in {"unknown", "conflict"} and self.value is not None:
-            raise ValueError("unknown or conflicting dimensions cannot have a numeric value")
+            raise ValueError(
+                "unknown or conflicting dimensions cannot have a numeric value"
+            )
         if self.status in {"supported", "partial"} and self.value is None:
             raise ValueError("supported or partial dimensions require a numeric value")
 
