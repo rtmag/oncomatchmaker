@@ -1,0 +1,139 @@
+{
+  "schema_version": "0.1",
+  "cases": [
+    {
+      "case_id": "fmi-lung-egfr-l858r",
+      "source_pdf": "05_FMI_F1CDx_lung_EGFR.pdf",
+      "report": {
+        "vendor": "Foundation Medicine",
+        "assay": "FoundationOne CDx",
+        "sample_type": "tissue"
+      },
+      "disease": {
+        "raw_text": "Lung adenocarcinoma",
+        "normalized": "non-small cell lung cancer",
+        "synonyms": ["NSCLC", "lung adenocarcinoma"],
+        "histology": "adenocarcinoma",
+        "stage": null
+      },
+      "patient_context": {
+        "age": null,
+        "sex": null,
+        "prior_therapies": [],
+        "ecog": null
+      },
+      "biomarkers": {
+        "snv_indel": [
+          {
+            "gene": "EGFR",
+            "gene_synonyms": ["ERBB1", "HER1"],
+            "protein_change": "L858R",
+            "source_text": "EGFR L858R"
+          }
+        ],
+        "msi": {"status": "stable", "synonyms": ["MSS"]},
+        "tmb": {"value": 24.0, "unit": "mut/Mb"}
+      }
+    },
+    {
+      "case_id": "fmi-nsclc-met-exon14",
+      "source_pdf": "06_FMI_F1CDx_NSCLC_MET.pdf",
+      "report": {
+        "vendor": "Foundation Medicine",
+        "assay": "FoundationOne CDx",
+        "sample_type": "tissue"
+      },
+      "disease": {
+        "raw_text": "Non-small cell lung cancer (NOS)",
+        "normalized": "non-small cell lung cancer",
+        "synonyms": ["NSCLC"],
+        "histology": null,
+        "stage": null
+      },
+      "patient_context": {
+        "age": null,
+        "sex": null,
+        "prior_therapies": [],
+        "ecog": null
+      },
+      "biomarkers": {
+        "snv_indel": [
+          {
+            "gene": "MET",
+            "gene_synonyms": ["HGFR"],
+            "protein_change": null,
+            "event": "exon 14 skipping splice-site alteration",
+            "source_text": "MET 3024_3028+17del22"
+          }
+        ],
+        "msi": {"status": "stable", "synonyms": ["MSS"]},
+        "tmb": {"value": 8.0, "unit": "mut/Mb"}
+      }
+    },
+    {
+      "case_id": "fmi-prostate-brca2-loss",
+      "source_pdf": "07_FMI_F1CDx_prostate_BRCA2.pdf",
+      "report": {
+        "vendor": "Foundation Medicine",
+        "assay": "FoundationOne CDx",
+        "sample_type": "tissue"
+      },
+      "disease": {
+        "raw_text": "Prostate acinar adenocarcinoma",
+        "normalized": "prostate adenocarcinoma",
+        "synonyms": ["prostate cancer"],
+        "histology": "acinar adenocarcinoma",
+        "stage": null
+      },
+      "patient_context": {
+        "age": null,
+        "sex": null,
+        "prior_therapies": [],
+        "ecog": null
+      },
+      "biomarkers": {
+        "copy_number": [
+          {
+            "gene": "BRCA2",
+            "gene_synonyms": ["FANCD1"],
+            "event": "loss",
+            "germline_status": "unknown",
+            "zygosity": "unknown",
+            "source_text": "BRCA2 loss"
+          }
+        ],
+        "msi": {"status": "stable", "synonyms": ["MSS"]},
+        "tmb": {"value": 1.0, "unit": "mut/Mb"}
+      }
+    },
+    {
+      "case_id": "tempus-metastatic-colon-msih",
+      "source_pdf": "11_Tempus_xF_metastatic_colon.pdf",
+      "report": {
+        "vendor": "Tempus",
+        "assay": "xF",
+        "sample_type": "plasma"
+      },
+      "disease": {
+        "raw_text": "Metastatic colon cancer",
+        "normalized": "metastatic colorectal cancer",
+        "synonyms": ["mCRC", "metastatic colon cancer"],
+        "histology": null,
+        "stage": "metastatic"
+      },
+      "patient_context": {
+        "age": null,
+        "sex": null,
+        "prior_therapies": [],
+        "ecog": null
+      },
+      "biomarkers": {
+        "msi": {
+          "status": "high",
+          "synonyms": ["MSI-H", "microsatellite instability-high"]
+        },
+        "tmb": {"value": null, "unit": "mut/Mb"}
+      }
+    }
+  ]
+}

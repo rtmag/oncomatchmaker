@@ -1,0 +1,131 @@
+{
+  "run": {
+    "date": "2026-09-13",
+    "model": "ChatGPT in the current Codex session",
+    "snapshot": "oncology-snapshot-2026-09-13-v1",
+    "scope": "molecular and disease prescreening only; locations excluded",
+    "disclaimer": "Candidate means worth clinical prescreening, not eligible or recommended treatment."
+  },
+  "assessments": [
+    {
+      "case_id": "fmi-lung-egfr-l858r",
+      "nct_id": "NCT06641609",
+      "match_class": "candidate",
+      "disease_fit": "compatible",
+      "molecular_fit": "exact",
+      "rationale": "The study requires advanced NSCLC harboring EGFR L858R, which matches the reported disease and exact alteration.",
+      "unknown_or_required_review": ["locally advanced or metastatic stage", "standard-treatment history or suitability", "measurable or evaluable disease", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT06641609"
+    },
+    {
+      "case_id": "fmi-lung-egfr-l858r",
+      "nct_id": "NCT04181060",
+      "match_class": "candidate",
+      "disease_fit": "compatible",
+      "molecular_fit": "exact",
+      "rationale": "The study accepts non-squamous NSCLC with an activating EGFR mutation and explicitly lists L858R.",
+      "unknown_or_required_review": ["advanced, metastatic, or recurrent stage", "no prior EGFR TKI or systemic metastatic therapy", "measurable disease", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT04181060"
+    },
+    {
+      "case_id": "fmi-lung-egfr-l858r",
+      "nct_id": "NCT07291037",
+      "match_class": "conflict",
+      "disease_fit": "compatible",
+      "molecular_fit": "conflict",
+      "rationale": "The study requires NSCLC without actionable genomic alterations and specifically requires a negative EGFR L858R result.",
+      "unknown_or_required_review": [],
+      "source_url": "https://clinicaltrials.gov/study/NCT07291037"
+    },
+    {
+      "case_id": "fmi-nsclc-met-exon14",
+      "nct_id": "NCT06031688",
+      "match_class": "candidate",
+      "disease_fit": "compatible",
+      "molecular_fit": "exact",
+      "rationale": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing.",
+      "unknown_or_required_review": ["stage IV or recurrent stage", "Lung-MAP assignment", "measurable disease", "other actionable drivers", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT06031688"
+    },
+    {
+      "case_id": "fmi-nsclc-met-exon14",
+      "nct_id": "NCT07619339",
+      "match_class": "candidate",
+      "disease_fit": "compatible",
+      "molecular_fit": "exact",
+      "rationale": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event.",
+      "unknown_or_required_review": ["advanced or recurrent stage", "measurable disease", "absence of other actionable drivers", "prior therapy", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT07619339"
+    },
+    {
+      "case_id": "fmi-nsclc-met-exon14",
+      "nct_id": "NCT06119581",
+      "match_class": "conflict",
+      "disease_fit": "compatible",
+      "molecular_fit": "conflict",
+      "rationale": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration.",
+      "unknown_or_required_review": [],
+      "source_url": "https://clinicaltrials.gov/study/NCT06119581"
+    },
+    {
+      "case_id": "fmi-prostate-brca2-loss",
+      "nct_id": "NCT06952803",
+      "match_class": "candidate",
+      "disease_fit": "compatible",
+      "molecular_fit": "compatible",
+      "rationale": "Prostate adenocarcinoma and a tumor BRCA2 loss are compatible with the study's prostate cancer and tumor BRCA1/2 requirement, subject to required central confirmation.",
+      "unknown_or_required_review": ["central tumor BRCA confirmation", "high-risk localized, locally advanced, or qualifying biochemical-recurrence context", "radiotherapy and ADT history", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT06952803"
+    },
+    {
+      "case_id": "fmi-prostate-brca2-loss",
+      "nct_id": "NCT05806515",
+      "match_class": "insufficient_biomarker_evidence",
+      "disease_fit": "compatible",
+      "molecular_fit": "unproven",
+      "rationale": "The trial requires a pathogenic germline BRCA1/2 variant; a tumor BRCA2 loss does not establish inherited status.",
+      "unknown_or_required_review": ["germline BRCA1/2 result", "high- or very-high-risk disease", "performance status and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT05806515"
+    },
+    {
+      "case_id": "fmi-prostate-brca2-loss",
+      "nct_id": "NCT06439225",
+      "match_class": "insufficient_biomarker_evidence",
+      "disease_fit": "compatible",
+      "molecular_fit": "unproven",
+      "rationale": "BRCA2 is an accepted DDR gene, but the trial excludes an isolated monoallelic deletion and the report fixture does not establish zygosity.",
+      "unknown_or_required_review": ["BRCA2 loss zygosity and clinical classification", "metastatic castration-resistant state", "progression after ARPI therapy", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT06439225"
+    },
+    {
+      "case_id": "tempus-metastatic-colon-msih",
+      "nct_id": "NCT07807800",
+      "match_class": "candidate",
+      "disease_fit": "exact",
+      "molecular_fit": "exact",
+      "rationale": "The upcoming study requires unresectable or metastatic colorectal cancer confirmed as dMMR and/or MSI-H, matching the profile.",
+      "unknown_or_required_review": ["progression or intolerance after listed prior treatment", "measurable disease", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT07807800"
+    },
+    {
+      "case_id": "tempus-metastatic-colon-msih",
+      "nct_id": "NCT05310643",
+      "match_class": "candidate",
+      "disease_fit": "exact",
+      "molecular_fit": "exact",
+      "rationale": "The study requires metastatic colorectal adenocarcinoma with dMMR/MSI and therefore matches the known disease and MSI-high result.",
+      "unknown_or_required_review": ["progression during or soon after anti-PD1 therapy", "required prior standard therapies", "confirmatory MSI/dMMR testing", "measurable disease", "ECOG and organ function"],
+      "source_url": "https://clinicaltrials.gov/study/NCT05310643"
+    },
+    {
+      "case_id": "tempus-metastatic-colon-msih",
+      "nct_id": "NCT07446322",
+      "match_class": "conflict",
+      "disease_fit": "exact",
+      "molecular_fit": "conflict",
+      "rationale": "The study requires non-MSI-H/non-dMMR, microsatellite-stable, RAS-mutated colorectal cancer; the report is MSI-high and does not establish the required RAS mutation.",
+      "unknown_or_required_review": [],
+      "source_url": "https://clinicaltrials.gov/study/NCT07446322"
+    }
+  ]
+}
