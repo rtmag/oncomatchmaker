@@ -134,7 +134,9 @@ def test_snapshot_pipeline_keeps_exploratory_leads_unscored(profile, fail):
             for p in failures
         )
         return
-    assert "NCT06040541" in {r.trial.nct_id for r in result.trials}
+    # A three-review smoke budget is not a fixed trial-ID ordering guarantee.
+    # The full twenty-review basket regression is checked separately.
+    assert len(result.trials) == 3
     for trial in result.trials:
         point = next(
             p for p in result.screening_landscape if p["nct_id"] == trial.trial.nct_id
@@ -154,6 +156,55 @@ def test_snapshot_pipeline_keeps_exploratory_leads_unscored(profile, fail):
         for r in payload["exploratory_trials"]
     )
     assert MatchResults.model_validate(payload) == result
+
+
+def test_review_continues_after_failure_and_hard_conflict(profile):
+    from schemas.astra_contracts import EXPERT_ROLES
+    from trials.astra_runner import ExpertTeamError
+    from trials.pipeline import SNAPSHOT, _match_snapshot
+
+    if not SNAPSHOT.exists():
+        pytest.skip("Local registry snapshot unavailable")
+
+    class SequencedTeam:
+        calls = []
+
+        def run_team(self, profile, record, evidence):
+            self.calls.append(record["nct_id"])
+            if len(self.calls) == 1:
+                raise ExpertTeamError("Synthetic validation failure")
+            conflict = len(self.calls) == 2
+            return {
+                "assessments": [
+                    {
+                        "expert_role": role,
+                        "assessment": "caution",
+                        "reasoning_summary": "Synthetic regression only",
+                    }
+                    for role in EXPERT_ROLES
+                ],
+                "consensus": {
+                    "disposition": "conflict" if conflict else "needs_review",
+                    "safety_gate_triggered_by": ["safety_critic"] if conflict else [],
+                },
+            }
+
+    runner = SequencedTeam()
+    result = _match_snapshot(
+        profile,
+        database=SNAPSHOT,
+        astra_runner=runner,
+        minimum_reviews=1,
+        maximum_reviews=3,
+        target_candidates=1,
+        team_concurrency=1,
+    )
+    assert len(set(runner.calls)) == 3
+    assert result.screening_summary["non_conflicting_candidates"] == 1
+    points = {p["nct_id"]: p for p in result.screening_landscape}
+    assert points[runner.calls[0]]["clinical_score"] is None
+    assert points[runner.calls[1]]["clinical_score"] is None
+    assert points[runner.calls[2]]["clinical_score"] == 60
 
 
 def test_landscape_uses_only_open_studies_and_open_sites():

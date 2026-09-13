@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from evidence.actionability import find_approved_options
 from schemas.match_results import ExploratoryTrial, MatchResults, RankedTrial
 from trials.astra_runner import AstraExpertRunner, ExpertTeamError
-from trials.candidate_retrieval import screen_trials
+from trials.candidate_retrieval import _terms, screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
 from trials.clinical_scoring import aggregate
 from trials.eligibility import evaluate_eligibility
@@ -23,6 +23,7 @@ from trials.geography import (
 from trials.integrated_pipeline import _trial
 from trials.ranking import score_trial
 from trials.registry_features import load as load_features
+from trials.review_selection import select_for_review
 from trials.search import generate_queries
 from trials.trial_parser import parse_trial
 
@@ -172,29 +173,14 @@ def _match_snapshot(
         screening = screen_trials(db, result.profile.model_dump(mode="json"), features)
         result.screening_landscape = [dict(row) for row in screening.landscape]
         attach_screening_geography(db, result.screening_landscape, location)
-        scores = {
-            point["nct_id"]: point["clinical_score"] for point in screening.landscape
-        }
-        coverage = {
-            point["nct_id"]: point["clinical_assessment"]["coverage"]
-            for point in screening.landscape
-        }
-        candidates = sorted(
+        candidates = select_for_review(
             screening.candidates,
-            key=lambda c: (
-                -(
-                    scores[c.nct_id] * coverage[c.nct_id]
-                    if scores[c.nct_id] is not None
-                    else -1
-                ),
-                -(scores[c.nct_id] if scores[c.nct_id] is not None else -1),
-                -len(c.exact_variant_hits),
-                -c.preliminary_score,
-                c.nct_id,
-            ),
-        )[:maximum_reviews]
+            result.screening_landscape,
+            maximum_reviews,
+            molecular_required=bool(_terms(result.profile.model_dump(mode="json"))[1]),
+        )
         result.warnings.append(
-            "Clinical-fit v2 is a coverage-normalized weighted score. Provisional and expert scores use identical arithmetic but are not yet empirically calibrated. Unknown dimensions are excluded from the denominator; inspect coverage and bounds."
+            "Clinical-fit v3 sums supported dimension points on a fixed 100-point scale. Unknown dimensions add no supported points; inspect coverage and bounds. Provisional and expert scores share arithmetic, not validated reliability. Review allocation considers clinical support and geographic access separately."
         )
         if not features:
             result.warnings.append(

@@ -2,6 +2,9 @@
 
 Run: python -m evaluation.test_support_strategy
 Printed JSON contains metrics, not new clinical or expert assessments.
+Only v2 arithmetic is frozen here; retrieval/features use the current checkout.
+The historical report is not reproduced by running this against a newer parser.
+Use evaluation.cohort_scoring_regression for current cohort-policy validation.
 """
 
 import json
@@ -11,11 +14,28 @@ from pathlib import Path
 
 from schemas.molecular_profile import Location
 from trials.candidate_retrieval import screen_trials
-from trials.clinical_scoring import CLINICAL_WEIGHTS, aggregate
+from trials.clinical_scoring import CLINICAL_WEIGHTS
+from trials.clinical_scoring import aggregate as current_aggregate
 from trials.pipeline import SNAPSHOT, attach_screening_geography
 from trials.registry_features import load
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def aggregate(components, conflict=False):
+    """Freeze the v2 arithmetic baseline; do not inherit live policy changes."""
+    result = current_aggregate(components, conflict=conflict)
+    known = sum(CLINICAL_WEIGHTS[k] for k, v in components.items() if v is not None)
+    credit = sum(
+        CLINICAL_WEIGHTS[k] * v for k, v in components.items() if v is not None
+    )
+    result.update(
+        overall_score=round(100 * credit / known, 1)
+        if known and not conflict
+        else None,
+        score_version="clinical-fit-v2",
+    )
+    return result
 
 
 def fixed_support(assessment):

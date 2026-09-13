@@ -29,7 +29,7 @@ export function ClinicalGeographyPlot({trials,landscape=[]}:{trials:RankedTrial[
       <p className="eyebrow text-primary">One clinical-fit scale · separately scored geography</p>
       <h2 className="mt-2 font-display text-3xl">Clinical fit × geographic access</h2>
       <p className="mt-2 text-sm text-muted-foreground">{dots.length.toLocaleString()} registry studies considered · {visible.length.toLocaleString()} scored points shown · {unscored.length.toLocaleString()} excluded or insufficiently assessed in this view.</p>
-      <p className="mt-2 text-sm text-muted-foreground">Gray scores are provisional and calculated fresh for this patient. Mint scores replace them after expert review. Both use clinical-fit v2 weights, but are not yet calibrated to equal reliability. High score with low coverage is not a strong recommendation.</p>
+      <p className="mt-2 text-sm text-muted-foreground">Gray scores are provisional and calculated fresh for this patient. Mint scores replace them after expert review. Both sum supported points on the same fixed 100-point scale. Unknown dimensions earn no supported points, not a finding of poor fit. Gray means unreviewed—not rejected. Expert review can raise or lower support; these scores are not eligibility or benefit probabilities.</p>
       <div className="mt-4 flex gap-3" role="group" aria-label="Filter unified clinical chart">
         <button aria-pressed={!shortlist} onClick={()=>{setShortlist(false);setHovered(null)}} className={`rounded-lg px-4 py-2 ${!shortlist?"bg-primary text-primary-foreground":"border border-border"}`}>All studies</button>
         <button aria-pressed={shortlist} onClick={()=>{setShortlist(true);setHovered(null)}} className={`rounded-lg px-4 py-2 ${shortlist?"bg-primary text-primary-foreground":"border border-border"}`}>Expert shortlist</button>
@@ -41,7 +41,7 @@ export function ClinicalGeographyPlot({trials,landscape=[]}:{trials:RankedTrial[
         <text transform="translate(20 185) rotate(-90)" textAnchor="middle" className="fill-muted-foreground text-[12px]">Geographic access · distance + domestic travel</text>
         <rect x={L} y={U-13} width={R-L} height="26" rx="6" className="fill-foreground/5"/>
         <text x={L} y={U-20} className="fill-muted-foreground text-[10px]">RECRUITING-SITE ACCESS UNKNOWN · NOT ZERO</text>
-        <text x={W/2} y={H-8} textAnchor="middle" className="fill-muted-foreground text-[12px]">Clinical-fit v2 · inspect coverage and assessment status →</text>
+        <text x={W/2} y={H-8} textAnchor="middle" className="fill-muted-foreground text-[12px]">Evidence-supported clinical fit · inspect coverage and assessment status →</text>
       </svg>
       <canvas ref={canvas} className="absolute inset-0 h-full w-full" aria-hidden="true" onMouseLeave={()=>setHovered(null)} onMouseMove={event=>{
         const b=event.currentTarget.getBoundingClientRect(),mx=(event.clientX-b.left)/b.width*W,my=(event.clientY-b.top)/b.height*H
@@ -51,9 +51,9 @@ export function ClinicalGeographyPlot({trials,landscape=[]}:{trials:RankedTrial[
       }}/>
     </div>
     <div className="m-6 min-h-20 rounded-xl border border-border px-4 py-3 text-sm" aria-live="polite">
-      {hovered?<><a className="text-primary" href={hovered.reviewed?routeHref("trials",hovered.nct_id):`https://clinicaltrials.gov/study/${hovered.nct_id}`}>{hovered.nct_id} ↗</a><p>{hovered.status.replaceAll("_"," ")} · Clinical fit {hovered.plot_score?.toFixed(1)} · Coverage {Math.round(hovered.coverage*100)}% · Unassessed-dimension bounds {hovered.bounds?.join("–")??"unknown"}</p><p>{hovered.title}</p></>:<p>Hover to inspect score, coverage and uncertainty. Both filters preserve identical coordinates. Overlapping points form clusters.</p>}
+      {hovered?<><a className="text-primary" href={hovered.reviewed?routeHref("trials",hovered.nct_id):`https://clinicaltrials.gov/study/${hovered.nct_id}`}>{hovered.nct_id} ↗</a><p>{hovered.status.replaceAll("_"," ")} · Clinical fit {hovered.plot_score?.toFixed(1)} · Coverage {Math.round(hovered.coverage*100)}% · Unassessed-dimension bounds {hovered.bounds?.join("–")??"unknown"}</p><p>{hovered.title}</p><p className="mt-2 text-muted-foreground">{hovered.rationale?.[0]}</p></>:<p>Hover to inspect score, coverage and uncertainty. Both filters preserve identical coordinates. Overlapping points form clusters.</p>}
     </div>
-    <details className="m-6 text-sm"><summary>{unscored.length.toLocaleString()} excluded / unknown-score records (not plotted as zero)</summary><p className="my-2 text-muted-foreground">Missing features, unresolved evidence, failed reviews and hard conflicts remain unscored. Older cached results must be rerun for v2. First 50 shown.</p><ul>{unscored.slice(0,50).map(d=><li key={d.nct_id}><a className="text-primary" href={`https://clinicaltrials.gov/study/${d.nct_id}`}>{d.nct_id}</a> · {d.status.replaceAll("_"," ")} · {d.title}</li>)}</ul></details>
+    <details className="m-6 text-sm"><summary>{unscored.length.toLocaleString()} excluded / unknown-score records (not plotted as zero)</summary><p className="my-2 text-muted-foreground">Missing features, unresolved evidence, failed reviews and hard conflicts remain unscored. Older cached results must be rerun for v3. First 50 shown.</p><ul>{unscored.slice(0,50).map(d=><li key={d.nct_id}><a className="text-primary" href={`https://clinicaltrials.gov/study/${d.nct_id}`}>{d.nct_id}</a> · {d.status.replaceAll("_"," ")} · {d.title}<p className="mb-3 text-xs text-muted-foreground">{d.rationale?.[0]}</p></li>)}</ul></details>
     <p className="border-t border-border px-7 py-4 text-xs text-muted-foreground">● Gray: provisional · ● Mint: expert-reviewed. Geography uses explicitly recruiting sites only; transport, language, visa and cost barriers are not assessed. Scores do not establish eligibility or benefit.</p>
   </section>
 }

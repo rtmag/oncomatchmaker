@@ -8,6 +8,7 @@ import sqlite3
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+from trials.cohort_matching import contains
 from trials.provisional_scoring import provisional_score
 from trials.registry_features import fingerprint
 
@@ -153,11 +154,29 @@ def screen_trials(
             sorted(term for term in disease_terms if term in full_text)
         )
         molecular_hits = tuple(
-            sorted(term for term in molecular_terms if term in full_text)
+            sorted(
+                term
+                for term in molecular_terms
+                if term in full_text and contains(term, full_text)
+            )
         )
         inclusion = re.split(r"exclusion\s+criteria", eligibility or "", flags=re.I)[0]
         positive_text = (title or "") + " " + inclusion
         variant_hits = _variant_hits(molecular_terms, positive_text)
+        if assessment["status"] == "cohort_unconfirmed":
+            row["screening_state"] = "cohort_unconfirmed"
+            if variant_hits:
+                exploratory.append(
+                    RetrievedCandidate(
+                        nct_id,
+                        disease_hits,
+                        molecular_hits,
+                        0.0,
+                        "other_or_unconfirmed_disease",
+                        variant_hits,
+                    )
+                )
+            continue
         basket = bool(molecular_hits) and _solid_basket(
             disease_terms, title or "", inclusion
         )

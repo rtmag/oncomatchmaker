@@ -9,13 +9,17 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import sqlite3
+import tempfile
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 
-VERSION = "registry-features-v1"
+from trials.cohort_matching import DISEASES, SOLID
+
+VERSION = "registry-features-v2"
 
 
 def fingerprint(title, eligibility, conditions, status):
@@ -29,19 +33,36 @@ def fingerprint(title, eligibility, conditions, status):
 def extract_features(title, eligibility, conditions, status):
     clauses = []
     section = "unscoped"
+    cohort_context = ""
     # Keep original lines, positions and surrounding cohort wording for review.
     for offset, line in enumerate((eligibility or "").splitlines()):
-        if re.search(r"exclusion\s+criteria", line, re.I):
+        if re.search(r"exclusion(?:\s+criteria)?\s*:", line, re.I) or re.search(
+            r"exclusion\s+criteria", line, re.I
+        ):
             section = "exclusion"
-        elif re.search(r"inclusion\s+criteria", line, re.I):
+            cohort_context = ""
+        elif re.search(r"inclusion(?:\s+criteria)?\s*:", line, re.I) or re.search(
+            r"inclusion\s+criteria", line, re.I
+        ):
             section = "inclusion"
+            cohort_context = ""
+        if re.search(r"\b(?:cohort|arm|subprotocol|group)\s+[A-Z0-9]+", line, re.I):
+            cohort_context = line if line.rstrip().endswith(":") else ""
         if line.strip():
             clauses.append(
                 {
                     "text": line,
-                    "section": section,
+                    "section": "inclusion"
+                    if section == "unscoped"
+                    and re.search(
+                        r"\b(?:patients?|participants?|subjects?)\s+must have\b",
+                        line,
+                        re.I,
+                    )
+                    else section,
                     "source_field": "eligibility_text",
                     "line": offset + 1,
+                    "cohort_context": cohort_context,
                 }
             )
     sources = [
@@ -57,12 +78,26 @@ def extract_features(title, eligibility, conditions, status):
         )
     )
     biomarkers = []
-    for source in sources:
+    sentence_sources = [
+        {
+            **source,
+            "text": sentence,
+            "sentence_index": index,
+            "source_line_text": source["text"],
+        }
+        for source in sources
+        for index, sentence in enumerate(
+            [source["text"]]
+            if source["section"] == "title"
+            else re.split(r"(?<=[.!?])\s+(?=[A-Z])", source["text"])
+        )
+    ]
+    for source in sentence_sources:
         variants = re.findall(
             r"(?<![A-Za-z0-9])(?:p\.)?([A-Z]\d+[A-Z])(?![A-Za-z0-9])", source["text"]
         )
         events = re.findall(
-            r"fusion|amplification|exon\s+\d+\s+skipping|MSI[ -]high|MSI-H|dMMR",
+            r"fusion|amplification|\bloss\b|deletion|exon[ -]+\d+[ -]+skipping|MSI[ -]high|MSI-H|dMMR|\bMSS\b|\bpMMR\b|microsatellite|mismatch repair",
             source["text"],
             re.I,
         )
@@ -86,6 +121,16 @@ def extract_features(title, eligibility, conditions, status):
     positive = " ".join(
         s["text"] for s in sources if s["section"] in {"title", "inclusion"}
     )
+    inclusion_context = " ".join(
+        s["text"] for s in clauses if s["section"] == "inclusion"
+    )
+    # Precompute bounded disease vocabulary, not a new patient-specific match.
+    explicit_disease_context = " ".join(
+        match.group(0)
+        for match in re.finditer(
+            "|".join(DISEASES) + "|" + SOLID, inclusion_context, re.I
+        )
+    )
     return {
         "feature_version": VERSION,
         "status": status,
@@ -94,6 +139,17 @@ def extract_features(title, eligibility, conditions, status):
         "lexical_tokens": tokens,
         "biomarker_mentions": biomarkers,
         "criteria": clauses,
+        "inclusion_context": explicit_disease_context,
+        "multiple_cohorts": len(
+            set(
+                re.findall(
+                    r"\b(?:cohort|arm|subprotocol|group)\s+([A-Z0-9]+)\b",
+                    eligibility or "",
+                    re.I,
+                )
+            )
+        )
+        > 1,
         "broad_solid_mention": bool(
             re.search(r"\bsolid (?:tumou?rs?|malignanc\w*)\b", positive, re.I)
         ),
@@ -119,6 +175,24 @@ def feature_path(snapshot):
 
 
 def build(snapshot, output=None):
+    """Publish a complete companion atomically; active readers keep the old file."""
+    snapshot = Path(snapshot).resolve()
+    output = Path(output or feature_path(snapshot)).resolve()
+    if output == snapshot:
+        raise ValueError("Feature output must not overwrite the registry")
+    fd, temporary = tempfile.mkstemp(
+        prefix=".trial-features-", suffix=".sqlite", dir=output.parent
+    )
+    os.close(fd)
+    try:
+        result = _build(snapshot, temporary)
+        os.replace(temporary, output)
+        return {**result, "path": str(output)}
+    finally:
+        Path(temporary).unlink(missing_ok=True)
+
+
+def _build(snapshot, output=None):
     snapshot = Path(snapshot).resolve()
     output = Path(output or feature_path(snapshot)).resolve()
     if output == snapshot:
@@ -165,6 +239,8 @@ def build(snapshot, output=None):
                     "broad_solid_mention",
                     "lexical_tokens",
                     "biomarker_mentions",
+                    "multiple_cohorts",
+                    "inclusion_context",
                 )
             }
             dest.execute(

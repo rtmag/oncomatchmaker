@@ -8,7 +8,7 @@ CLINICAL_WEIGHTS = {
     "eligibility": 20.0,
     "safety": 5.0,
 }
-SCORE_VERSION = "clinical-fit-v2"
+SCORE_VERSION = "clinical-fit-v3"
 
 
 def aggregate(components, conflict=False):
@@ -23,7 +23,7 @@ def aggregate(components, conflict=False):
         if value is not None
     )
     return {
-        "overall_score": round(100 * credit / known, 1)
+        "overall_score": round(credit, 1)
         if known and not conflict
         else None,
         "coverage": round(known / 100, 3),

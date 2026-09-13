@@ -61,7 +61,7 @@ def test_shared_scale_preserves_unknowns_and_conflicts():
     components = dict.fromkeys(CLINICAL_WEIGHTS)
     assert aggregate(components)["overall_score"] is None
     components["molecular"] = 0.9
-    assert aggregate(components)["overall_score"] == 90
+    assert aggregate(components)["overall_score"] == 27
     assert aggregate(components)["coverage"] == 0.3
     assert aggregate(components)["uncertainty_bounds"] == [27, 97]
     assert aggregate(components, conflict=True)["overall_score"] is None
@@ -73,7 +73,7 @@ def test_target_mismatch_cannot_receive_disease_only_high_score():
         patient("EGFR", "L858R", "non-small cell lung cancer"), f
     )
     assert result["overall_score"] is None
-    assert result["status"] == "unscored"
+    assert result["status"] == "cohort_unconfirmed"
 
 
 @pytest.mark.parametrize(
@@ -141,9 +141,27 @@ def test_companion_build_preserves_source_and_rejects_stale_features(tmp_path):
     with sqlite3.connect(snapshot) as db:
         first = screen_trials(db, patient(), stored).landscape[0]
         assert first["clinical_score"] is not None
-        assert first["clinical_assessment"]["score_version"] == "clinical-fit-v2"
+        assert first["clinical_assessment"]["score_version"] == "clinical-fit-v3"
         db.execute("UPDATE studies SET eligibility_text='Changed'")
         stale = screen_trials(db, patient(), stored).landscape[0]
         assert stale["clinical_score"] is None
     with pytest.raises(ValueError):
         build(snapshot, snapshot)
+
+
+def test_failed_feature_rebuild_keeps_previous_companion(tmp_path, monkeypatch):
+    import trials.registry_features as registry
+
+    snapshot = tmp_path / "oncology.sqlite"
+    output = tmp_path / "trial_features.sqlite"
+    output.write_bytes(b"previous derived database")
+    before = output.read_bytes()
+
+    def fail(*args):
+        raise RuntimeError("Synthetic builder failure")
+
+    monkeypatch.setattr(registry, "_build", fail)
+    with pytest.raises(RuntimeError, match="Synthetic"):
+        registry.build(snapshot)
+    assert output.read_bytes() == before
+    assert not list(tmp_path.glob(".trial-features-*"))

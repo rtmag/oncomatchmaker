@@ -13,7 +13,7 @@ export interface ScreeningPoint {
   title: string
   preliminary_score: number
   clinical_score?: number | null
-  clinical_assessment?: { coverage: number; score_version: string; status: string; uncertainty_bounds?: number[] | null }
+  clinical_assessment?: { coverage: number; score_version: string; status: string; uncertainty_bounds?: number[] | null; rationale?: string[] }
   geography_score: number | null
   distance_km: number | null
   screening_state: string
