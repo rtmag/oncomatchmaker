@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { PageHeader } from "@/components/PageHeader"
 import { BorderBeam } from "@/components/ui/border-beam"
 import { FileDropzone } from "@/components/ui/file-dropzone"
+import { Field, inputClass } from "@/components/ui/field"
 import { Stepper, StepperDescription, StepperIndicator, StepperItem, StepperSeparator, StepperTitle } from "@/components/ui/stepper"
 import { Callout, Panel, PanelHeader, Tag } from "@/components/ui/surface"
 import { navigate, routeHref } from "@/hooks/useHashRoute"
@@ -76,10 +77,17 @@ export function IntakeView() {
   const { loadDemo, loadJson, extractPdf, busy } = useCase()
   const { cases, error } = useDemoCases()
   const [pendingCase, setPendingCase] = useState<string | null>(null)
+  const [city, setCity] = useState("")
 
   const handlePdf = useCallback(
-    async (file: File) => openReview(await extractPdf(file), `Extracted ${file.name}. Review every finding before searching.`),
-    [extractPdf],
+    async (file: File) => {
+      if (!city.trim()) {
+        toast.error("Enter the patient's city before uploading the report.")
+        return
+      }
+      openReview(await extractPdf(file, city), `Extracted ${file.name} for ${city.trim()}. Review the profile, then run matching.`)
+    },
+    [city, extractPdf],
   )
   const handleJson = useCallback(async (file: File) => openReview(await loadJson(file), `Loaded ${file.name}.`), [loadJson])
 
@@ -113,16 +121,23 @@ export function IntakeView() {
             action={<Tag tone="evidence">Model + HGNC</Tag>}
           />
           <div className="grid gap-8 px-6 pb-6 md:grid-cols-[1.25fr_1fr]">
-            <FileDropzone
-              accept={PDF_ACCEPT}
-              maxSizeMB={20}
-              onFile={handlePdf}
-              busy={busy === "extract"}
-              busyLabel="Extracting findings…"
-              title="Drop a molecular report"
-              hint="PDF · up to 20 MB · sent only to your local API"
-              icon={<FileText className="size-5" />}
-            />
+            <div className="grid content-start gap-4">
+              <Field label="Patient city" hint="Required for distance to explicitly recruiting trial sites.">
+                {(control) => (
+                  <input {...control} className={inputClass} value={city} onChange={(event) => setCity(event.target.value)} placeholder="e.g. Singapore or Boston, MA" maxLength={120} />
+                )}
+              </Field>
+              <FileDropzone
+                accept={PDF_ACCEPT}
+                maxSizeMB={20}
+                onFile={handlePdf}
+                busy={busy === "extract"}
+                busyLabel="Fast extraction in progress…"
+                title="Drop a molecular report"
+                hint="PDF · up to 20 MB · sent only to your local API"
+                icon={<FileText className="size-5" />}
+              />
+            </div>
             <Stepper orientation="vertical" value={busy === "extract" ? 2 : 1} aria-label="Extraction pipeline">
               {PIPELINE.map((step, index) => (
                 <StepperItem key={step.title} step={index + 1} loading={busy === "extract"} className="items-start">

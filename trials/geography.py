@@ -20,8 +20,8 @@ def resolve_city_location(
 ) -> Location:
     """Resolve city/country server-side; coordinates never need to be typed in the UI."""
     city, country = city.strip(), country.strip()
-    if not city or not country:
-        raise ValueError("City and country are required for geographic matching.")
+    if not city:
+        raise ValueError("City is required for geographic matching.")
     owned = http is None
     client = http or httpx.Client(
         base_url="https://nominatim.openstreetmap.org",
@@ -32,9 +32,9 @@ def resolve_city_location(
         response = client.get(
             "/search",
             params={
-                "city": city,
-                "country": country,
+                **({"city": city, "country": country} if country else {"q": city}),
                 "format": "jsonv2",
+                "addressdetails": 1,
                 "limit": 1,
             },
         )
@@ -46,11 +46,11 @@ def resolve_city_location(
         if owned:
             client.close()
     if not rows:
-        raise ValueError("City and country could not be resolved; check the spelling.")
+        raise ValueError("City could not be resolved; add a region or country if it is ambiguous.")
     try:
         return Location(
             city=city,
-            country=country,
+            country=country or rows[0].get("address", {}).get("country"),
             latitude=float(rows[0]["lat"]),
             longitude=float(rows[0]["lon"]),
         )

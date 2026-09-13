@@ -99,7 +99,10 @@ def extract(file: UploadFile = File(...)):
         path = Path(folder) / "report.pdf"
         path.write_bytes(data)
         try:
-            result = ingestion_pipeline.ingest_report(path)
+            # The interactive demo uses one low-reasoning Sol pass, followed by
+            # deterministic source/HGNC checks. The returned profile is explicitly
+            # marked for human confirmation before trial matching.
+            result = ingestion_pipeline.ingest_report(path, extraction_mode="fast")
         except (ExtractionError, PDFReadError) as exc:
             raise HTTPException(
                 422, "Report extraction failed safely; no profile was accepted."

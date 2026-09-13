@@ -73,7 +73,7 @@ interface CaseContextValue extends CaseState {
   isStale: boolean
   loadDemo: (id: string, label: string) => Promise<boolean>
   loadJson: (file: File) => Promise<boolean>
-  extractPdf: (file: File) => Promise<boolean>
+  extractPdf: (file: File, city: string) => Promise<boolean>
   editProfile: (profile: MolecularProfile) => void
   runMatch: (profile: MolecularProfile) => Promise<boolean>
 }
@@ -117,12 +117,16 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   )
 
   const extractPdf = useCallback(
-    (file: File) =>
-      perform("extract", async () => ({
-        type: "loaded",
-        profile: await api.extract(file),
-        source: { kind: "pdf", label: file.name },
-      })),
+    (file: File, city: string) =>
+      perform("extract", async () => {
+        const profile = await api.extract(file)
+        profile.patient_context.location = { city: city.trim(), country: null, latitude: null, longitude: null }
+        return {
+          type: "loaded",
+          profile,
+          source: { kind: "pdf", label: file.name },
+        }
+      }),
     [perform],
   )
 

@@ -10,11 +10,6 @@ import { applyDraft, draftFromProfile, validateDraft, type ContextDraft, type Dr
 import type { MolecularProfile } from "@/lib/types"
 import { useCase } from "@/state/case-store"
 
-const OPTIONAL_FIELDS: { key: keyof ContextDraft; label: string; inputMode?: "decimal" | "numeric"; placeholder: string }[] = [
-  { key: "city", label: "Patient city", placeholder: "e.g. Singapore" },
-  { key: "country", label: "Country", placeholder: "e.g. Singapore" },
-  { key: "age", label: "Age (years)", inputMode: "numeric", placeholder: "Optional" },
-]
 const ECOG_OPTIONS = ["0", "1", "2", "3", "4", "5"]
 
 export function ContextForm({ profile }: { profile: MolecularProfile }) {
@@ -48,23 +43,20 @@ export function ContextForm({ profile }: { profile: MolecularProfile }) {
         {(control) => <input {...control} className={inputClass} value={draft.diagnosis} onChange={update("diagnosis")} maxLength={200} />}
       </Field>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {OPTIONAL_FIELDS.map((field) => (
-          <Field key={field.key} label={field.label} error={errors[field.key]}>
-            {(control) => (
-              <input
-                {...control}
-                className={inputClass}
-                value={draft[field.key]}
-                onChange={update(field.key)}
-                inputMode={field.inputMode}
-                placeholder={field.placeholder}
-                maxLength={80}
-              />
-            )}
+      <Field label="Patient city" error={errors.city}>
+        {(control) => <input {...control} className={inputClass} value={draft.city} onChange={update("city")} placeholder="e.g. Singapore or Boston, MA" maxLength={120} />}
+      </Field>
+
+      <details className="rounded-xl border border-border bg-card-2 p-4">
+        <summary className="cursor-pointer text-sm font-medium">Optional clinical context</summary>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <Field label="Country" error={errors.country}>
+            {(control) => <input {...control} className={inputClass} value={draft.country} onChange={update("country")} placeholder="Optional" maxLength={80} />}
           </Field>
-        ))}
-        <Field label="ECOG performance status">
+          <Field label="Age (years)" error={errors.age}>
+            {(control) => <input {...control} className={inputClass} value={draft.age} onChange={update("age")} inputMode="numeric" placeholder="Optional" maxLength={3} />}
+          </Field>
+          <Field label="ECOG performance status">
           {(control) => (
             <select {...control} className={inputClass} value={draft.ecog} onChange={update("ecog")}>
               <option value="">Unknown</option>
@@ -75,14 +67,14 @@ export function ContextForm({ profile }: { profile: MolecularProfile }) {
               ))}
             </select>
           )}
-        </Field>
-      </div>
+          </Field>
+          <Field label="Previous treatments" hint="Blank means unrecorded, not treatment-naive.">
+            {(control) => <input {...control} className={inputClass} value={draft.therapies} onChange={update("therapies")} maxLength={300} />}
+          </Field>
+        </div>
+      </details>
 
-      <Field label="Previous treatments" hint="Comma-separated. Blank means unrecorded, not treatment-naive.">
-        {(control) => <input {...control} className={inputClass} value={draft.therapies} onChange={update("therapies")} maxLength={300} />}
-      </Field>
-
-      <p className="text-xs text-muted-foreground">City and country are resolved server-side. Distance is calculated only to trial sites explicitly marked recruiting.</p>
+      <p className="text-xs text-muted-foreground">City is resolved server-side. Distance is calculated only to trial sites explicitly marked recruiting.</p>
 
       <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-card-2 p-4 text-sm transition-colors hover:border-border-strong has-checked:border-primary/40 has-checked:bg-primary/6">
         <input type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} className="mt-0.5 size-4 accent-[var(--color-primary)]" />

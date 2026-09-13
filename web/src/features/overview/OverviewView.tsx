@@ -9,6 +9,7 @@ import { Stepper, StepperIndicator, StepperItem, StepperSeparator, StepperTitle,
 import { Callout, Panel, PanelHeader, Tag } from "@/components/ui/surface"
 import type { SceneSelection } from "@/features/scene/molecular-scene.js"
 import { TrialCard } from "@/features/trials/TrialCard"
+import { ClinicalGeographyPlot } from "@/features/trials/ClinicalGeographyPlot"
 import { navigate, routeHref, type View } from "@/hooks/useHashRoute"
 import { normalizeFindings, type Finding } from "@/lib/findings"
 import { pluralize } from "@/lib/format"
@@ -160,6 +161,7 @@ export function OverviewView() {
         subtitle="Review the molecular profile, supporting evidence and enrollment requirements in one place."
         aside={<CasePill />}
       />
+      {results && <ClinicalGeographyPlot trials={results.trials} />}
       <JourneyStepper hasResults={Boolean(results)} />
 
       {isStale && (

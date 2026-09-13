@@ -283,6 +283,41 @@ def test_pipeline_two_passes(document, finding):
     assert profile.biomarkers.snv_indel[0].hgnc_id
 
 
+def test_fast_pipeline_uses_one_model_pass_and_requires_review(document, finding):
+    class FakeExtractor:
+        model = "fake-for-tests"
+        reasoning_effort = "low"
+        service_tier = "priority"
+        vision_pages = 0
+
+        def __init__(self):
+            self.review_called = False
+
+        def extract(self, document, pdf_path=None):
+            return extraction([finding])
+
+        def review(self, document, extracted):
+            self.review_called = True
+            return review(extracted.findings)
+
+    extractor = FakeExtractor()
+    with patch("ingestion.pipeline.read_document", return_value=document):
+        result = ingest_report(
+            "unused", extractor=extractor, extraction_mode="fast"
+        )
+    profile = MolecularProfile.model_validate(result.profile)
+    assert not extractor.review_called
+    assert profile.biomarkers.snv_indel[0].gene == "KRAS"
+    assert profile.ingestion_provenance["extraction_mode"] == "fast"
+    assert profile.ingestion_provenance["requires_review"] is True
+    assert (
+        profile.ingestion_provenance[
+            "independent_completeness_review_performed"
+        ]
+        is False
+    )
+
+
 def test_model_request_schema_and_result(document):
     calls = []
 

@@ -49,7 +49,17 @@ def strict_schema(model):
 
 
 class SolExtractor:
-    def __init__(self, *, api_key=None, model=None, http=None, vision_pages=3):
+    def __init__(
+        self,
+        *,
+        api_key=None,
+        model=None,
+        http=None,
+        vision_pages=3,
+        reasoning_effort="medium",
+        max_output_tokens=16000,
+        service_tier=None,
+    ):
         load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
         key = api_key or os.environ.get("OPENAI_API_KEY")
         if not key:
@@ -60,6 +70,9 @@ class SolExtractor:
             "ONCOMATCH_EXTRACTION_MODEL", "gpt-5.6-sol"
         )
         self.vision_pages = vision_pages
+        self.reasoning_effort = reasoning_effort
+        self.max_output_tokens = max_output_tokens
+        self.service_tier = service_tier
         self.owned = http is None
         self.http = http or httpx.Client(
             base_url="https://api.openai.com/v1",
@@ -75,8 +88,8 @@ class SolExtractor:
         payload = {
             "model": self.model,
             "store": False,
-            "reasoning": {"effort": "medium"},
-            "max_output_tokens": 16000,
+            "reasoning": {"effort": self.reasoning_effort},
+            "max_output_tokens": self.max_output_tokens,
             "input": [
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": content},
@@ -90,6 +103,8 @@ class SolExtractor:
                 }
             },
         }
+        if self.service_tier:
+            payload["service_tier"] = self.service_tier
         try:
             response = self.http.post("/responses", json=payload)
             response.raise_for_status()
