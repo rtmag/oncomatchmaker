@@ -213,7 +213,11 @@ def _match_snapshot(
             row.trial.nct_id,
         )
     )
-    result.search_status = "complete"
+    result.search_status = "complete" if accepted >= target_candidates else "partial"
+    if candidates and accepted < target_candidates:
+        result.warnings.append(
+            f"ASTRA found {accepted} non-conflicting candidate(s) after reviewing {reviewed}; no additional recommendation was manufactured."
+        )
     if not result.trials:
         result.warnings.append(
             "No local molecular-and-disease candidates were retrieved; this is not evidence that no appropriate trial exists."
