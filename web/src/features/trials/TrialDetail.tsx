@@ -66,7 +66,8 @@ function ChipList({ items, empty }: { items: string[]; empty: string }) {
 }
 
 export function TrialDetail({ item }: { item: RankedTrial }) {
-  const { trial, match, eligibility, nearest_site: nearest, category } = item
+  const { trial, match, eligibility, category } = item
+  const nearest = item.accessible_site ?? item.nearest_site
   const categoryMeta = CATEGORY[category]
   const eligibilityMeta = ELIGIBILITY[eligibility.status]
   const facts = [
@@ -120,6 +121,7 @@ export function TrialDetail({ item }: { item: RankedTrial }) {
         <ScoreBreakdown match={match} />
         <p className="mt-4 text-sm text-muted-foreground">
           Geographic access is a separate axis: {item.geography_score === null ? "not scorable" : `${item.geography_score.toFixed(1)} / 100`}.
+          {" "}{item.geography_access?.rationale}
         </p>
       </section>
 
@@ -182,7 +184,7 @@ export function TrialDetail({ item }: { item: RankedTrial }) {
 
       <section className="grid gap-6 sm:grid-cols-2">
         <div>
-          <SectionTitle>Nearest recruiting site</SectionTitle>
+          <SectionTitle>{item.accessible_site ? "Highest-access recruiting site" : "Nearest recruiting site"}</SectionTitle>
           {nearest ? (
             <p className="text-sm">
               <span className="font-medium">{nearest.site.name}</span>

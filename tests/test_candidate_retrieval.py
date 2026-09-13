@@ -134,10 +134,10 @@ def test_landscape_uses_only_open_studies_and_open_sites():
     db = sqlite3.connect(":memory:")
     db.executescript("""
         CREATE TABLE studies(nct_id TEXT, overall_status TEXT);
-        CREATE TABLE sites(nct_id TEXT,status TEXT,latitude REAL,longitude REAL);
+        CREATE TABLE sites(nct_id TEXT,status TEXT,latitude REAL,longitude REAL,country TEXT);
         INSERT INTO studies VALUES ('A','RECRUITING'),('B','NOT_YET_RECRUITING'),('C','RECRUITING');
-        INSERT INTO sites VALUES ('A','ACTIVE_NOT_RECRUITING',0,0),('A','RECRUITING',0,1),
-        ('B','RECRUITING',0,0),('C','UNKNOWN',0,0),('C','RECRUITING',NULL,NULL);
+        INSERT INTO sites VALUES ('A','ACTIVE_NOT_RECRUITING',0,0,NULL),('A','RECRUITING',0,1,NULL),
+        ('B','RECRUITING',0,0,NULL),('C','UNKNOWN',0,0,NULL),('C','RECRUITING',NULL,NULL,NULL);
     """)
     points = [dict(nct_id=n, distance_km=None, geography_score=None) for n in "ABC"]
     attach_screening_geography(db, points, Location(latitude=0, longitude=0))

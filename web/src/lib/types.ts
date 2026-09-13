@@ -15,6 +15,7 @@ export interface ScreeningPoint {
   geography_score: number | null
   distance_km: number | null
   screening_state: string
+  geography_access?: { policy_version?: string }
 }
 
 export interface ReportMetadata {
@@ -181,6 +182,8 @@ export interface RankedTrial {
   nearest_site: NearestSite | null
   geography_score: number | null
   geography_availability: string
+  accessible_site?: NearestSite | null
+  geography_access?: { score?: number; travel_context?: string; policy_version?: string; rationale?: string }
   expert_assessments: ExpertAssessment[]
   consensus: Record<string, unknown>
   category: TrialCategory

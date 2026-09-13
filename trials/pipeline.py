@@ -1,5 +1,4 @@
 import json
-import math
 import os
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -14,7 +13,9 @@ from trials.candidate_retrieval import screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
 from trials.eligibility import evaluate_eligibility
 from trials.geography import (
+    find_accessible_site,
     find_nearest_site,
+    geographic_access,
     haversine_distance,
     resolve_city_location,
 )
@@ -51,21 +52,27 @@ ASSESSMENT_FRACTIONS = {"support": 0.9, "caution": 0.6}
 
 def attach_screening_geography(db, landscape, location):
     """One pass over explicitly open sites, preserving missing access as unknown."""
-    distances = {}
-    for nct_id, lat, lon in db.execute("""
-        SELECT s.nct_id,s.latitude,s.longitude FROM sites s
+    access_sites = {}
+    for nct_id, lat, lon, country in db.execute("""
+        SELECT s.nct_id,s.latitude,s.longitude,s.country FROM sites s
         JOIN studies t ON t.nct_id=s.nct_id
         WHERE s.status='RECRUITING' AND t.overall_status='RECRUITING'
         AND s.latitude BETWEEN -90 AND 90 AND s.longitude BETWEEN -180 AND 180
     """):
         distance = haversine_distance(location.latitude, location.longitude, lat, lon)
-        distances[nct_id] = min(distance, distances.get(nct_id, float("inf")))
+        distance = round(distance, 1)
+        access = geographic_access(distance, location.country, country)
+        key = (-access["score"], distance)
+        if nct_id not in access_sites or key < access_sites[nct_id][0]:
+            access_sites[nct_id] = (key, distance, access)
     for point in landscape:
-        distance = distances.get(point["nct_id"])
-        if distance is not None:
+        selected = access_sites.get(point["nct_id"])
+        if selected is not None:
+            _, distance, access = selected
             point.update(
                 distance_km=round(distance, 1),
-                geography_score=round(100 * math.exp(-distance / 250), 1),
+                geography_score=access["score"],
+                geography_access=access,
             )
 
 
@@ -111,9 +118,12 @@ def _evaluated_trial(profile, location, candidate, record, team):
         if trial.status == "RECRUITING"
         else None
     )
-    geography_score = (
-        round(100 * math.exp(-nearest.distance_km / 250), 1) if nearest else None
+    accessible, access = (
+        find_accessible_site(location, trial.sites)
+        if trial.status == "RECRUITING"
+        else (None, None)
     )
+    geography_score = access["score"] if access else None
     match = _clinical_score(team)
     match.rationale.insert(
         0, f"Preliminary local screening score: {candidate.preliminary_score:.1f}."
@@ -134,6 +144,8 @@ def _evaluated_trial(profile, location, candidate, record, team):
         eligibility=eligibility,
         nearest_site=nearest,
         geography_score=geography_score,
+        accessible_site=accessible,
+        geography_access=access or {},
         geography_availability=(
             "confirmed_recruiting_site" if nearest else "no_confirmed_open_site"
         ),
@@ -175,6 +187,7 @@ def _match_snapshot(
         [
             "ASTRA ranks evidence for professional review; it does not determine eligibility or therapeutic benefit.",
             "Geography is scored separately and uses only sites explicitly marked RECRUITING in the registry snapshot.",
+            "Geographic access uses a same-country travel heuristic, not actual journey time, language compatibility, visa eligibility or cost. The highest-access site may not be the nearest site.",
         ]
     )
     with sqlite3.connect(database) as db:

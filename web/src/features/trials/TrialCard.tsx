@@ -21,7 +21,8 @@ interface TrialCardProps {
 }
 
 export function TrialCard({ item, index = 0, featured = false }: TrialCardProps) {
-  const { trial, match, eligibility, nearest_site: nearest, category } = item
+  const { trial, match, eligibility, category } = item
+  const nearest = item.accessible_site ?? item.nearest_site
   const categoryMeta = CATEGORY[category]
   const eligibilityMeta = ELIGIBILITY[eligibility.status]
   const summary = trial.interventions.join(" · ") || trial.conditions.join(" · ")
@@ -63,6 +64,7 @@ export function TrialCard({ item, index = 0, featured = false }: TrialCardProps)
       <h3 className="mt-1.5 line-clamp-3 font-display text-[17px] font-medium leading-snug tracking-tight">{trial.title}</h3>
       {summary && <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{summary}</p>}
       <p className="mt-3 text-xs text-muted-foreground">{expandedAccessLabel(trial)}</p>
+      {item.geography_access?.travel_context && <p className="mt-2 text-xs text-muted-foreground">Highest-access recruiting site · {item.geography_access.travel_context.replaceAll("_", " ")}</p>}
       <div className="mt-auto pt-5">
         <div className="flex items-center justify-between gap-3 border-t border-border pt-4 text-xs">
           <span className="flex min-w-0 items-center gap-1.5 text-muted-foreground">

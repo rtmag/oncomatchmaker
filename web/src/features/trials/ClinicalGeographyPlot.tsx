@@ -8,6 +8,7 @@ const y = (v: number | null) => v === null ? U : B - v / 100 * (B-T)
 type Dot = ScreeningPoint & { reviewed?: RankedTrial }
 
 export function ClinicalGeographyPlot({ trials, landscape = [] }: { trials: RankedTrial[]; landscape?: ScreeningPoint[] }) {
+  const domesticPolicy = trials.some(row => row.geography_access?.policy_version === "domestic-access-v1") || landscape.some(row => row.geography_access?.policy_version === "domestic-access-v1")
   const canvas = useRef<HTMLCanvasElement>(null)
   const [hovered, setHovered] = useState<Dot | null>(null)
   const [all, setAll] = useState(true)
@@ -15,7 +16,7 @@ export function ClinicalGeographyPlot({ trials, landscape = [] }: { trials: Rank
   const reviewed = useMemo(() => new Map(trials.map(row => [row.trial.nct_id, row])), [trials])
   const dots = useMemo<Dot[]>(() => landscape.length ? landscape.map(row => ({ ...row, reviewed: reviewed.get(row.nct_id) })) : trials.map(row => ({
     nct_id: row.trial.nct_id, title: row.trial.title, preliminary_score: row.match.overall_score ?? 0,
-    geography_score: row.geography_score, distance_km: row.nearest_site?.distance_km ?? null,
+    geography_score: row.geography_score, distance_km: (row.accessible_site ?? row.nearest_site)?.distance_km ?? null,
     screening_state: "expert_reviewed", reviewed: row,
   })), [landscape, reviewed, trials])
   const expert = axis === "expert" || !landscape.length
@@ -63,7 +64,7 @@ export function ClinicalGeographyPlot({ trials, landscape = [] }: { trials: Rank
           <text x={x(tick)} y={B+20} textAnchor="middle" className="fill-muted-foreground text-[11px]">{tick}</text>
           <text x={L-16} y={y(tick)+4} textAnchor="end" className="fill-muted-foreground text-[11px]">{tick}</text>
         </g>)}
-        <text transform="translate(20 185) rotate(-90)" textAnchor="middle" className="fill-muted-foreground text-[12px]">Geographic access · closer is higher</text>
+        <text transform="translate(20 185) rotate(-90)" textAnchor="middle" className="fill-muted-foreground text-[12px]">{domesticPolicy ? "Geographic access · distance + domestic travel" : "Geographic access · recorded score"}</text>
         <rect x={L} y={U-13} width={R-L} height="26" rx="6" className="fill-foreground/5" />
         <text x={L} y={U-20} className="fill-muted-foreground text-[10px]">NO CONFIRMED RECRUITING-SITE DISTANCE · NOT ZERO ACCESS</text>
         <text x={W/2} y={H-8} textAnchor="middle" className="fill-muted-foreground text-[12px]">{expert ? "ASTRA clinical match score" : "Preliminary screening score · retrieval relevance, not clinical eligibility"} →</text>
@@ -82,7 +83,7 @@ export function ClinicalGeographyPlot({ trials, landscape = [] }: { trials: Rank
     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border bg-background/20 px-7 py-4 text-xs text-muted-foreground">
       <div className="flex flex-wrap gap-5"><span>● Gray: preliminary</span><span className="text-primary">● Mint: expert reviewed</span><span className="text-rose-400">● Rose: expert conflict</span></div>
       {!expert && <label className="flex items-center gap-2"><input type="checkbox" checked={all} onChange={event => setAll(event.target.checked)}/> Show all screened studies</label>}
-      <p className="w-full">Score types use separate views. Missing distance stays unknown. Screening text hits can include exclusion criteria and require expert interpretation.</p>
+      <p className="w-full">{domesticPolicy ? "Geography favors same-country travel and the highest-access explicitly recruiting site." : "These recorded results predate the domestic-access policy; run a new search for updated geography."} It does not estimate transport, language, visa or cost barriers. Missing distance stays unknown. Screening text hits require expert interpretation.</p>
     </div>
   </section>
 }

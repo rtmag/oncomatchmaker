@@ -69,6 +69,8 @@ class RankedTrial(Model):
     nearest_site: NearestSite | None = None
     geography_score: float | None = None
     geography_availability: str = "not_scored"
+    accessible_site: NearestSite | None = None
+    geography_access: dict = Field(default_factory=dict)
     expert_assessments: list[dict] = Field(default_factory=list)
     consensus: dict = Field(default_factory=dict)
     retrieval_route: str = "named_disease"
