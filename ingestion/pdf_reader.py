@@ -2,11 +2,15 @@
 
 import hashlib
 import io
+import itertools
 import re
+from operator import itemgetter
 from pathlib import Path
 
 import pdfplumber
 import pymupdf
+from pdfplumber.page import FilteredPage
+from pdfplumber.utils import cluster_objects
 
 from schemas.extraction import PDFDocument, PDFPage
 
@@ -15,7 +19,34 @@ class PDFReadError(ValueError):
     pass
 
 
-def read_document(path, *, ocr=False, max_pages=100, max_bytes=40 * 1024 * 1024):
+def _dedupe_page_linear(page, tolerance=1):
+    """Match pdfplumber de-duplication without its quadratic final ordering."""
+    chars = page.chars
+    original_index = {id(char): index for index, char in enumerate(chars)}
+    key = itemgetter("upright", "text")
+    position = itemgetter("doctop", "x0")
+    selected = []
+    for _, grouped in itertools.groupby(sorted(chars, key=key), key=key):
+        for y_cluster in cluster_objects(
+            list(grouped), itemgetter("doctop"), tolerance
+        ):
+            for x_cluster in cluster_objects(y_cluster, itemgetter("x0"), tolerance):
+                selected.append(min(x_cluster, key=position))
+    selected.sort(key=lambda char: original_index[id(char)])
+    filtered = FilteredPage(page, lambda _: True)
+    filtered._objects = {kind: objects for kind, objects in page.objects.items()}
+    filtered._objects["char"] = selected
+    return filtered
+
+
+def read_document(
+    path,
+    *,
+    ocr=False,
+    max_pages=100,
+    max_bytes=40 * 1024 * 1024,
+    mode="fast",
+):
     path = Path(path)
     if path.stat().st_size > max_bytes:
         raise PDFReadError("PDF exceeds the 40 MB ingestion limit")
@@ -70,30 +101,33 @@ def read_document(path, *, ocr=False, max_pages=100, max_bytes=40 * 1024 * 1024)
                 )
             )
     warnings = [f"Page {p.number}: {w}" for p in pages for w in p.warnings]
-    # A second, geometric view removes duplicated print glyphs and preserves rows.
-    # Keep the original block view too: neither linearization is perfect for every table.
-    try:
-        with pdfplumber.open(io.BytesIO(raw)) as layout_pdf:
-            for p, layout_page in zip(pages, layout_pdf.pages):
-                if p.extraction_method == "native":
-                    cleaned = (
-                        layout_page.dedupe_chars(
-                            tolerance=1, extra_attrs=()
-                        ).extract_text(x_tolerance=2, y_tolerance=3)
-                        or ""
-                    )
-                    if cleaned.strip():
-                        p.text = (
-                            "[ROW-ORDER TEXT]\n"
-                            + cleaned
-                            + "\n[ORIGINAL BLOCK-ORDER TEXT]\n"
-                            + p.text
+    if mode not in {"fast", "safe"}:
+        raise ValueError("mode must be fast or safe")
+    if mode == "safe":
+        # Neither linearization is perfect for every table, so safe mode keeps
+        # both. Failure is explicit: there is no silent downgrade to fast mode.
+        try:
+            with pdfplumber.open(io.BytesIO(raw)) as layout_pdf:
+                for p, layout_page in zip(pages, layout_pdf.pages):
+                    if p.extraction_method == "native":
+                        cleaned = (
+                            _dedupe_page_linear(layout_page).extract_text(
+                                x_tolerance=2, y_tolerance=3
+                            )
+                            or ""
                         )
-                layout_page.close()
-    except (ValueError, RuntimeError, OSError):
-        warnings.append(
-            "Secondary row-order extraction failed; original page text retained."
-        )
+                        if cleaned.strip():
+                            p.text = (
+                                "[ROW-ORDER TEXT]\n"
+                                + cleaned
+                                + "\n[ORIGINAL BLOCK-ORDER TEXT]\n"
+                                + p.text
+                            )
+                    layout_page.close()
+        except (ValueError, RuntimeError, OSError) as exc:
+            raise PDFReadError(
+                "Safe row-order extraction failed; no silent fallback was used"
+            ) from exc
     printed_totals = [
         int(total)
         for p in pages
@@ -105,7 +139,11 @@ def read_document(path, *, ocr=False, max_pages=100, max_bytes=40 * 1024 * 1024)
         )
     return PDFDocument(
         sha256=hashlib.sha256(raw).hexdigest(),
-        reader_version="dual-native-1.1",
+        reader_version=(
+            "pymupdf-blocks-fast-1.0"
+            if mode == "fast"
+            else "dual-native-safe-1.2-linear-dedupe"
+        ),
         pages=pages,
         warnings=warnings,
     )

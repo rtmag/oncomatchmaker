@@ -1,0 +1,1124 @@
+{
+  "result_schema_version": "0.1",
+  "case_id": "fmi-nsclc-met-exon14",
+  "generated_at": "2026-09-13T05:42:06.986487+00:00",
+  "snapshot_id": "oncology-snapshot-2026-09-13-v1",
+  "source_report": {
+    "filename": "06_FMI_F1CDx_NSCLC_MET.pdf",
+    "sha256": "40b483bb33f6b972198e9b4d3812faa3d63c3e77cd20d195c6039ead414e0dac",
+    "page_count": 32,
+    "reader_version": "pymupdf-blocks-fast-1.0",
+    "ingestion_mode": "recorded_public_sample_profile"
+  },
+  "patient_location": {
+    "city": "New York",
+    "country": "United States",
+    "latitude": 40.7128,
+    "longitude": -74.006
+  },
+  "molecular_profile": {
+    "case_id": "fmi-nsclc-met-exon14",
+    "source_pdf": "06_FMI_F1CDx_NSCLC_MET.pdf",
+    "report": {
+      "vendor": "Foundation Medicine",
+      "assay": "FoundationOne CDx",
+      "sample_type": "tissue"
+    },
+    "disease": {
+      "raw_text": "Non-small cell lung cancer (NOS)",
+      "normalized": "non-small cell lung cancer",
+      "synonyms": [
+        "NSCLC"
+      ],
+      "histology": null,
+      "stage": null
+    },
+    "patient_context": {
+      "age": null,
+      "sex": null,
+      "prior_therapies": [],
+      "ecog": null,
+      "prior_therapies_known": false
+    },
+    "biomarkers": {
+      "snv_indel": [
+        {
+          "gene": "MET",
+          "gene_synonyms": [
+            "HGFR"
+          ],
+          "protein_change": null,
+          "event": "exon 14 skipping splice-site alteration",
+          "source_text": "MET 3024_3028+17del22"
+        }
+      ],
+      "msi": {
+        "status": "stable",
+        "synonyms": [
+          "MSS"
+        ]
+      },
+      "tmb": {
+        "value": 8.0,
+        "unit": "mut/Mb"
+      }
+    },
+    "schema_version": "0.3"
+  },
+  "molecular_biology_summary": [
+    "MET 3024_3028+17del22",
+    "MSI: stable"
+  ],
+  "trials": [
+    {
+      "nct_id": "NCT06031688",
+      "title": "Targeted Treatment for Advanced Non-Small Cell Lung Cancer That Has a MET Exon 14 Skipping Gene Change (An Expanded Lung-MAP Treatment Trial)",
+      "source_url": "https://clinicaltrials.gov/study/NCT06031688",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-05-05",
+      "retrieval_basis": [
+        "disease: non-small cell lung cancer",
+        "disease: nsclc",
+        "molecular: met"
+      ],
+      "consensus": {
+        "trial_id": "NCT06031688",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "direct_variant",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "Lung-MAP assignment",
+          "measurable disease",
+          "other actionable drivers",
+          "stage IV or recurrent stage"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT06031688",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "stage IV or recurrent stage",
+            "Lung-MAP assignment",
+            "measurable disease",
+            "other actionable drivers",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06031688"
+          ],
+          "reasoning_summary": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+        },
+        {
+          "trial_id": "NCT06031688",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "stage IV or recurrent stage",
+            "Lung-MAP assignment",
+            "measurable disease",
+            "other actionable drivers",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06031688"
+          ],
+          "reasoning_summary": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+        },
+        {
+          "trial_id": "NCT06031688",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "stage IV or recurrent stage",
+            "Lung-MAP assignment",
+            "measurable disease",
+            "other actionable drivers",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06031688"
+          ],
+          "reasoning_summary": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+        },
+        {
+          "trial_id": "NCT06031688",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "stage IV or recurrent stage",
+            "Lung-MAP assignment",
+            "measurable disease",
+            "other actionable drivers",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06031688"
+          ],
+          "reasoning_summary": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+        },
+        {
+          "trial_id": "NCT06031688",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "stage IV or recurrent stage",
+            "Lung-MAP assignment",
+            "measurable disease",
+            "other actionable drivers",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06031688"
+          ],
+          "reasoning_summary": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+        },
+        {
+          "trial_id": "NCT06031688",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "stage IV or recurrent stage",
+            "Lung-MAP assignment",
+            "measurable disease",
+            "other actionable drivers",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06031688"
+          ],
+          "reasoning_summary": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 77.8,
+        "composite_score": 77.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06031688"
+            ],
+            "missing_information": [
+              "stage IV or recurrent stage",
+              "Lung-MAP assignment",
+              "measurable disease",
+              "other actionable drivers",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06031688"
+            ],
+            "missing_information": [
+              "stage IV or recurrent stage",
+              "Lung-MAP assignment",
+              "measurable disease",
+              "other actionable drivers",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06031688"
+            ],
+            "missing_information": [
+              "stage IV or recurrent stage",
+              "Lung-MAP assignment",
+              "measurable disease",
+              "other actionable drivers",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06031688"
+            ],
+            "missing_information": [
+              "stage IV or recurrent stage",
+              "Lung-MAP assignment",
+              "measurable disease",
+              "other actionable drivers",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06031688"
+            ],
+            "missing_information": [
+              "stage IV or recurrent stage",
+              "Lung-MAP assignment",
+              "measurable disease",
+              "other actionable drivers",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT06031688"
+            ],
+            "missing_information": [
+              "stage IV or recurrent stage",
+              "Lung-MAP assignment",
+              "measurable disease",
+              "other actionable drivers",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 99.9,
+        "distance_km": 0.2,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 77.8,
+        "geography_y": 99.9,
+        "quadrant": "high_match_high_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "Memorial Sloan Kettering Cancer Center",
+        "city": "New York",
+        "region": "New York",
+        "country": "United States",
+        "distance_km": 0.2,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-05-05",
+        "snapshot_retrieved_at": "2026-09-13T03:21:58.674322+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Memorial Sloan Kettering Nassau",
+          "city": "Uniondale",
+          "region": "New York",
+          "country": "United States",
+          "distance_km": 34.8,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-05-05",
+          "snapshot_retrieved_at": "2026-09-13T03:21:58.674322+00:00"
+        },
+        {
+          "facility": "Memorial Sloan Kettering Monmouth",
+          "city": "Middletown",
+          "region": "New Jersey",
+          "country": "United States",
+          "distance_km": 36.6,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-05-05",
+          "snapshot_retrieved_at": "2026-09-13T03:21:58.674322+00:00"
+        }
+      ],
+      "rationale": "The study requires stage IV or recurrent NSCLC with MET exon 14 skipping documented by qualified NGS testing.",
+      "missing_information": [
+        "stage IV or recurrent stage",
+        "Lung-MAP assignment",
+        "measurable disease",
+        "other actionable drivers",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: stage IV or recurrent stage?",
+        "Can the treating team confirm: Lung-MAP assignment?",
+        "Can the treating team confirm: measurable disease?",
+        "Can the treating team confirm: other actionable drivers?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT07619339",
+      "title": "A Study of Tepotinib and Ivonescimab in People With Non-Small Cell Lung Cancer",
+      "source_url": "https://clinicaltrials.gov/study/NCT07619339",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-06-11",
+      "retrieval_basis": [
+        "disease: non-small cell lung cancer",
+        "molecular: met"
+      ],
+      "consensus": {
+        "trial_id": "NCT07619339",
+        "disposition": "candidate",
+        "match_tier": "tier_2",
+        "primary_relationship": "direct_variant",
+        "known_conflicts": [],
+        "missing_information": [
+          "ECOG and organ function",
+          "absence of other actionable drivers",
+          "advanced or recurrent stage",
+          "measurable disease",
+          "prior therapy"
+        ],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": []
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT07619339",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced or recurrent stage",
+            "measurable disease",
+            "absence of other actionable drivers",
+            "prior therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07619339"
+          ],
+          "reasoning_summary": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+        },
+        {
+          "trial_id": "NCT07619339",
+          "expert_role": "disease_oncology",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced or recurrent stage",
+            "measurable disease",
+            "absence of other actionable drivers",
+            "prior therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07619339"
+          ],
+          "reasoning_summary": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+        },
+        {
+          "trial_id": "NCT07619339",
+          "expert_role": "actionability_evidence",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced or recurrent stage",
+            "measurable disease",
+            "absence of other actionable drivers",
+            "prior therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07619339"
+          ],
+          "reasoning_summary": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+        },
+        {
+          "trial_id": "NCT07619339",
+          "expert_role": "pathway_resistance",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced or recurrent stage",
+            "measurable disease",
+            "absence of other actionable drivers",
+            "prior therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07619339"
+          ],
+          "reasoning_summary": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+        },
+        {
+          "trial_id": "NCT07619339",
+          "expert_role": "trial_eligibility",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced or recurrent stage",
+            "measurable disease",
+            "absence of other actionable drivers",
+            "prior therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07619339"
+          ],
+          "reasoning_summary": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+        },
+        {
+          "trial_id": "NCT07619339",
+          "expert_role": "safety_critic",
+          "assessment": "caution",
+          "confidence": 0.75,
+          "relationships": [
+            "direct_variant"
+          ],
+          "supporting_facts": [
+            "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+          ],
+          "conflicting_facts": [],
+          "missing_information": [
+            "advanced or recurrent stage",
+            "measurable disease",
+            "absence of other actionable drivers",
+            "prior therapy",
+            "ECOG and organ function"
+          ],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT07619339"
+          ],
+          "reasoning_summary": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": 77.8,
+        "composite_score": 77.8,
+        "coverage": 1.0,
+        "rankable": true,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": 95.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07619339"
+            ],
+            "missing_information": [
+              "advanced or recurrent stage",
+              "measurable disease",
+              "absence of other actionable drivers",
+              "prior therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "disease_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07619339"
+            ],
+            "missing_information": [
+              "advanced or recurrent stage",
+              "measurable disease",
+              "absence of other actionable drivers",
+              "prior therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": 82.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07619339"
+            ],
+            "missing_information": [
+              "advanced or recurrent stage",
+              "measurable disease",
+              "absence of other actionable drivers",
+              "prior therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": 78.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07619339"
+            ],
+            "missing_information": [
+              "advanced or recurrent stage",
+              "measurable disease",
+              "absence of other actionable drivers",
+              "prior therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": 50.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07619339"
+            ],
+            "missing_information": [
+              "advanced or recurrent stage",
+              "measurable disease",
+              "absence of other actionable drivers",
+              "prior therapy",
+              "ECOG and organ function"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": 60.0,
+            "status": "partial",
+            "confidence": 0.7,
+            "rationale": [
+              "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event."
+            ],
+            "evidence_references": [
+              "https://clinicaltrials.gov/study/NCT07619339"
+            ],
+            "missing_information": [
+              "advanced or recurrent stage",
+              "measurable disease",
+              "absence of other actionable drivers",
+              "prior therapy",
+              "ECOG and organ function"
+            ]
+          }
+        ],
+        "hard_conflicts": []
+      },
+      "geography_score": {
+        "score": 99.9,
+        "distance_km": 0.2,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "plottable",
+        "clinical_x": 77.8,
+        "geography_y": 99.9,
+        "quadrant": "high_match_high_access",
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Thresholds organize review; they are configurable and not clinically validated cutoffs."
+      },
+      "nearest_open_site": {
+        "facility": "Memorial Sloan Kettering Cancer Center (All Protocol Activities)",
+        "city": "New York",
+        "region": "New York",
+        "country": "United States",
+        "distance_km": 0.2,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-06-11",
+        "snapshot_retrieved_at": "2026-09-13T03:22:04.952125+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Memorial Sloan Kettering Nassau (All Protocol Activities)",
+          "city": "Uniondale",
+          "region": "New York",
+          "country": "United States",
+          "distance_km": 34.8,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-06-11",
+          "snapshot_retrieved_at": "2026-09-13T03:22:04.952125+00:00"
+        },
+        {
+          "facility": "Memorial Sloan Kettering Monmouth (All Protocol Activities)",
+          "city": "Middletown",
+          "region": "New Jersey",
+          "country": "United States",
+          "distance_km": 36.6,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-06-11",
+          "snapshot_retrieved_at": "2026-09-13T03:22:04.952125+00:00"
+        }
+      ],
+      "rationale": "The study requires NSCLC with MET exon 14 skipping, matching the normalized report event.",
+      "missing_information": [
+        "advanced or recurrent stage",
+        "measurable disease",
+        "absence of other actionable drivers",
+        "prior therapy",
+        "ECOG and organ function"
+      ],
+      "discussion_questions": [
+        "Can the treating team confirm: advanced or recurrent stage?",
+        "Can the treating team confirm: measurable disease?",
+        "Can the treating team confirm: absence of other actionable drivers?",
+        "Can the treating team confirm: prior therapy?",
+        "Can the treating team confirm: ECOG and organ function?"
+      ]
+    },
+    {
+      "nct_id": "NCT06119581",
+      "title": "A Study of First-Line Olomorasib (LY3537982) and Pembrolizumab With or Without Chemotherapy in Patients With Advanced KRAS G12C-Mutant Non-small Cell Lung Cancer",
+      "source_url": "https://clinicaltrials.gov/study/NCT06119581",
+      "overall_status": "RECRUITING",
+      "registry_last_update": "2026-09-08",
+      "retrieval_basis": [
+        "disease: non-small cell lung cancer",
+        "disease: nsclc",
+        "molecular: met"
+      ],
+      "consensus": {
+        "trial_id": "NCT06119581",
+        "disposition": "conflict",
+        "match_tier": "not_matched",
+        "primary_relationship": "gene_level",
+        "known_conflicts": [
+          "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        ],
+        "missing_information": [],
+        "eligibility_state": "not_determined",
+        "expert_assessments": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "actionability_evidence",
+          "pathway_resistance",
+          "trial_eligibility",
+          "safety_critic"
+        ],
+        "safety_gate_triggered_by": [
+          "molecular_profile_qc",
+          "disease_oncology",
+          "trial_eligibility",
+          "safety_critic"
+        ]
+      },
+      "expert_assessments": [
+        {
+          "trial_id": "NCT06119581",
+          "expert_role": "molecular_profile_qc",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06119581"
+          ],
+          "reasoning_summary": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        },
+        {
+          "trial_id": "NCT06119581",
+          "expert_role": "disease_oncology",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06119581"
+          ],
+          "reasoning_summary": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        },
+        {
+          "trial_id": "NCT06119581",
+          "expert_role": "actionability_evidence",
+          "assessment": "support",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06119581"
+          ],
+          "reasoning_summary": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        },
+        {
+          "trial_id": "NCT06119581",
+          "expert_role": "pathway_resistance",
+          "assessment": "support",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06119581"
+          ],
+          "reasoning_summary": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        },
+        {
+          "trial_id": "NCT06119581",
+          "expert_role": "trial_eligibility",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06119581"
+          ],
+          "reasoning_summary": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        },
+        {
+          "trial_id": "NCT06119581",
+          "expert_role": "safety_critic",
+          "assessment": "conflict",
+          "confidence": 0.75,
+          "relationships": [
+            "gene_level"
+          ],
+          "supporting_facts": [],
+          "conflicting_facts": [
+            "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+          ],
+          "missing_information": [],
+          "evidence_references": [
+            "https://clinicaltrials.gov/study/NCT06119581"
+          ],
+          "reasoning_summary": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+        }
+      ],
+      "clinical_score": {
+        "observed_score": null,
+        "composite_score": null,
+        "coverage": 0.0,
+        "rankable": false,
+        "weights": {
+          "molecular_fit": 30.0,
+          "disease_fit": 15.0,
+          "mechanistic_fit": 15.0,
+          "evidence_strength": 15.0,
+          "eligibility_compatibility": 20.0,
+          "trial_design_relevance": 5.0
+        },
+        "dimensions": [
+          {
+            "dimension": "molecular_fit",
+            "value": null,
+            "status": "conflict",
+            "confidence": 0.9,
+            "rationale": [
+              "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+            ],
+            "evidence_references": [],
+            "missing_information": []
+          },
+          {
+            "dimension": "disease_fit",
+            "value": null,
+            "status": "conflict",
+            "confidence": 0.9,
+            "rationale": [
+              "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration."
+            ],
+            "evidence_references": [],
+            "missing_information": []
+          },
+          {
+            "dimension": "mechanistic_fit",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "evidence_strength",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "eligibility_compatibility",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          },
+          {
+            "dimension": "trial_design_relevance",
+            "value": null,
+            "status": "unknown",
+            "confidence": null,
+            "rationale": [],
+            "evidence_references": [],
+            "missing_information": [
+              "Not scored after hard conflict"
+            ]
+          }
+        ],
+        "hard_conflicts": [
+          "molecular_fit",
+          "disease_fit"
+        ]
+      },
+      "geography_score": {
+        "score": 99.9,
+        "distance_km": 0.2,
+        "availability": "open_site",
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "rationale": "Distance score uses the nearest explicitly recruiting site and Haversine distance."
+      },
+      "plot_position": {
+        "plot_status": "not_plottable",
+        "clinical_x": null,
+        "geography_y": 99.9,
+        "quadrant": null,
+        "clinical_threshold": 70.0,
+        "geography_threshold": 50.0,
+        "rationale": "Clinical hard conflict or no scorable clinical evidence."
+      },
+      "nearest_open_site": {
+        "facility": "Laura and Isaac Perlmutter Cancer Center",
+        "city": "New York",
+        "region": "New York",
+        "country": "United States",
+        "distance_km": 0.2,
+        "study_status": "RECRUITING",
+        "site_status": "RECRUITING",
+        "registry_last_update": "2026-09-08",
+        "snapshot_retrieved_at": "2026-09-13T03:21:52.724928+00:00"
+      },
+      "alternative_open_sites": [
+        {
+          "facility": "Manhattan Eye, Ear and Throat Hospital",
+          "city": "New York",
+          "region": "New York",
+          "country": "United States",
+          "distance_km": 0.2,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-08",
+          "snapshot_retrieved_at": "2026-09-13T03:21:52.724928+00:00"
+        },
+        {
+          "facility": "Memorial Sloan Kettering Cancer Center",
+          "city": "New York",
+          "region": "New York",
+          "country": "United States",
+          "distance_km": 0.2,
+          "study_status": "RECRUITING",
+          "site_status": "RECRUITING",
+          "registry_last_update": "2026-09-08",
+          "snapshot_retrieved_at": "2026-09-13T03:21:52.724928+00:00"
+        }
+      ],
+      "rationale": "The study requires KRAS G12C and excludes a documented MET exon 14 actionable alteration.",
+      "missing_information": [],
+      "discussion_questions": []
+    }
+  ],
+  "limitations": [
+    "The profile and expert review are recorded from the earlier public-sample POC; no live model call was made.",
+    "Candidate trial IDs are a recorded retrieval set, not an exhaustive search.",
+    "Eligibility remains undetermined until a trial site reviews the complete clinical record.",
+    "Distance is great-circle distance to sites explicitly recruiting in the snapshot, not travel time."
+  ],
+  "disclaimer": "Clinical decision-support for professional review; not medical advice or a determination of eligibility."
+}

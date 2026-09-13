@@ -42,6 +42,7 @@ class ExpertAssessmentResult(ResultModel):
     missing_information: list[str]
     evidence_references: list[str]
     reasoning_summary: str
+    execution: dict[str, Any] | None = None
 
 
 class ConsensusResult(ResultModel):
