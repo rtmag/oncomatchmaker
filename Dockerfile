@@ -22,6 +22,7 @@ COPY normalization/ normalization/
 COPY trials/ trials/
 COPY evidence/ evidence/
 COPY ui/ ui/
+COPY data/snapshots/.gitignore data/snapshots/.gitignore
 COPY tests/fixtures/ tests/fixtures/
 COPY --from=web-build /build/web/dist web/dist/
 
@@ -29,4 +30,4 @@ RUN pip install --no-cache-dir .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uvicorn app.api:app --host 0.0.0.0 --port ${PORT}"]
+CMD ["sh", "-c", "python -m app.snapshot && uvicorn app.api:app --host 0.0.0.0 --port ${PORT}"]

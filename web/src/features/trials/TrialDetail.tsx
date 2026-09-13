@@ -111,6 +111,29 @@ export function TrialDetail({ item }: { item: RankedTrial }) {
       <section>
         <SectionTitle>Score components</SectionTitle>
         <ScoreBreakdown match={match} />
+        <p className="mt-4 text-sm text-muted-foreground">
+          Geographic access is a separate axis: {item.geography_score === null ? "not scorable" : `${item.geography_score.toFixed(1)} / 100`}.
+        </p>
+      </section>
+
+      <section>
+        <SectionTitle>Six independent ASTRA experts</SectionTitle>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {item.expert_assessments.map((expert) => (
+            <article key={expert.expert_role} className="rounded-xl border border-border bg-card-2 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <strong className="text-sm capitalize">{humanize(expert.expert_role)}</strong>
+                <Tag>{expert.assessment.toUpperCase()}</Tag>
+              </div>
+              <p className="mt-2 text-sm text-muted-foreground">{expert.reasoning_summary}</p>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                Confidence {(expert.confidence * 100).toFixed(0)}%
+                {expert.execution?.latency_ms ? ` · ${(expert.execution.latency_ms / 1000).toFixed(1)}s` : ""}
+                {expert.execution?.status ? ` · ${expert.execution.status}` : ""}
+              </p>
+            </article>
+          ))}
+        </div>
       </section>
 
       {match.rationale.length > 0 && (

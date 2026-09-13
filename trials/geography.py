@@ -7,7 +7,88 @@ import sqlite3
 from dataclasses import asdict, dataclass
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
+import httpx
+
+from schemas.match_results import NearestSite
+from schemas.molecular_profile import Location
+
 EARTH_RADIUS_KM = 6371.0088
+
+
+def resolve_city_location(
+    city: str, country: str, *, http: httpx.Client | None = None
+) -> Location:
+    """Resolve city/country server-side; coordinates never need to be typed in the UI."""
+    city, country = city.strip(), country.strip()
+    if not city or not country:
+        raise ValueError("City and country are required for geographic matching.")
+    owned = http is None
+    client = http or httpx.Client(
+        base_url="https://nominatim.openstreetmap.org",
+        timeout=15,
+        headers={"User-Agent": "OncoMatchmaker/0.1 clinical-trial-demo"},
+    )
+    try:
+        response = client.get(
+            "/search",
+            params={
+                "city": city,
+                "country": country,
+                "format": "jsonv2",
+                "limit": 1,
+            },
+        )
+        response.raise_for_status()
+        rows = response.json()
+    except (httpx.HTTPError, ValueError, TypeError) as exc:
+        raise ValueError("City lookup is temporarily unavailable.") from exc
+    finally:
+        if owned:
+            client.close()
+    if not rows:
+        raise ValueError("City and country could not be resolved; check the spelling.")
+    try:
+        return Location(
+            city=city,
+            country=country,
+            latitude=float(rows[0]["lat"]),
+            longitude=float(rows[0]["lon"]),
+        )
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("City lookup returned invalid coordinates.") from exc
+
+
+def haversine_distance(lat1, lon1, lat2, lon2):
+    """Compatibility helper used by the web result contract."""
+    a, b = math.radians(lat1), math.radians(lat2)
+    dlat, dlon = b - a, math.radians(lon2 - lon1)
+    h = math.sin(dlat / 2) ** 2 + math.cos(a) * math.cos(b) * math.sin(dlon / 2) ** 2
+    return EARTH_RADIUS_KM * 2 * math.asin(math.sqrt(min(1, max(0, h))))
+
+
+def find_nearest_site(patient_location, sites):
+    """Return only an explicitly recruiting site with usable coordinates."""
+    if patient_location.latitude is None or patient_location.longitude is None:
+        return None
+    candidates = [
+        NearestSite(
+            site=site,
+            distance_km=round(
+                haversine_distance(
+                    patient_location.latitude,
+                    patient_location.longitude,
+                    site.latitude,
+                    site.longitude,
+                ),
+                1,
+            ),
+        )
+        for site in sites
+        if site.status == "RECRUITING"
+        and site.latitude is not None
+        and site.longitude is not None
+    ]
+    return min(candidates, key=lambda value: value.distance_km) if candidates else None
 
 
 @dataclass(frozen=True)

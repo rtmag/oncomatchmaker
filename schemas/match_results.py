@@ -65,6 +65,10 @@ class RankedTrial(Model):
     match: TrialScore
     eligibility: Eligibility
     nearest_site: NearestSite | None = None
+    geography_score: float | None = None
+    geography_availability: str = "not_scored"
+    expert_assessments: list[dict] = Field(default_factory=list)
+    consensus: dict = Field(default_factory=dict)
     category: Literal["recruiting", "not_yet_recruiting", "review", "excluded"]
 
 

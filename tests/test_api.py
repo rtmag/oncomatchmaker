@@ -77,4 +77,6 @@ def test_extract_reports_extraction_failure():
     with patch("ingestion.pipeline.ingest_report", side_effect=failure):
         response = upload(PDF_BYTES)
     assert response.status_code == 422
-    assert "unreadable pages" in response.json()["detail"]
+    assert response.json()["detail"] == (
+        "Report extraction failed safely; no profile was accepted."
+    )

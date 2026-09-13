@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils"
 import { useCase } from "@/state/case-store"
 
 import { TrialCard } from "./TrialCard"
+import { ClinicalGeographyPlot } from "./ClinicalGeographyPlot"
 import { TrialDetail } from "./TrialDetail"
 
 type CategoryFilter = "all" | TrialCategory
@@ -141,6 +142,7 @@ export function TrialsView({ param }: { param: string | null }) {
       </div>
 
       <SearchNotes warnings={results.warnings} />
+      <ClinicalGeographyPlot trials={trials} />
 
       {shown.length > 0 ? (
         <>

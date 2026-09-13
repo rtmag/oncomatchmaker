@@ -11,10 +11,8 @@ import type { MolecularProfile } from "@/lib/types"
 import { useCase } from "@/state/case-store"
 
 const OPTIONAL_FIELDS: { key: keyof ContextDraft; label: string; inputMode?: "decimal" | "numeric"; placeholder: string }[] = [
-  { key: "city", label: "City", placeholder: "Optional" },
-  { key: "country", label: "Country", placeholder: "Optional" },
-  { key: "latitude", label: "Latitude", inputMode: "decimal", placeholder: "e.g. 1.3521" },
-  { key: "longitude", label: "Longitude", inputMode: "decimal", placeholder: "e.g. 103.8198" },
+  { key: "city", label: "Patient city", placeholder: "e.g. Singapore" },
+  { key: "country", label: "Country", placeholder: "e.g. Singapore" },
   { key: "age", label: "Age (years)", inputMode: "numeric", placeholder: "Optional" },
 ]
 const ECOG_OPTIONS = ["0", "1", "2", "3", "4", "5"]
@@ -84,7 +82,7 @@ export function ContextForm({ profile }: { profile: MolecularProfile }) {
         {(control) => <input {...control} className={inputClass} value={draft.therapies} onChange={update("therapies")} maxLength={300} />}
       </Field>
 
-      <p className="text-xs text-muted-foreground">City and country alone do not calculate distance. Add coordinates to rank nearby sites.</p>
+      <p className="text-xs text-muted-foreground">City and country are resolved server-side. Distance is calculated only to trial sites explicitly marked recruiting.</p>
 
       <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-card-2 p-4 text-sm transition-colors hover:border-border-strong has-checked:border-primary/40 has-checked:bg-primary/6">
         <input type="checkbox" checked={confirmed} onChange={(event) => setConfirmed(event.target.checked)} className="mt-0.5 size-4 accent-[var(--color-primary)]" />
@@ -94,7 +92,7 @@ export function ContextForm({ profile }: { profile: MolecularProfile }) {
       <Button type="submit" size="lg" disabled={!confirmed || searching} className="relative overflow-hidden">
         {searching && <BorderBeam size={90} duration={3} colorFrom="var(--color-primary-foreground)" colorTo="white" />}
         {searching ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <Search aria-hidden="true" />}
-        {searching ? "Searching ClinicalTrials.gov…" : submitLabel}
+        {searching ? "Running ASTRA and ranking open sites…" : submitLabel}
       </Button>
     </form>
   )

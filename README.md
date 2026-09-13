@@ -4,7 +4,7 @@
 
 OncoMatchmaker is a clinical decision-support project that helps users move from a molecular oncology report to relevant treatment evidence and clinical-trial opportunities.
 
-Users upload a molecular oncology report, and GPT-5.6 Sol extracts and reviews the molecular profile. Local HGNC and NCIt checks validate gene nomenclature and supported cancer names. The downstream trial-discovery prototype remains rule based; biological interpretation of trial eligibility is a separate, deferred task.
+Users upload a molecular oncology PDF and enter the patient's city and country. GPT-5.6 Sol extracts and reviews the molecular profile, local HGNC and NCIt checks normalize it, and the versioned oncology snapshot retrieves candidates. Six isolated GPT-6 Astra experts review each shortlisted trial concurrently. Clinical match and geographic access remain separate scores; geography uses only sites explicitly marked recruiting.
 
 Approved therapies and experimental clinical trials are intentionally presented separately. OncoMatchmaker supports informed discussion with qualified clinicians and trial teams; it does not provide medical advice or determine treatment or trial eligibility.
 
@@ -19,13 +19,11 @@ python3 -m venv .venv
 .venv/bin/streamlit run app/main.py
 ```
 
-Choose a PDF report, a synthetic demo, or canonical JSON, review the profile, then search.
-Patient location coordinates are optional; city/country alone does not produce a
-distance. The app queries live ClinicalTrials.gov v2 records, which needs no credentials.
-PDF extraction uses the OpenAI API key described below. Reports and patient profiles
-are not written to a persistent cache by the UI.
-Queries send disease and molecular search terms to ClinicalTrials.gov; age,
-coordinates, and other context stay in the local matching process.
+For Abhishek's React workspace, build `web/` and run `uvicorn app.api:app`. Upload a
+PDF, review the extracted profile, enter city and country, and select **Find evidence
+and trials**. The backend resolves the city, uses the local registry snapshot, runs
+the six-expert ASTRA team, and returns the complete result workspace. Reports and
+patient profiles are not written to a persistent cache by the UI.
 
 For machine-readable output:
 
@@ -35,7 +33,7 @@ For machine-readable output:
 
 ## Integration contract
 
-`schemas.molecular_profile.MolecularProfile` accepts versions `0.1` and `0.2`.
+`schemas.molecular_profile.MolecularProfile` accepts versions `0.1`, `0.2`, and `0.3`.
 `ingestion.pipeline.parse_report(pdf_path) -> MolecularProfile` now performs real
 Sol extraction, an optional single repair pass, independent review and deterministic
 source/registry checks. New profiles use `0.2`, with HGNC IDs, finding origin,
@@ -57,39 +55,19 @@ ranges are validated. Review these contracts with Roberto before merging.
 
 ## Matching behavior and limits
 
-- Search uses disease/variant, disease/gene, and solid-tumor queries, deduplicated
-  by NCT ID. Negative reports use disease-only search. Unknown classification,
-  VUS, and possible CH do not create molecular targets. HGVS long protein names,
-  disease ontology mapping, and complex biomarkers require upstream normalization.
-- The direct API adapter supports pagination (three pages of 100 per query),
-  20-second request timeouts, three attempts for transient failures, and a
-  15-minute in-memory public-response cache per client. Truncation or failed
-  pages are reported as partial results. No stale-cache fallback is automatic.
-- Molecular scoring measures **title relevance**, not satisfaction of molecular
-  inclusion criteria. It awards 30 for gene and exact alteration mentions and 20
-  for a gene mention. Trial-title negation/cohort interpretation is not automated.
-- Disease scoring awards 15 for canonical disease equality and 8 for explicitly
-  broad solid-tumor conditions. Unconfirmed disease compatibility goes into the
-  review group, outside primary recruiting candidates.
-- Eligibility resolves structured age (years) and sex criteria only. Free-text
-  ECOG, therapy, CNS, organ-function, molecular and cohort rules remain UNKNOWN
-  for trial-team review, even when some patient context is available. A known
-  mismatch excludes the candidate from the primary list.
-- Eligibility contributes up to 20 based on matched/all recorded criteria;
-  unresolved criteria cannot earn points. Development contributes up to 10 using
-  phase only (I: 2.5, II: 5, III: 7.5, IV: 10; early I: 1).
-- Recruitment contributes 10 for a recruiting study with an explicitly recruiting
-  site, 5 if site status is uncertain, 2 for not-yet-recruiting, otherwise 0.
-  Geography contributes `15 * exp(-distance_km / 250)` using the nearest explicitly
-  recruiting site. Unknown distance or other unknown components earn no points
-  and reduce displayed component coverage. Totals are not rescaled.
-- Recruiting, not-yet-recruiting, review, and known-mismatch groups stay separate.
-  Phase and total scores do not estimate benefit or eligibility probability.
-- The curated evidence dataset covers two demo associations (KRAS G12C and EGFR
-  L858R in NSCLC). FDA source links, restrictions, jurisdiction and verification
-  dates are included. It is not a comprehensive or automatically refreshed
-  knowledgebase. Other-disease evidence is labeled separately; local approval
-  and full patient applicability are not inferred.
+- Candidate retrieval uses the complete local oncology snapshot and never counts a
+  text hit as a match. The demo defaults to the top three candidates.
+- Each candidate receives six independent Responses API calls: molecular QC,
+  disease oncology, actionability evidence, pathway/resistance, trial eligibility,
+  and safety critic. Any malformed, incomplete, refused, mismatched, or unsupported
+  response fails the whole team closed.
+- Deterministic consensus makes safety-role conflicts non-overridable. Eligibility
+  remains undetermined until the trial team reviews the complete clinical record.
+- The clinical composite contains no geography. Geographic access is calculated
+  separately from the nearest site whose individual status and parent study are
+  explicitly recruiting, and both axes appear in the UI plot.
+- Approved therapies remain separate from experimental trials. The curated therapy
+  evidence is intentionally limited and is not a comprehensive knowledgebase.
 
 ## Tests and demo
 
@@ -116,6 +94,8 @@ Configure the ignored `.env` file (or environment):
 ```dotenv
 OPENAI_API_KEY=your-key-here
 ONCOMATCH_EXTRACTION_MODEL=gpt-5.6-sol
+ONCOMATCH_ASTRA_MODEL=gpt-6-astra
+ONCOMATCH_MAX_CANDIDATES=3
 ```
 
 Select **PDF report** in the UI, upload a sample, and click **Extract profile**.

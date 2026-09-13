@@ -46,6 +46,8 @@ function checkRange(value: string, label: string, min: number, max: number, inte
 export function validateDraft(draft: ContextDraft): DraftErrors {
   const errors: DraftErrors = {
     diagnosis: draft.diagnosis.trim() ? undefined : "A confirmed diagnosis is required to search.",
+    city: draft.city.trim() ? undefined : "Patient city is required for site proximity.",
+    country: draft.country.trim() ? undefined : "Country is required to resolve the city safely.",
     latitude: checkRange(draft.latitude, "Latitude", -90, 90),
     longitude: checkRange(draft.longitude, "Longitude", -180, 180),
     age: checkRange(draft.age, "Age", 0, 120, true),
@@ -73,8 +75,8 @@ export function applyDraft(profile: MolecularProfile, draft: ContextDraft): Mole
       location: {
         city: orNull(draft.city),
         country: orNull(draft.country),
-        latitude: parseNumber(draft.latitude),
-        longitude: parseNumber(draft.longitude),
+        latitude: null,
+        longitude: null,
       },
     },
   }

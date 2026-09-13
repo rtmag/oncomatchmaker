@@ -77,7 +77,7 @@ export interface IngestionProvenance {
 }
 
 export interface MolecularProfile {
-  schema_version: "0.1" | "0.2"
+  schema_version: "0.1" | "0.2" | "0.3"
   report: ReportMetadata
   disease: Disease
   patient_context: PatientContext
@@ -143,6 +143,23 @@ export interface TrialScore {
   rationale: string[]
 }
 
+export interface ExpertAssessment {
+  expert_role: string
+  assessment: "support" | "caution" | "conflict" | "unknown"
+  confidence: number
+  reasoning_summary: string
+  supporting_facts: string[]
+  conflicting_facts: string[]
+  missing_information: string[]
+  evidence_references: string[]
+  execution?: {
+    model?: string
+    latency_ms?: number
+    total_tokens?: number
+    status?: string
+  }
+}
+
 export type TrialCategory = "recruiting" | "not_yet_recruiting" | "review" | "excluded"
 
 export interface RankedTrial {
@@ -150,6 +167,10 @@ export interface RankedTrial {
   match: TrialScore
   eligibility: Eligibility
   nearest_site: NearestSite | null
+  geography_score: number | null
+  geography_availability: string
+  expert_assessments: ExpertAssessment[]
+  consensus: Record<string, unknown>
   category: TrialCategory
 }
 

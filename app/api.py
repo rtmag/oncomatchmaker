@@ -14,6 +14,7 @@ from ingestion.pdf_reader import PDFReadError
 from schemas.match_results import MatchResults
 from schemas.molecular_profile import MolecularProfile
 from trials import pipeline as trial_pipeline
+from trials.astra_runner import ExpertTeamError
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
@@ -77,7 +78,14 @@ def validate_profile(profile: MolecularProfile):
 
 @app.post("/api/match", response_model=MatchResults)
 def match(profile: MolecularProfile):
-    return trial_pipeline.match_patient(profile)
+    try:
+        return trial_pipeline.match_patient(profile)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    except ExpertTeamError as exc:
+        raise HTTPException(
+            502, "The complete ASTRA expert team did not return a validated result."
+        ) from exc
 
 
 @app.post("/api/extract", response_model=MolecularProfile)
@@ -93,7 +101,9 @@ def extract(file: UploadFile = File(...)):
         try:
             result = ingestion_pipeline.ingest_report(path)
         except (ExtractionError, PDFReadError) as exc:
-            raise HTTPException(422, f"Report extraction failed: {exc}") from exc
+            raise HTTPException(
+                422, "Report extraction failed safely; no profile was accepted."
+            ) from exc
     return MolecularProfile.model_validate(result.profile)
 
 

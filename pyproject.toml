@@ -13,7 +13,7 @@ dependencies = ["pydantic>=2.7,<3", "httpx>=0.27,<1", "streamlit>=1.40,<2", "pym
 dev = ["pytest>=8,<9", "ruff>=0.9,<1"]
 
 [tool.setuptools.packages.find]
-include = ["app*", "schemas*", "trials*", "evidence*", "ui*", "ingestion*", "normalization*"]
+include = ["app*", "schemas*", "trials*", "evidence*", "ui*", "ingestion*", "normalization*", "evaluation*"]
 
 [tool.setuptools.package-data]
 evidence = ["*.json"]
