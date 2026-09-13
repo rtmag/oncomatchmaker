@@ -6,8 +6,12 @@ from normalization.genes import get_registry
 from schemas.extraction import IngestionResult
 
 
-def ingest_report(pdf_path, *, extractor=None, registry=None, ocr=False):
-    document = read_document(pdf_path, ocr=ocr)
+def ingest_report(
+    pdf_path, *, extractor=None, registry=None, ocr=False, full_layout=False
+):
+    document = read_document(
+        pdf_path, ocr=ocr, row_order_pages=None if full_layout else ()
+    )
     if any(p.extraction_method == "unreadable" for p in document.pages):
         raise ExtractionError(
             "Report has unreadable pages. Enable OCR or supply a searchable PDF; partial extraction is not accepted."
@@ -25,6 +29,19 @@ def ingest_report(pdf_path, *, extractor=None, registry=None, ocr=False):
         ]
         repaired = bool(repair_errors and hasattr(extractor, "repair"))
         if repaired:
+            if not full_layout:
+                failed_pages = {
+                    citation.page
+                    for error in repair_errors
+                    for citation in (
+                        extracted.findings[error["finding_index"]].evidence,
+                        extracted.findings[error["finding_index"]].section_evidence,
+                    )
+                    if citation is not None
+                }
+                document = read_document(
+                    pdf_path, ocr=ocr, row_order_pages=failed_pages
+                )
             extracted = extractor.repair(document, extracted, repair_errors)
             anchored.extend(anchor_scalar_evidence(extracted, document))
         review = extractor.review(document, extracted)

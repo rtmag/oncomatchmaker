@@ -331,3 +331,51 @@ def test_corpus_native_reader():
     for path in files:
         doc = read_document(path)
         assert doc.pages and all(p.extraction_method == "native" for p in doc.pages)
+        if path.name.startswith("03_"):
+            repaired = read_document(path, row_order_pages={7})
+            row_text = repaired.pages[6].text.split("[ORIGINAL BLOCK-ORDER TEXT]")[0]
+            assert "RAD51C" in row_text
+
+
+def test_native_reader_skips_layout_and_selected_page_is_deduplicated(tmp_path):
+    path = tmp_path / "overlap.pdf"
+    with pymupdf.open() as pdf:
+        for _ in range(2):
+            page = pdf.new_page()
+            for _ in range(2):
+                page.insert_text((40, 40), "Somatic Findings RAD51C G264S Pathogenic")
+        pdf.save(path)
+    with patch("ingestion.pdf_reader.pdfplumber.open") as layout:
+        read_document(path)
+        layout.assert_not_called()
+    doc = read_document(path, row_order_pages={2})
+    assert "[ROW-ORDER TEXT]" not in doc.pages[0].text
+    row_text = doc.pages[1].text.split("[ORIGINAL BLOCK-ORDER TEXT]")[0]
+    assert row_text.count("RAD51C") == 1
+    assert "rows=2" in doc.reader_version
+
+
+def test_failed_finding_enriches_source_before_repair(document, finding):
+    class FakeExtractor:
+        model = "fake-for-tests"
+
+        def extract(self, document, pdf_path=None):
+            bad = finding.model_copy(update={"gene": "NOT_A_GENE"})
+            return extraction([bad])
+
+        def repair(self, enriched, extracted, errors):
+            assert enriched.reader_version == "enriched"
+            assert errors
+            return extraction([finding])
+
+        def review(self, document, extracted):
+            return review(extracted.findings)
+
+    enriched = document.model_copy(update={"reader_version": "enriched"})
+    with patch(
+        "ingestion.pipeline.read_document", side_effect=[document, enriched]
+    ) as reader:
+        result = ingest_report("unused", extractor=FakeExtractor())
+    assert reader.call_args.kwargs["row_order_pages"] == {1}
+    assert result.reader_version == "enriched"
+    assert result.profile["biomarkers"]["snv_indel"][0]["gene"] == "KRAS"

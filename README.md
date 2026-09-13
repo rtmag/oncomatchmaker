@@ -141,8 +141,9 @@ payloads are included in application error messages.
 The extraction pipeline:
 
 1. Reads every PDF page with PyMuPDF and retains text blocks, coordinates and a
-   document hash. A second pdfplumber view deduplicates overlapping glyphs and
-   preserves row order. Scanned/unreadable pages fail closed unless local OCR is enabled
+   document hash. Before model repair, a pdfplumber view deduplicates overlapping
+   glyphs on pages cited by findings that failed validation. Use `--full-layout`
+   to run this slower pass on all native pages from the start. Scanned/unreadable pages fail closed unless local OCR is enabled
    with `--ocr` (requires Tesseract English language data). Limits: 40 MB, 100 pages,
    600,000 extracted characters. It never silently truncates the report.
 2. Sol returns structured findings and scalar fields with page/quote evidence,
@@ -153,6 +154,8 @@ The extraction pipeline:
 4. Finding quotes must occur on the stated page and contain the reported gene and
    alteration. Classification and numeric evidence are checked separately. Invalid
    findings receive at most one model repair pass, then are validated again.
+   The selective layout fallback cannot detect findings omitted entirely by the
+   initial extraction; use full-layout mode when investigating suspected omissions.
    Scalar quotes may be narrowed to an exact value already present on the same page;
    this is recorded in the audit. Finding quotes are not heuristically reconstructed.
 5. A separate Sol call audits the proposal against the source, including amended

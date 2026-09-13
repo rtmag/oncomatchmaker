@@ -11,10 +11,10 @@ from ingestion.pdf_reader import PDFReadError
 from ingestion.pipeline import ingest_report
 
 
-def process_report(path, *, output, ocr=False):
+def process_report(path, *, output, ocr=False, full_layout=False):
     """Use separate processes because the native PDF library is not thread-safe."""
     try:
-        result = ingest_report(path, ocr=ocr)
+        result = ingest_report(path, ocr=ocr, full_layout=full_layout)
         target = output / (path.stem + ".json")
         target.write_text(result.model_dump_json(indent=2))
         row = {
@@ -36,6 +36,11 @@ def main():
     parser.add_argument("--output", type=Path, help="Save full extraction audit JSON")
     parser.add_argument("--ocr", action="store_true", help="Enable local Tesseract OCR")
     parser.add_argument(
+        "--full-layout",
+        action="store_true",
+        help="Run the slower pdfplumber row-order pass on every native page",
+    )
+    parser.add_argument(
         "--batch",
         action="store_true",
         help="Process a directory of reports into an output directory (two concurrent reports)",
@@ -52,13 +57,19 @@ def main():
         with ProcessPoolExecutor(max_workers=2) as pool:
             rows = list(
                 pool.map(
-                    partial(process_report, output=args.output, ocr=args.ocr), paths
+                    partial(
+                        process_report,
+                        output=args.output,
+                        ocr=args.ocr,
+                        full_layout=args.full_layout,
+                    ),
+                    paths,
                 )
             )
         (args.output / "summary.json").write_text(json.dumps(rows, indent=2))
         return 1 if any(row["status"] == "failed" for row in rows) else 0
     try:
-        result = ingest_report(args.pdf, ocr=args.ocr)
+        result = ingest_report(args.pdf, ocr=args.ocr, full_layout=args.full_layout)
     except (ExtractionError, PDFReadError, OSError) as exc:
         parser.exit(1, f"Ingestion failed: {exc}\n")
     if args.output:

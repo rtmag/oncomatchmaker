@@ -1,0 +1,59 @@
+{
+  "schema_version": "0.1",
+  "report": {
+    "vendor": "SYNTHETIC — Astra demonstration",
+    "assay": "Canonical molecular profile",
+    "sample_type": "plasma"
+  },
+  "disease": {
+    "raw_text": "Metastatic non-small cell lung cancer",
+    "normalized": "non-small cell lung cancer",
+    "histology": "Adenocarcinoma",
+    "stage": "metastatic"
+  },
+  "patient_context": {
+    "prior_therapies": ["osimertinib"],
+    "prior_therapies_known": true,
+    "location": {
+      "city": "Singapore",
+      "country": "Singapore",
+      "latitude": 1.3521,
+      "longitude": 103.8198
+    }
+  },
+  "biomarkers": {
+    "snv_indel": [
+      {
+        "gene": "EGFR",
+        "protein_change": "L858R",
+        "classification": "pathogenic",
+        "source_text": "EGFR p.L858R — pathogenic",
+        "potential_ch": false
+      },
+      {
+        "gene": "ATM",
+        "classification": "VUS",
+        "source_text": "ATM — variant of uncertain significance (illustrative finding; exact variant not specified)",
+        "potential_ch": false
+      },
+      {
+        "gene": "DNMT3A",
+        "protein_change": "R882H",
+        "classification": "pathogenic",
+        "source_text": "DNMT3A p.R882H — possible clonal hematopoiesis; tumor origin not established",
+        "potential_ch": true
+      }
+    ],
+    "copy_number": [
+      {
+        "gene": "MET",
+        "alteration": "amplification",
+        "classification": "amplification",
+        "source_text": "MET amplification — reported in this synthetic scenario"
+      }
+    ]
+  },
+  "technical_notes": [
+    "Synthetic demonstration adapted from the Astra Precision UI kit; not a patient report."
+  ]
+}

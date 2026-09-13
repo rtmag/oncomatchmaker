@@ -1,5 +1,22 @@
 # Ingestion validation — 2026-09-13
 
+## Selective reader update
+
+`selective-native-1.2` uses native blocks initially and enriches pages cited by
+invalid findings with pdfplumber before the existing model repair call. The CLI
+offers `--full-layout` to enrich all native pages before initial extraction.
+No extracted-text cache or new persistent report storage was added.
+
+A single sequential local benchmark of the same 12 PDFs took 1.176 seconds
+total (0.017–0.260 seconds per file), versus 63.6 seconds with the previous
+all-page dual reader. This measures local reading only, not model latency.
+Tests verify selected-page glyph deduplication, the real RAD51C row on page 7
+of the stomach report, and enrichment before model repair. A fresh live model
+evaluation remains outstanding; omitted findings cannot themselves trigger
+the validation-based fallback.
+
+## Prior live baseline
+
 The live baseline completed extraction and review for all 12 locally available
 sample reports using `gpt-5.6-sol` and prompt version `ingestion-0.2.1`.
 These reports include both tissue and liquid assays.
