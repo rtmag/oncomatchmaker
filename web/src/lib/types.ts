@@ -118,6 +118,8 @@ export interface TrialCandidate {
   sources: string[]
   retrieved_at: string
   cached: boolean
+  expanded_access?: boolean | null
+  registry_updated_at?: string | null
 }
 
 export type CriterionStatus = "MATCH" | "MISMATCH" | "UNKNOWN" | "NOT_APPLICABLE"
@@ -182,6 +184,7 @@ export interface RankedTrial {
   expert_assessments: ExpertAssessment[]
   consensus: Record<string, unknown>
   category: TrialCategory
+  retrieval_route?: string
 }
 
 export type EvidenceContext = "same_disease" | "tumor_agnostic" | "other_disease" | "investigational"
@@ -202,6 +205,7 @@ export interface ApprovedOption {
 export type SearchStatus = "complete" | "partial" | "failed" | "not_searched"
 
 export interface MatchResults {
+  exploratory_trials?: { trial: TrialCandidate; matched_variants: string[]; disease_context: string; expert_reviewed: boolean }[]
   screening_landscape?: ScreeningPoint[]
   profile: MolecularProfile
   approved_options: ApprovedOption[]

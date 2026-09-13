@@ -44,4 +44,10 @@ def parse_trial(record):
         sources=[f"https://clinicaltrials.gov/study/{nct_id}"],
         retrieved_at=record["_retrieved_at"],
         cached=record.get("_cached", False),
+        expanded_access=protocol.get("statusModule", {})
+        .get("expandedAccessInfo", {})
+        .get("hasExpandedAccess"),
+        registry_updated_at=protocol.get("statusModule", {})
+        .get("lastUpdatePostDateStruct", {})
+        .get("date"),
     )

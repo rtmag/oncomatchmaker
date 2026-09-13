@@ -11,6 +11,17 @@ from trials.geography import find_nearest_site, haversine_distance
 from trials.pipeline import _clinical_score, match_patient
 from trials.ranking import score_trial
 from trials.search import generate_queries
+from trials.trial_parser import parse_trial
+
+
+@pytest.mark.parametrize("value", [True, False, None])
+def test_expanded_access_preserves_registry_tristate(record, value):
+    status = record["protocolSection"].setdefault("statusModule", {})
+    status["expandedAccessInfo"] = {} if value is None else {"hasExpandedAccess": value}
+    status["lastUpdatePostDateStruct"] = {"date": "2026-09-13"}
+    trial = parse_trial(record)
+    assert trial.expanded_access is value
+    assert trial.registry_updated_at == "2026-09-13"
 
 
 def test_profile_contract_and_unknowns(profile):

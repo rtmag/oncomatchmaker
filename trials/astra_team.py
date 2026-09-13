@@ -122,6 +122,9 @@ def build_expert_packets(
         "constraints": [
             "Use only supplied profile, registry, and evidence facts.",
             "Preserve unknowns; do not infer eligibility.",
+            "A broad solid-tumor basket may accept the patient's histology without naming it. Check the applicable phase/cohort inclusions and exclusions; broad condition tags alone do not establish eligibility.",
+            "Distinguish an explicit tumor-type exclusion from missing cohort information. Preserve true disease conflicts. A molecular match never overrides a tumor-type restriction.",
+            "Expanded access is outside trial enrollment. Do not infer compassionate access from a mutation, disease mismatch, or recruiting status; use only explicit registry information and retain sponsor/clinician confirmation as required.",
             "Do not use or imply site-level recruitment or geography.",
             "Return the ExpertAssessment contract only.",
         ],

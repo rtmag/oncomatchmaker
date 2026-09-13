@@ -20,6 +20,7 @@ import { useCase } from "@/state/case-store"
 import { TrialCard } from "./TrialCard"
 import { ClinicalGeographyPlot } from "./ClinicalGeographyPlot"
 import { TrialDetail } from "./TrialDetail"
+import { ExploratoryTrials } from "./ExploratoryTrials"
 
 type CategoryFilter = "all" | TrialCategory
 type SortKey = "ranked" | "score" | "distance"
@@ -187,6 +188,7 @@ export function TrialsView({ param }: { param: string | null }) {
         </Callout>
       )}
 
+      <ExploratoryTrials results={results} />
       <Dialog open={Boolean(selected)} onOpenChange={(open) => !open && navigate("trials")}>
         {selected && (
           <DialogContent eyebrow={selected.trial.nct_id} title={selected.trial.title}>

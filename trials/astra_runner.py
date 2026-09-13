@@ -17,7 +17,7 @@ from trials.astra_team import build_expert_packets, reach_consensus
 
 MODEL = "gpt-6-astra"
 REASONING_EFFORT = "medium"
-PROMPT_VERSION = "astra-expert-0.1"
+PROMPT_VERSION = "astra-expert-0.2-basket-context"
 
 
 class ExpertTeamError(RuntimeError):

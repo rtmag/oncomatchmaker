@@ -8,7 +8,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from evidence.actionability import find_approved_options
-from schemas.match_results import MatchResults, RankedTrial
+from schemas.match_results import ExploratoryTrial, MatchResults, RankedTrial
 from trials.astra_runner import AstraExpertRunner, ExpertTeamError
 from trials.candidate_retrieval import screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
@@ -140,6 +140,7 @@ def _evaluated_trial(profile, location, candidate, record, team):
         expert_assessments=team["assessments"],
         consensus=team["consensus"],
         category=category,
+        retrieval_route=candidate.retrieval_route,
     )
 
 
@@ -198,6 +199,20 @@ def _match_snapshot(
         records = [
             (candidate, _trial(db, candidate.nct_id)) for candidate in candidates
         ]
+        # Unreviewed cross-disease text leads are never scored or plotted as matches.
+        for lead in screening.exploratory[:12]:
+            record = _trial(db, lead.nct_id)
+            raw = json.loads(record["raw_json"])
+            raw.update(_retrieved_at=record["retrieved_at"], _cached=True)
+            result.exploratory_trials.append(
+                ExploratoryTrial(
+                    trial=parse_trial(raw),
+                    matched_variants=list(lead.exact_variant_hits),
+                )
+            )
+        result.screening_summary["exploratory_other_disease_leads"] = len(
+            screening.exploratory
+        )
 
     profile_payload = result.profile.model_dump(mode="json")
     reviewed = accepted = 0

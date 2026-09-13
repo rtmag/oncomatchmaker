@@ -10,6 +10,7 @@ import { routeHref } from "@/hooks/useHashRoute"
 import { formatDate, formatKm, formatPercent, formatPhase, humanize, pluralize, safeHref } from "@/lib/format"
 import { CATEGORY, CRITERION, ELIGIBILITY, TONE_TEXT, TONE_VAR } from "@/lib/status"
 import type { RankedTrial, TrialScore } from "@/lib/types"
+import { expandedAccessLabel } from "./ExploratoryTrials"
 import { cn } from "@/lib/utils"
 
 const PREVIEW_CRITERIA = 5
@@ -69,6 +70,8 @@ export function TrialDetail({ item }: { item: RankedTrial }) {
   const categoryMeta = CATEGORY[category]
   const eligibilityMeta = ELIGIBILITY[eligibility.status]
   const facts = [
+    ["Expanded access", expandedAccessLabel(trial)],
+    ["Registry updated", trial.registry_updated_at ?? "Unknown"],
     ["Status", humanize(trial.status)],
     ["Phase", formatPhase(trial.phase)],
     ["Ages", [trial.minimum_age, trial.maximum_age].filter(Boolean).join(" – ") || "Not stated"],
