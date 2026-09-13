@@ -11,6 +11,7 @@ from schemas.match_results import ExploratoryTrial, MatchResults, RankedTrial
 from trials.astra_runner import AstraExpertRunner, ExpertTeamError
 from trials.candidate_retrieval import screen_trials
 from trials.client import ClinicalTrialsClient, TrialServiceError
+from trials.clinical_scoring import aggregate
 from trials.eligibility import evaluate_eligibility
 from trials.geography import (
     find_accessible_site,
@@ -21,6 +22,7 @@ from trials.geography import (
 )
 from trials.integrated_pipeline import _trial
 from trials.ranking import score_trial
+from trials.registry_features import load as load_features
 from trials.search import generate_queries
 from trials.trial_parser import parse_trial
 
@@ -38,14 +40,6 @@ ROLE_COMPONENTS = {
     "pathway_resistance": "mechanism",
     "trial_eligibility": "eligibility",
     "safety_critic": "safety",
-}
-CLINICAL_WEIGHTS = {
-    "molecular": 30.0,
-    "disease": 15.0,
-    "evidence": 15.0,
-    "mechanism": 15.0,
-    "eligibility": 20.0,
-    "safety": 5.0,
 }
 ASSESSMENT_FRACTIONS = {"support": 0.9, "caution": 0.6}
 
@@ -81,28 +75,11 @@ def _clinical_score(team):
         ROLE_COMPONENTS[row["expert_role"]]: ASSESSMENT_FRACTIONS.get(row["assessment"])
         for row in team["assessments"]
     }
-    known_weight = sum(
-        CLINICAL_WEIGHTS[name]
-        for name, value in components.items()
-        if value is not None
-    )
     hard_conflict = bool(team["consensus"]["safety_gate_triggered_by"])
-    overall = None
-    if not hard_conflict:
-        overall = round(
-            sum(
-                (value or 0) * CLINICAL_WEIGHTS[name]
-                for name, value in components.items()
-            ),
-            1,
-        )
     from schemas.match_results import TrialScore
 
     return TrialScore(
-        overall_score=overall,
-        coverage=round(known_weight / 100, 3),
-        components=components,
-        weights=CLINICAL_WEIGHTS,
+        **aggregate(components, conflict=hard_conflict),
         rationale=[row["reasoning_summary"] for row in team["assessments"]],
     )
 
@@ -191,10 +168,38 @@ def _match_snapshot(
         ]
     )
     with sqlite3.connect(database) as db:
-        screening = screen_trials(db, result.profile.model_dump(mode="json"))
+        features = load_features(database)
+        screening = screen_trials(db, result.profile.model_dump(mode="json"), features)
         result.screening_landscape = [dict(row) for row in screening.landscape]
         attach_screening_geography(db, result.screening_landscape, location)
-        candidates = list(screening.candidates[:maximum_reviews])
+        scores = {
+            point["nct_id"]: point["clinical_score"] for point in screening.landscape
+        }
+        coverage = {
+            point["nct_id"]: point["clinical_assessment"]["coverage"]
+            for point in screening.landscape
+        }
+        candidates = sorted(
+            screening.candidates,
+            key=lambda c: (
+                -(
+                    scores[c.nct_id] * coverage[c.nct_id]
+                    if scores[c.nct_id] is not None
+                    else -1
+                ),
+                -(scores[c.nct_id] if scores[c.nct_id] is not None else -1),
+                -len(c.exact_variant_hits),
+                -c.preliminary_score,
+                c.nct_id,
+            ),
+        )[:maximum_reviews]
+        result.warnings.append(
+            "Clinical-fit v2 is a coverage-normalized weighted score. Provisional and expert scores use identical arithmetic but are not yet empirically calibrated. Unknown dimensions are excluded from the denominator; inspect coverage and bounds."
+        )
+        if not features:
+            result.warnings.append(
+                "Registry features unavailable: unreviewed trials remain unscored. Rebuild snapshot features before provisional scoring."
+            )
         result.screening_summary = {
             "total_snapshot_trials_screened": screening.total_screened,
             "status_eligible": screening.status_eligible,
@@ -228,6 +233,7 @@ def _match_snapshot(
         )
 
     profile_payload = result.profile.model_dump(mode="json")
+    points_by_id = {point["nct_id"]: point for point in result.screening_landscape}
     reviewed = accepted = 0
     for start in range(0, len(records), team_concurrency):
         batch = records[start : start + team_concurrency]
@@ -245,6 +251,16 @@ def _match_snapshot(
                 try:
                     team = future.result()
                 except ExpertTeamError:
+                    point = points_by_id[candidate.nct_id]
+                    point["provisional_clinical_assessment"] = point[
+                        "clinical_assessment"
+                    ]
+                    point["clinical_score"] = None
+                    point["clinical_assessment"] = {
+                        **point["clinical_assessment"],
+                        "overall_score": None,
+                        "status": "review_failed",
+                    }
                     result.warnings.append(
                         f"{candidate.nct_id}: ASTRA team failed validation; no partial assessment was accepted."
                     )
@@ -253,6 +269,15 @@ def _match_snapshot(
                     result.profile, location, candidate, record, team
                 )
                 result.trials.append(row)
+                point = points_by_id[candidate.nct_id]
+                point["provisional_clinical_assessment"] = point["clinical_assessment"]
+                point["clinical_score"] = row.match.overall_score
+                point["clinical_assessment"] = {
+                    **row.match.model_dump(mode="json"),
+                    "status": "excluded"
+                    if row.category == "excluded"
+                    else "expert_reviewed",
+                }
                 if row.category != "excluded" and row.match.overall_score is not None:
                     accepted += 1
         if reviewed >= minimum_reviews and accepted >= target_candidates:

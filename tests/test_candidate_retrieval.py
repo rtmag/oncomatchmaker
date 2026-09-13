@@ -83,7 +83,8 @@ def test_snapshot_retrieves_rmc9805_for_cholangiocarcinoma():
     assert len(result.landscape) == result.total_screened
 
 
-def test_snapshot_pipeline_keeps_exploratory_leads_unscored(profile):
+@pytest.mark.parametrize("fail", [False, True])
+def test_snapshot_pipeline_keeps_exploratory_leads_unscored(profile, fail):
     from schemas.astra_contracts import EXPERT_ROLES
     from schemas.match_results import MatchResults
     from trials.pipeline import SNAPSHOT, match_patient
@@ -97,6 +98,10 @@ def test_snapshot_pipeline_keeps_exploratory_leads_unscored(profile):
 
     class StubTeam:
         def run_team(self, profile, record, evidence):
+            if fail:
+                from trials.astra_runner import ExpertTeamError
+
+                raise ExpertTeamError("Synthetic failure")
             return {
                 "assessments": [
                     {
@@ -115,7 +120,28 @@ def test_snapshot_pipeline_keeps_exploratory_leads_unscored(profile):
     result = match_patient(
         profile, astra_runner=StubTeam(), max_candidates=3, target_candidates=1
     )
+    if fail:
+        assert not result.trials
+        failures = [
+            p
+            for p in result.screening_landscape
+            if p["clinical_assessment"]["status"] == "review_failed"
+        ]
+        assert len(failures) == 3
+        assert all(
+            p["clinical_score"] is None
+            and p["clinical_assessment"]["overall_score"] is None
+            for p in failures
+        )
+        return
     assert "NCT06040541" in {r.trial.nct_id for r in result.trials}
+    for trial in result.trials:
+        point = next(
+            p for p in result.screening_landscape if p["nct_id"] == trial.trial.nct_id
+        )
+        assert point["clinical_score"] == trial.match.overall_score
+        assert point["clinical_assessment"]["coverage"] == trial.match.coverage
+        assert "provisional_clinical_assessment" in point
     assert result.exploratory_trials
     assert all(not r.expert_reviewed for r in result.exploratory_trials)
     assert not (

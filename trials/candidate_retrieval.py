@@ -8,6 +8,9 @@ import sqlite3
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+from trials.provisional_scoring import provisional_score
+from trials.registry_features import fingerprint
+
 
 @dataclass(frozen=True)
 class RetrievedCandidate:
@@ -102,7 +105,7 @@ def _terms(profile: Mapping[str, Any]) -> tuple[set[str], set[str]]:
 
 
 def screen_trials(
-    db: sqlite3.Connection, profile: Mapping[str, Any]
+    db: sqlite3.Connection, profile: Mapping[str, Any], feature_records=None
 ) -> TrialScreenResult:
     """Screen every snapshot study and rank viable candidates without model calls.
 
@@ -128,6 +131,17 @@ def screen_trials(
             "screening_state": "status_filtered",
         }
         landscape.append(row)
+        stored = (feature_records or {}).get(nct_id)
+        features = (
+            stored[1]
+            if stored
+            and stored[0] == fingerprint(title, eligibility, conditions_json, status)
+            else None
+        )
+        assessment = provisional_score(profile, features)
+        row.update(
+            clinical_score=assessment["overall_score"], clinical_assessment=assessment
+        )
         if status not in {"RECRUITING", "NOT_YET_RECRUITING"}:
             continue
         status_eligible += 1

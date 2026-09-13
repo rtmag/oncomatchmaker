@@ -60,6 +60,8 @@ class TrialScore(Model):
     components: dict[str, float | None]
     weights: dict[str, float]
     rationale: list[str]
+    score_version: str | None = None
+    uncertainty_bounds: list[float] | None = None
 
 
 class RankedTrial(Model):

@@ -12,6 +12,8 @@ export interface ScreeningPoint {
   nct_id: string
   title: string
   preliminary_score: number
+  clinical_score?: number | null
+  clinical_assessment?: { coverage: number; score_version: string; status: string; uncertainty_bounds?: number[] | null }
   geography_score: number | null
   distance_km: number | null
   screening_state: string
@@ -149,6 +151,8 @@ export interface NearestSite {
 }
 
 export interface TrialScore {
+  score_version?: string | null
+  uncertainty_bounds?: number[] | null
   overall_score: number | null
   coverage: number
   components: Record<string, number | null>
