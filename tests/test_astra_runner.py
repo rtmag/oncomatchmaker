@@ -108,6 +108,7 @@ def test_any_bad_agent_fails_the_entire_team(failure):
 
 
 def test_missing_server_key_fails_closed(monkeypatch):
+    monkeypatch.setattr("trials.astra_runner.load_dotenv", lambda *args, **kwargs: None)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     with pytest.raises(ExpertTeamError, match="not configured"):
         AstraExpertRunner()

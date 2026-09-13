@@ -6,9 +6,11 @@ import json
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 import httpx
+from dotenv import load_dotenv
 
 from schemas.astra_contracts import EXPERT_ROLES, ExpertAssessment
 from trials.astra_team import build_expert_packets, reach_consensus
@@ -62,12 +64,14 @@ def expert_assessment_schema() -> dict[str, Any]:
 
 
 class AstraExpertRunner:
-    def __init__(self, *, api_key=None, http=None):
+    def __init__(self, *, api_key=None, model=None, http=None):
+        load_dotenv(Path(__file__).resolve().parents[1] / ".env", override=False)
         key = api_key or os.environ.get("OPENAI_API_KEY")
         if not key:
             raise ExpertTeamError(
                 "OPENAI_API_KEY is not configured; six-agent matching was not run."
             )
+        self.model = model or os.environ.get("ONCOMATCH_ASTRA_MODEL", MODEL)
         self._owned = http is None
         self._http = http or httpx.Client(
             base_url="https://api.openai.com/v1",
@@ -82,8 +86,27 @@ class AstraExpertRunner:
     def _call(self, packet: Mapping[str, Any]) -> dict[str, Any]:
         role = packet["expert_role"]
         trial_id = packet["trial"]["nct_id"]
+        allowed_references = {
+            packet["trial"].get("source_url"),
+            trial_id,
+            packet["profile"].get("case_id"),
+            packet["profile"].get("source_pdf"),
+        }
+        allowed_references.update(
+            reference
+            for evidence in packet.get("evidence", [])
+            for key in ("source_url", "url", "reference")
+            if (reference := evidence.get(key))
+        )
+        allowed_references = {
+            reference for reference in allowed_references if reference
+        }
+        schema = expert_assessment_schema()
+        schema["properties"]["evidence_references"]["items"]["enum"] = sorted(
+            allowed_references
+        )
         payload = {
-            "model": MODEL,
+            "model": self.model,
             "store": False,
             "reasoning": {"effort": REASONING_EFFORT},
             "max_output_tokens": 4000,
@@ -93,8 +116,8 @@ class AstraExpertRunner:
                     "content": (
                         "You are one isolated ASTRA oncology trial-review expert. "
                         "Use only the supplied packet. Preserve unknowns, never determine "
-                        "eligibility, cite supplied evidence references, and return only "
-                        "the requested structured assessment."
+                        "eligibility, select evidence references exactly from the allowed "
+                        "source identifiers, and return only the requested structured assessment."
                     ),
                 },
                 {"role": "user", "content": json.dumps(packet)},
@@ -104,7 +127,7 @@ class AstraExpertRunner:
                     "type": "json_schema",
                     "name": "ExpertAssessment",
                     "strict": True,
-                    "schema": expert_assessment_schema(),
+                    "schema": schema,
                 }
             },
             "metadata": {
@@ -149,13 +172,6 @@ class AstraExpertRunner:
             raise ExpertTeamError(
                 f"ASTRA expert {role} returned mismatched identity; no team result was accepted."
             )
-        allowed_references = {packet["trial"].get("source_url")}
-        allowed_references.update(
-            reference
-            for evidence in packet.get("evidence", [])
-            for key in ("source_url", "url", "reference")
-            if (reference := evidence.get(key))
-        )
         if not assessment.evidence_references or any(
             reference not in allowed_references
             for reference in assessment.evidence_references
@@ -165,7 +181,7 @@ class AstraExpertRunner:
             )
         usage = result.get("usage") or {}
         raw["execution"] = {
-            "model": result.get("model") or MODEL,
+            "model": result.get("model") or self.model,
             "reasoning_effort": REASONING_EFFORT,
             "prompt_version": PROMPT_VERSION,
             "latency_ms": latency_ms,
@@ -202,7 +218,7 @@ class AstraExpertRunner:
             raise ExpertTeamError("The complete six-agent team did not return.")
         assessments = [completed[role] for role in EXPERT_ROLES]
         return {
-            "model": MODEL,
+            "model": self.model,
             "reasoning_effort": REASONING_EFFORT,
             "prompt_version": PROMPT_VERSION,
             "execution": "concurrent_isolated_responses",
